@@ -1,4 +1,5 @@
 rootProject.name = "mk-ervers"
 
-include("hermes")
+include("gaia")
 include("hephaistos")
+include("hermes")
