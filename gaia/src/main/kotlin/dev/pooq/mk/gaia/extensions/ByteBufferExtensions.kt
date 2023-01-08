@@ -14,7 +14,7 @@ fun ByteBuffer.varInt(): Int{
   var currentByte: Byte
 
   while (true){
-    currentByte = this.get()
+    currentByte = this.flip().get()
     value = (currentByte and SEGMENT_BITS.toByte()).toInt() shl position
     if((currentByte.toInt() and CONTINUE_BIT) == 0) break
 
@@ -32,7 +32,7 @@ fun ByteBuffer.varLong(): Long{
   var currentByte: Byte
 
   while (true){
-    currentByte = this.get()
+    currentByte = this.flip().get()
     value = value or ((currentByte.toInt() and SEGMENT_BITS).toLong()) shl position
     if((currentByte.toInt() and CONTINUE_BIT) == 0) break
 
@@ -71,9 +71,9 @@ fun ByteBuffer.varInt(int: Int){
 }
 
 fun ByteBuffer.string(): String{
-  return StandardCharsets.UTF_8.decode(this).toString()
+  return StandardCharsets.UTF_8.decode(this.flip()).toString()
 }
 
 fun ByteBuffer.string(string: String){
-  this.put(string.toByteArray())
+  this.asCharBuffer().put(string)
 }
