@@ -63,8 +63,6 @@ fun ByteBuffer.varInt(int: Int){
       value = value ushr 7
     }
   }
-
-  ProtoBuf {  }
 }
 
 fun ByteBuffer.string(): String{
