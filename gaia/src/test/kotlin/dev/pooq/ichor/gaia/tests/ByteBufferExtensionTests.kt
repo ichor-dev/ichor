@@ -1,8 +1,8 @@
-package dev.pooq.mk.gaia.tests
+package dev.pooq.ichor.gaia.tests
 
-import dev.pooq.mk.gaia.extensions.string
-import dev.pooq.mk.gaia.extensions.varInt
-import dev.pooq.mk.gaia.extensions.varLong
+import dev.pooq.ichor.gaia.extensions.string
+import dev.pooq.ichor.gaia.extensions.varInt
+import dev.pooq.ichor.gaia.extensions.varLong
 import java.nio.ByteBuffer
 import kotlin.test.Test
 import kotlin.test.assertEquals
