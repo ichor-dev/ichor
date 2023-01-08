@@ -1,4 +1,4 @@
-rootProject.name = "mk-ervers"
+rootProject.name = "ichor"
 
 include("gaia")
 include("hephaistos")
