@@ -17,11 +17,9 @@ dependencies {
   api("io.ktor:ktor-server-netty:$ktorVersion")
   api("io.ktor:ktor-server-content-negotiation:$ktorVersion")
   api("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-  api("io.ktor:ktor-serialization-kotlinx-protobuf:$ktorVersion")
 
   api("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
   api("com.akuleshov7:ktoml-core-jvm:$ktomlVersion")
-  api("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:$serializationVersion")
 
   testImplementation(kotlin("test"))
 }

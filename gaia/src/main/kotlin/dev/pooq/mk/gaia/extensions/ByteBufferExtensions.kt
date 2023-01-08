@@ -1,8 +1,6 @@
 package dev.pooq.mk.gaia.extensions
 
-import kotlinx.serialization.protobuf.ProtoBuf
 import java.nio.ByteBuffer
-import kotlin.math.max
 
 const val SEGMENT_BITS = 0x7F
 const val CONTINUE_BIT = 0x80
@@ -14,9 +12,12 @@ fun ByteBuffer.varInt(): Int {
 
   while (true) {
     currentByte = get()
-    value = value or (currentByte.toInt() and SEGMENT_BITS shl position)
+    value = value or ((currentByte.toInt() and SEGMENT_BITS) shl position)
+
     if (currentByte.toInt() and CONTINUE_BIT == 0) break
+
     position += 7
+
     if (position >= 32) throw RuntimeException("VarInt is too big")
   }
 
@@ -30,9 +31,12 @@ fun ByteBuffer.varLong(): Long {
 
   while (true) {
     currentByte = get()
-    value = value or ((currentByte.toInt() and SEGMENT_BITS).toLong() shl position)
+    value = value or (((currentByte.toInt() and SEGMENT_BITS) shl position).toLong())
+
     if (currentByte.toInt() and CONTINUE_BIT == 0) break
+
     position += 7
+
     if (position >= 64) throw RuntimeException("VarLong is too big")
   }
 
@@ -71,7 +75,11 @@ fun ByteBuffer.string(): String{
 
   if(length > (maxLength * 4)) throw IllegalArgumentException("String is too long")
 
-  val string = this.
+  if(hasArray()) return String(array())
+
+  val bytes = ByteArray(remaining())
+  get(bytes)
+  return String(ByteArray(remaining()))
 }
 
 fun ByteBuffer.string(string: String){
@@ -83,6 +91,5 @@ fun ByteBuffer.string(string: String){
 
   if(bytes.size > (maxLength * 4)) throw throw IllegalArgumentException("String bytearray is too long.")
 
-  varInt(bytes.size)
   put(bytes)
 }
