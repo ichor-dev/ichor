@@ -22,4 +22,6 @@ dependencies {
   api("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
   api("com.akuleshov7:ktoml-core-jvm:$ktomlVersion")
   api("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:$serializationVersion")
+
+  testImplementation(kotlin("test"))
 }
