@@ -20,7 +20,7 @@ data class Handshake(
 ) : ServerPacket() {
 
 
-  companion object : PacketSerializer<Handshake>{
+  companion object : PacketSerializer<Handshake> {
     override fun serialize(packet: Handshake): ByteBuffer {
       return buffer(VAR_INT + VAR_INT + packet.serverAddress.length + SHORT + VAR_INT){
         varInt(packet.id)

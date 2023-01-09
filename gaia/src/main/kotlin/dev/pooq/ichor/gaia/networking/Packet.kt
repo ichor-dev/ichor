@@ -8,16 +8,18 @@ interface Packet{
   val state: State
 }
 
-abstract class ServerPacket : Packet {
+abstract class ClientPacket : Packet {
 
-  interface PacketSerializer<out T: ServerPacket>{
-    fun serialize(packet: @UnsafeVariance T): ByteBuffer
+  companion object
+
+  interface PacketDeserializer<P: ClientPacket>{
+    fun deserialize(id: Int, byteBuffer: ByteBuffer): P
   }
 }
 
-abstract class ClientPacket : Packet {
+abstract class ServerPacket : Packet {
 
-  interface PacketDeserializer<T: ClientPacket>{
-    fun deserialize(id: Int, byteBuffer: ByteBuffer): T
+  interface PacketSerializer<P: ServerPacket>{
+    fun serialize(packet: P): ByteBuffer
   }
 }
