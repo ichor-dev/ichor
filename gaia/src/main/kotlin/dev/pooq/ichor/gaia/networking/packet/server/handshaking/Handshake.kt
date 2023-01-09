@@ -4,6 +4,7 @@ import dev.pooq.ichor.gaia.extensions.buffer
 import dev.pooq.ichor.gaia.extensions.short
 import dev.pooq.ichor.gaia.extensions.string
 import dev.pooq.ichor.gaia.extensions.varInt
+import dev.pooq.ichor.gaia.networking.INT
 import dev.pooq.ichor.gaia.networking.SHORT
 import dev.pooq.ichor.gaia.networking.ServerPacket
 import dev.pooq.ichor.gaia.networking.VAR_INT
@@ -19,16 +20,13 @@ data class Handshake(
   val nextState: NextState
 ) : ServerPacket() {
 
-
-  companion object : PacketSerializer<Handshake> {
-    override fun serialize(packet: Handshake): ByteBuffer {
-      return buffer(VAR_INT + VAR_INT + packet.serverAddress.length + SHORT + VAR_INT){
-        varInt(packet.id)
-        varInt(packet.protocolVersion)
-        string(packet.serverAddress)
-        short(packet.serverPort)
-        varInt(packet.nextState.stateId)
-      }
+  override fun serialize(): ByteBuffer {
+    return buffer(INT + VAR_INT + serverAddress.length + SHORT + VAR_INT){
+      varInt(id)
+      varInt(protocolVersion)
+      string(serverAddress)
+      short(serverPort)
+      varInt(nextState.stateId)
     }
   }
 

@@ -17,7 +17,5 @@ abstract class ClientPacket : Packet {
 
 abstract class ServerPacket : Packet {
 
-  interface PacketSerializer<P: ServerPacket> {
-    fun serialize(packet: P): ByteBuffer
-  }
+  abstract fun serialize(): ByteBuffer
 }
