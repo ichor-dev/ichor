@@ -10,8 +10,6 @@ interface Packet{
 
 abstract class ClientPacket : Packet {
 
-  companion object
-
   interface PacketDeserializer<P: ClientPacket>{
     fun deserialize(id: Int, byteBuffer: ByteBuffer): P
   }
@@ -19,7 +17,7 @@ abstract class ClientPacket : Packet {
 
 abstract class ServerPacket : Packet {
 
-  interface PacketSerializer<P: ServerPacket>{
+  interface PacketSerializer<P: ServerPacket> {
     fun serialize(packet: P): ByteBuffer
   }
 }
