@@ -14,12 +14,13 @@ repositories{
 
 dependencies {
   api("io.ktor", "ktor-server-core", ktorVersion)
-  api("io.ktor:ktor-server-netty:$ktorVersion")
-  api("io.ktor:ktor-server-content-negotiation:$ktorVersion")
-  api("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+  api("io.ktor", "ktor-server-netty", ktorVersion)
+  implementation("io.ktor", "ktor-network", ktorVersion)
+  api("io.ktor" ,"ktor-server-content-negotiation" , ktorVersion)
+  api("io.ktor", "ktor-serialization-kotlinx-json" , ktorVersion)
 
-  api("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
-  api("com.akuleshov7:ktoml-core-jvm:$ktomlVersion")
+  api("org.jetbrains.kotlinx" ,"kotlinx-serialization-json", serializationVersion)
+  api("com.akuleshov7", "ktoml-core-jvm" , ktomlVersion)
 
   testImplementation(kotlin("test"))
 }
