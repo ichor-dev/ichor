@@ -11,7 +11,7 @@ interface Packet{
 abstract class ClientPacket : Packet {
 
   interface PacketDeserializer<P: ClientPacket>{
-    fun deserialize(id: Int, byteBuffer: ByteBuffer): P
+    fun deserialize(byteBuffer: ByteBuffer): P
   }
 }
 
