@@ -18,11 +18,12 @@ enum class ClientPackets(
   ;
 
   companion object {
-    fun deserialize(byteBuffer: ByteBuffer): ClientPacket? {
+    fun deserialize(byteBuffer: ByteBuffer): ClientPacket
+    {
       val id = byteBuffer.varInt()
-      return values().firstOrNull { it.id == id}
-        ?.deserializer
-        ?.deserialize(id, byteBuffer)
+      return values().first { it.id == id}
+        .deserializer
+        .deserialize(id, byteBuffer)
     }
   }
 }

@@ -35,15 +35,5 @@ data class Handshake(
   ){
     STATUS(1),
     LOGIN(2);
-
-    companion object{
-      fun byStateId(id: Int): NextState {
-        return when(id){
-          1 -> STATUS
-          2 -> LOGIN
-          else -> throw IllegalArgumentException("Entered State id must be 1 (Status) or 2 (Login).")
-        }
-      }
-    }
   }
 }
