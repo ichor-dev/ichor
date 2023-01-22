@@ -2,6 +2,7 @@ package dev.pooq.ichor.gaia.networking.packet
 
 import dev.pooq.ichor.gaia.extensions.varInt
 import dev.pooq.ichor.gaia.networking.ClientPacket
+import dev.pooq.ichor.gaia.networking.packet.client.handshaking.Handshake
 import dev.pooq.ichor.gaia.networking.packet.client.status.StatusRequest
 import java.nio.ByteBuffer
 
@@ -11,7 +12,7 @@ enum class ClientPackets(
 ){
 
   //State = Handshake
-  HANDSHAKE(0x00, dev.pooq.ichor.gaia.networking.packet.client.handshaking.Handshake.StatusRequest),
+  HANDSHAKE(0x00, Handshake),
 
   //State = Status
   STATUS_REQUEST(0x00, StatusRequest),
