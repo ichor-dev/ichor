@@ -1,12 +1,9 @@
 package dev.pooq.ichor.gaia.networking.packet.server.status
 
 import dev.pooq.ichor.gaia.extensions.buffer
-import dev.pooq.ichor.gaia.extensions.string
-import dev.pooq.ichor.gaia.networking.ClientPacket
 import dev.pooq.ichor.gaia.networking.INT
 import dev.pooq.ichor.gaia.networking.ServerPacket
 import dev.pooq.ichor.gaia.networking.packet.State
-import dev.pooq.ichor.gaia.networking.packet.client.status.StatusRequest
 import java.nio.ByteBuffer
 
 class StatusResponse(
@@ -15,7 +12,6 @@ class StatusResponse(
 
   override val id: Int
     get() = 0x00
-
 
   override val state: State
     get() = State.STATUS

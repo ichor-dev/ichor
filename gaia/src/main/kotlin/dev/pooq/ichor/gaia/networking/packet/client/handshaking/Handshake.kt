@@ -11,9 +11,8 @@ data class Handshake(
   val protocolVersion: Int,
   val serverAddress: String,
   val serverPort: Short,
-  val nextState: NextState
+  val nextState: State
 ) : ClientPacket() {
-
 
   override val id: Int
     get() = 0x00
@@ -21,7 +20,7 @@ data class Handshake(
   override val state: State
     get() = State.HANDSHAKING
 
-  companion object : PacketDeserializer<Handshake>{
+  companion object : PacketDeserializer<Handshake> {
     override fun deserialize(byteBuffer: ByteBuffer): Handshake {
       return Handshake(
         byteBuffer.varInt(),
@@ -30,23 +29,15 @@ data class Handshake(
         NextState.of(byteBuffer.varInt())
       )
     }
-
   }
 
-  enum class NextState(
-    val stateId: Int
-  ){
-    STATUS(1),
-    LOGIN(2);
+  object NextState {
+    fun of(stateId: Int): State {
+      return when (stateId) {
+        1 -> State.STATUS
+        2 -> State.LOGIN
 
-    companion object{
-      fun of(stateId: Int): NextState{
-        return when(stateId){
-          1 -> STATUS
-          2 -> LOGIN
-
-          else -> throw IllegalArgumentException("StateId must be 1 or 2.")
-        }
+        else -> throw IllegalArgumentException("StateId must be 1 or 2.")
       }
     }
   }
