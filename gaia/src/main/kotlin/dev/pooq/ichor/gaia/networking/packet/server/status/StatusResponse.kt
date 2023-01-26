@@ -18,7 +18,7 @@ class StatusResponse(
     get() = State.STATUS
 
   override fun serialize(): ByteBuffer {
-    return buffer(INT){
+    return buffer(INT + jsonResponse.length){
       putInt(id)
       string(jsonResponse)
     }
