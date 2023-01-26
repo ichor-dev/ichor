@@ -22,6 +22,8 @@ dependencies {
   api("org.jetbrains.kotlinx" ,"kotlinx-serialization-json", serializationVersion)
   api("com.akuleshov7", "ktoml-core-jvm" , ktomlVersion)
 
+  api("com.github.ajalt.mordant", "mordant", "2.0.0-beta9")
+
   testImplementation(kotlin("test"))
 }
 
