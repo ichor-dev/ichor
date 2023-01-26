@@ -26,8 +26,6 @@ class Hephaistos : Server(){
       val write = socket.openWriteChannel(true)
 
       read.read { buffer ->
-        println(buffer.varInt())
-
         val packet = ClientPackets.deserialize(buffer, clients.client(socket))
 
         if(packet.id == ClientPackets.STATUS_REQUEST.id){

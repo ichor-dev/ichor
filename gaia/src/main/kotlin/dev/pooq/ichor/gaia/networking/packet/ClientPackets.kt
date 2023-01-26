@@ -27,9 +27,10 @@ enum class ClientPackets(
 
   companion object {
     fun deserialize(byteBuffer: ByteBuffer, client: Client): ClientPacket {
+      val length = byteBuffer.varInt()
       val id = byteBuffer.varInt()
 
-      println("ID: $id")
+      println("Received packet | ID: $id with length: $length")
 
       return values()
         .first { it.id == id && it.state == client.state }
