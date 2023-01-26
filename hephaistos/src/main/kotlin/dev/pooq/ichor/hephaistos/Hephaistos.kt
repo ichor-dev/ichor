@@ -1,70 +1,60 @@
 package dev.pooq.ichor.hephaistos
 
+import dev.pooq.ichor.gaia.extensions.client
 import dev.pooq.ichor.gaia.extensions.varInt
+import dev.pooq.ichor.gaia.networking.client.Client
 import dev.pooq.ichor.gaia.networking.packet.ClientPackets
 import dev.pooq.ichor.gaia.networking.packet.server.status.StatusResponse
+import dev.pooq.ichor.gaia.server.Server
 import io.ktor.network.selector.*
 import io.ktor.network.sockets.*
 import io.ktor.utils.io.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 
-suspend fun main(args: Array<String>){
-  val manager = SelectorManager(Dispatchers.Default)
-  val serverSocket = aSocket(manager).tcp().bind("127.0.0.1", 25565)
+class Hephaistos : Server(){
 
-  while (true){
-    val socket = serverSocket.accept()
+  override suspend fun startup(args: Array<String>) {
+    val manager = SelectorManager(Dispatchers.Default)
+    val serverSocket = aSocket(manager).tcp().bind("127.0.0.1", 25565)
 
-    println("Accepted")
 
-    val read = socket.openReadChannel()
-    val write = socket.openWriteChannel(true)
+    while (true){
+      val socket = serverSocket.accept()
 
-    read.read { buffer ->
+      val read = socket.openReadChannel()
+      val write = socket.openWriteChannel(true)
 
-      val length = println(buffer.varInt())
+      read.read { buffer ->
+        println(buffer.varInt())
 
-      val packet = ClientPackets.deserialize(buffer)
+        val packet = ClientPackets.deserialize(buffer, clients.client(socket))
 
-      println("""
-        Packet: ${packet.javaClass.simpleName}
-        ID: ${packet.id}
-        Length: $length
-      """.trimIndent())
-
-      if(packet.id == ClientPackets.STATUS_REQUEST.id){
-        runBlocking(Dispatchers.Default) {
-          write.writeAvailable(
-            StatusResponse(exampleStatus).serialize()
-          )
-          write.close()
+        if(packet.id == ClientPackets.STATUS_REQUEST.id){
+          runBlocking(Dispatchers.Default) {
+            write.writeAvailable(
+              StatusResponse("{}").serialize()
+            )
+            write.close()
+          }
         }
       }
     }
   }
+
+  override suspend fun shutdown() {
+
+  }
 }
 
-val exampleStatus = """
-  {
-    "version": {
-        "name": "1.19.3",
-        "protocol": 761
-    },
-    "players": {
-        "max": 420,
-        "online": 69,
-        "sample": [
-            {
-                "name": "thinkofdeath",
-                "id": "4566e69f-c907-48ee-8d71-d7ba5aa00d20"
-            }
-        ]
-    },
-    "description": {
-        "text": "§rHello world"
-    },
-    "favicon": "data:image/png;base64,<data>",
-    "previewsChat": false,
-    "enforcesSecureChat": false,
+suspend fun main(args: Array<String>){
+  val hephaistos = Hephaistos()
+
+  Runtime.getRuntime().addShutdownHook(Thread{
+    runBlocking {
+      hephaistos.shutdown()
+    }
+  })
+
+  hephaistos.startup(args)
 }
-""".trimIndent()
