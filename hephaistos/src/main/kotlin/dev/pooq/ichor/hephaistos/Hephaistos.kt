@@ -8,13 +8,9 @@ import dev.pooq.ichor.gaia.server.Server
 import io.ktor.network.selector.*
 import io.ktor.network.sockets.*
 import kotlinx.coroutines.*
-import kotlin.time.Duration.Companion.seconds
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
 object Hephaistos : Server() {
 
-  @OptIn(DelicateCoroutinesApi::class)
   override suspend fun startup(args: Array<String>) {
     val manager = SelectorManager(Dispatchers.Default)
     val serverSocket = aSocket(manager).tcp().bind("127.0.0.1", 25565)
@@ -22,12 +18,18 @@ object Hephaistos : Server() {
     while (true) {
       val socket = serverSocket.accept()
 
-      val client = clients.getOrDefault(socket, Client(State.STATUS))
+      val client = clients.stream().filter {
+        it.socket == socket
+      }.findFirst().orElseGet {
+        val client = Client(State.STATUS, socket, false)
+        clients.add(client)
+        client
+      }
 
       val read = socket.openReadChannel()
 
       read.read { buffer ->
-        GlobalScope.launch {
+        MainScope().launch {
           val packet = ClientPackets.deserializeAndHandle(buffer, client)
           terminal.info(brightGreen("Packet: ${packet.id}"))
           terminal.info(brightYellow("State: ${packet.state}"))

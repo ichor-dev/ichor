@@ -3,23 +3,20 @@ package dev.pooq.ichor.gaia.server
 import com.github.ajalt.mordant.rendering.Theme
 import com.github.ajalt.mordant.terminal.Terminal
 import dev.pooq.ichor.gaia.networking.client.Client
-import io.ktor.network.sockets.*
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
-@OptIn(DelicateCoroutinesApi::class)
 abstract class Server {
 
   init {
     Runtime.getRuntime().addShutdownHook(Thread {
-      GlobalScope.launch {
+      MainScope().launch {
         shutdown()
       }
     })
   }
 
-  val clients: HashMap<ASocket, Client> = hashMapOf()
+  val clients: HashSet<Client> = hashSetOf()
 
   fun terminal(
     theme: Theme = Theme.PlainAscii, tabWidth: Int = 8

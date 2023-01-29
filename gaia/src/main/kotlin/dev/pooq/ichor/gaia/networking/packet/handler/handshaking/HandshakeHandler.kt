@@ -1,4 +1,4 @@
-package dev.pooq.ichor.gaia.networking.packet.handler
+package dev.pooq.ichor.gaia.networking.packet.handler.handshaking
 
 import com.github.ajalt.mordant.rendering.TextColors.*
 import dev.pooq.ichor.gaia.extensions.terminal
