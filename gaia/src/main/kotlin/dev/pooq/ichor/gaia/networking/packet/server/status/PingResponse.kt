@@ -13,7 +13,7 @@ class PingResponse(
   val payload: Long
 ) : ServerPacket() {
 
-  override fun serialize(): ByteBuffer {
+  override suspend fun serialize(): ByteBuffer {
     return buffer(INT + LONG){
       putInt(id)
       putLong(payload)

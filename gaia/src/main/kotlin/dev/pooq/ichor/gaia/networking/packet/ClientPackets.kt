@@ -9,6 +9,8 @@ import dev.pooq.ichor.gaia.networking.packet.client.status.PingRequest
 import dev.pooq.ichor.gaia.networking.packet.client.status.StatusRequest
 import java.nio.ByteBuffer
 
+import dev.pooq.ichor.gaia.networking.Packet
+
 enum class ClientPackets(
   val id: Int,
   val state: State,
@@ -26,16 +28,17 @@ enum class ClientPackets(
   ;
 
   companion object {
-    fun deserialize(byteBuffer: ByteBuffer, client: Client): ClientPacket {
+    suspend fun deserializeAndHandle(byteBuffer: ByteBuffer, client: Client) : Packet {
       val length = byteBuffer.varInt()
       val id = byteBuffer.varInt()
 
-      println("Received packet | ID: $id with length: $length")
+      val clientPacket = values().first { clientPacket ->
+        clientPacket.id == id && clientPacket.state == client.state
+      }
 
-      return values()
-        .first { it.id == id && it.state == client.state }
-        .deserializer
-        .deserialize(byteBuffer)
+      val deserializer = clientPacket.deserializer
+
+      return deserializer.deserializeAndHandle(byteBuffer, client)
     }
   }
 }

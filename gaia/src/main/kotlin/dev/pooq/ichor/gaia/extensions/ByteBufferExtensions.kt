@@ -73,7 +73,7 @@ fun ByteBuffer.short(): Short{
 
     position += 7
 
-    if (position >= 64) throw RuntimeException("VarLong is too big")
+    if (position >= 64) throw RuntimeException("Short is too big")
   }
 
   return value
