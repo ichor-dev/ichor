@@ -1,7 +1,7 @@
 package dev.pooq.ichor.hephaistos
 
 import com.github.ajalt.mordant.rendering.TextColors.*
-import dev.pooq.ichor.gaia.networking.client.Client
+import dev.pooq.ichor.gaia.networking.client.Receiver
 import dev.pooq.ichor.gaia.networking.packet.ClientPackets
 import dev.pooq.ichor.gaia.networking.packet.State
 import dev.pooq.ichor.gaia.server.Server
@@ -18,12 +18,12 @@ object Hephaistos : Server() {
     while (true) {
       val socket = serverSocket.accept()
 
-      val client = clients.stream().filter {
+      val client = receivers.stream().filter {
         it.socket == socket
       }.findFirst().orElseGet {
-        val client = Client(State.STATUS, socket, false)
-        clients.add(client)
-        client
+        val receiver = Receiver(State.STATUS, socket, false)
+        receivers.add(receiver)
+        receiver
       }
 
       val read = socket.openReadChannel()

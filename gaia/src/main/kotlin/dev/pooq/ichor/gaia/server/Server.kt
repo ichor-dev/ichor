@@ -2,7 +2,7 @@ package dev.pooq.ichor.gaia.server
 
 import com.github.ajalt.mordant.rendering.Theme
 import com.github.ajalt.mordant.terminal.Terminal
-import dev.pooq.ichor.gaia.networking.client.Client
+import dev.pooq.ichor.gaia.networking.client.Receiver
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
@@ -16,7 +16,7 @@ abstract class Server {
     })
   }
 
-  val clients: HashSet<Client> = hashSetOf()
+  val receivers: HashSet<Receiver> = hashSetOf()
 
   fun terminal(
     theme: Theme = Theme.PlainAscii, tabWidth: Int = 8

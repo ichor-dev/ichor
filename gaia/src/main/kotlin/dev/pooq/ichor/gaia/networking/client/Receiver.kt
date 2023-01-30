@@ -8,7 +8,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.nio.ByteBuffer
 
-class Client(
+class Receiver(
   var state: State,
   val socket: Socket,
   var compression: Boolean

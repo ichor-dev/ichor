@@ -3,7 +3,7 @@ package dev.pooq.ichor.gaia.networking.packet
 import dev.pooq.ichor.gaia.extensions.decompress
 import dev.pooq.ichor.gaia.extensions.varInt
 import dev.pooq.ichor.gaia.networking.ClientPacket
-import dev.pooq.ichor.gaia.networking.client.Client
+import dev.pooq.ichor.gaia.networking.client.Receiver
 import java.nio.ByteBuffer
 
 import dev.pooq.ichor.gaia.networking.Packet
@@ -29,20 +29,20 @@ enum class ClientPackets(
   ;
 
   companion object {
-    suspend fun deserializeAndHandle(originalBuffer: ByteBuffer, client: Client) : Packet {
+    suspend fun deserializeAndHandle(originalBuffer: ByteBuffer, receiver: Receiver) : Packet {
       val length = originalBuffer.varInt()
 
-      val buffer = if(!client.compression) originalBuffer else ByteBuffer.wrap(originalBuffer.array().decompress(length))
+      val buffer = if(!receiver.compression) originalBuffer else ByteBuffer.wrap(originalBuffer.array().decompress(length))
 
       val id = buffer.varInt()
 
       val clientPacket = values().first { clientPacket ->
-        clientPacket.id == id && clientPacket.state == client.state
+        clientPacket.id == id && clientPacket.state == receiver.state
       }
 
       val deserializer = clientPacket.deserializer
 
-      return deserializer.deserializeAndHandle(buffer, client)
+      return deserializer.deserializeAndHandle(buffer, receiver)
     }
   }
 }
