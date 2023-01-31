@@ -1,4 +1,4 @@
-package dev.pooq.ichor.gaia.networking.client
+package dev.pooq.ichor.gaia.networking.handle
 
 import dev.pooq.ichor.gaia.extensions.compress
 import dev.pooq.ichor.gaia.networking.ServerPacket
@@ -8,7 +8,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.nio.ByteBuffer
 
-class Receiver(
+class PacketHandle(
   var state: State,
   val socket: Socket,
   var compression: Boolean
