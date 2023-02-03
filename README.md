@@ -1,7 +1,7 @@
-<h1>Ichor</h1>
+<h1>Ichor <a href="https://en.wikipedia.org/wiki/Ichor">[ ɪˈçoːɐ ]</a></h1>
 
 <h3>Word clarification:</h3>
-Ichor is the blood of the gods (greek). It is gold.
+Ichor is the blood of the gods (greek). It is gold. <s>Like this project.</s>
 
 <br>
 
