@@ -3,14 +3,13 @@ package dev.pooq.ichor.gaia.networking.packet
 import dev.pooq.ichor.gaia.extensions.decompress
 import dev.pooq.ichor.gaia.extensions.varInt
 import dev.pooq.ichor.gaia.networking.ClientPacket
-import dev.pooq.ichor.gaia.networking.handle.PacketHandle
-import java.nio.ByteBuffer
-
 import dev.pooq.ichor.gaia.networking.Packet
+import dev.pooq.ichor.gaia.networking.handle.PacketHandle
 import dev.pooq.ichor.gaia.networking.packet.client.handshaking.Handshake
 import dev.pooq.ichor.gaia.networking.packet.client.handshaking.LegacyServerListPing
 import dev.pooq.ichor.gaia.networking.packet.client.status.PingRequest
 import dev.pooq.ichor.gaia.networking.packet.client.status.StatusRequest
+import java.nio.ByteBuffer
 
 enum class ClientPackets(
   val id: Int,
@@ -30,11 +29,16 @@ enum class ClientPackets(
 
   companion object {
     suspend fun deserializeAndHandle(originalBuffer: ByteBuffer, packetHandle: PacketHandle) : Packet {
-      val length = originalBuffer.varInt()
+      val compression = packetHandle.compression
 
-      val buffer = if(!packetHandle.compression) originalBuffer else ByteBuffer.wrap(originalBuffer.array().decompress(length))
+      val packetLength = originalBuffer.varInt()
+      val dataLength = if(compression) packetLength else originalBuffer.varInt()
 
-      val id = buffer.varInt()
+      var id: Int? = if(compression) null else originalBuffer.varInt()
+
+      val buffer = if(compression) ByteBuffer.wrap(originalBuffer.array().decompress(dataLength)).apply {
+        id = this.varInt()
+      } else originalBuffer
 
       val clientPacket = values().first { clientPacket ->
         clientPacket.id == id && clientPacket.state == packetHandle.state
