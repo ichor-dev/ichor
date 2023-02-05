@@ -11,17 +11,17 @@ import java.nio.ByteBuffer
 class PacketHandle(
   var state: State,
   val socket: Socket,
-  var compression: Boolean
+  var threshhold: Int = -1,
+  var compression: Boolean = threshhold < 0
 ) {
 
   suspend fun sendPacket(packet: ServerPacket) {
     MainScope().launch {
-      val serialized = if(compression){
-        ByteBuffer.wrap(packet.serialize().array().compress())
-      } else packet.serialize()
-
-      socket.openWriteChannel(true).writeAvailable(serialized)
+      socket.openWriteChannel(true).writeAvailable(
+        packet.serialize().run {
+          if(compression && limit() >= threshhold) ByteBuffer.wrap(array().compress()) else this
+        }
+      )
     }
-
   }
 }

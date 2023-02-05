@@ -21,7 +21,7 @@ object Hephaistos : Server() {
       val client = packetHandles.stream().filter {
         it.socket == socket
       }.findFirst().orElseGet {
-        val packetHandle = PacketHandle(State.STATUS, socket, false)
+        val packetHandle = PacketHandle(State.STATUS, socket)
         packetHandles.add(packetHandle)
         packetHandle
       }
