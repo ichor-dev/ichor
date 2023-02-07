@@ -47,9 +47,5 @@ object Hephaistos : Server() {
 }
 
 suspend fun main(args: Array<String>) {
-  //Hephaistos.startup(args)
-  debug = true
-  terminal.log("Log")
-  terminal.debug("Debug")
-  terminal.error("Error", NullPointerException("An error occured"))
+  Hephaistos.startup(args)
 }
