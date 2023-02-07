@@ -22,7 +22,7 @@ dependencies {
   api("io.ktor", "ktor-serialization-kotlinx-json" , ktorVersion)
 
   api("org.jetbrains.kotlinx" ,"kotlinx-serialization-json", serializationVersion)
-  implementation("org.jetbrains.kotlinx" ,"kotlinx-coroutines-core", coroutinesVersion)
+  api("org.jetbrains.kotlinx" ,"kotlinx-coroutines-core", coroutinesVersion)
 
   api("com.akuleshov7", "ktoml-core-jvm" , ktomlVersion)
 
