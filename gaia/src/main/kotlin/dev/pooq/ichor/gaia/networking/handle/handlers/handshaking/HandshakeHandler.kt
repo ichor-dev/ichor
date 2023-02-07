@@ -17,5 +17,4 @@ class HandshakeHandler : PacketHandler<Handshake> {
       ${brightYellow("Client State: ${packetHandle.state}")}
     """.trimIndent())
   }
-
 }

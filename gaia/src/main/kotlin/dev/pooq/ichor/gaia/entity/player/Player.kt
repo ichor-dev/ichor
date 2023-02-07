@@ -7,6 +7,4 @@ class Player(
   val handle: PacketHandle
 ) : Entity.Creature {
 
-
-
 }
