@@ -1,18 +1,14 @@
 package dev.pooq.ichor.hephaistos
 
 import com.github.ajalt.mordant.rendering.TextColors.*
-import dev.pooq.ichor.gaia.extensions.error
 import dev.pooq.ichor.gaia.extensions.log
-import dev.pooq.ichor.gaia.extensions.terminal
 import dev.pooq.ichor.gaia.networking.packet.ClientPackets
 import dev.pooq.ichor.gaia.server.Server
-import dev.pooq.ichor.gaia.extensions.debug.debug
 import io.ktor.network.selector.*
 import io.ktor.network.sockets.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import java.lang.NullPointerException
 
 object Hephaistos : Server() {
 

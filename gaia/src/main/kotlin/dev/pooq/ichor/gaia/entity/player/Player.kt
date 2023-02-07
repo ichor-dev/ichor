@@ -5,6 +5,4 @@ import dev.pooq.ichor.gaia.networking.handle.PacketHandle
 
 class Player(
   val handle: PacketHandle
-) : Entity.Creature {
-
-}
+) : Entity.Creature
