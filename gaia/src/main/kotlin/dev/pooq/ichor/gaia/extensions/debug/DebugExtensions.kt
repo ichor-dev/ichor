@@ -9,5 +9,5 @@ var debug: Boolean = false
 fun Terminal.debug(message: Any){
   if(!debug) return
   val debugStyle = (brightYellow + bold)
-  println(debugStyle("[DEBUG]") + white(" > ") + yellow(message.toString()))
+  this.println(debugStyle("[DEBUG]") + white(" > ") + yellow(message.toString()))
 }
