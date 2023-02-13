@@ -12,7 +12,7 @@ class SetCompressionPacket(
 ) : ServerPacket() {
 
   override suspend fun serialize(): ByteBuffer {
-    return buffer(VAR_INT){
+    return buffer(VAR_INT) {
       varInt(threshold)
     }
   }

@@ -1,4 +1,4 @@
-plugins{
+plugins {
   application
   kotlin("jvm") version "1.8.0"
   kotlin("plugin.serialization") version "1.8.0"
@@ -10,7 +10,7 @@ val ktomlVersion: String by project
 val mordantVersion: String by project
 val coroutinesVersion: String by project
 
-repositories{
+repositories {
   mavenCentral()
 }
 
@@ -18,13 +18,13 @@ dependencies {
   api("io.ktor", "ktor-server-core", ktorVersion)
   api("io.ktor", "ktor-server-netty", ktorVersion)
   api("io.ktor", "ktor-network", ktorVersion)
-  api("io.ktor" ,"ktor-server-content-negotiation" , ktorVersion)
-  api("io.ktor", "ktor-serialization-kotlinx-json" , ktorVersion)
+  api("io.ktor", "ktor-server-content-negotiation", ktorVersion)
+  api("io.ktor", "ktor-serialization-kotlinx-json", ktorVersion)
 
-  api("org.jetbrains.kotlinx" ,"kotlinx-serialization-json", serializationVersion)
-  api("org.jetbrains.kotlinx" ,"kotlinx-coroutines-core", coroutinesVersion)
+  api("org.jetbrains.kotlinx", "kotlinx-serialization-json", serializationVersion)
+  api("org.jetbrains.kotlinx", "kotlinx-coroutines-core", coroutinesVersion)
 
-  api("com.akuleshov7", "ktoml-core-jvm" , ktomlVersion)
+  api("com.akuleshov7", "ktoml-core-jvm", ktomlVersion)
 
   api("com.github.ajalt.mordant", "mordant", mordantVersion)
 

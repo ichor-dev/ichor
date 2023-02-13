@@ -1,12 +1,12 @@
-plugins{
+plugins {
   kotlin("jvm") version "1.8.0"
 }
 
-repositories{
+repositories {
   mavenCentral()
 }
 
-dependencies{
+dependencies {
   implementation(project(":gaia"))
 
   testImplementation(kotlin("test"))

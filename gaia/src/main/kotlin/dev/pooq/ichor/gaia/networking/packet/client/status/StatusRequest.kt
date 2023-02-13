@@ -1,7 +1,6 @@
 package dev.pooq.ichor.gaia.networking.packet.client.status
 
 import dev.pooq.ichor.gaia.networking.ClientPacket
-import dev.pooq.ichor.gaia.networking.packet.PacketHandler
 import dev.pooq.ichor.gaia.networking.packet.State
 import java.nio.ByteBuffer
 

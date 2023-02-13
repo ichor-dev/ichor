@@ -12,7 +12,7 @@ class PingResponse(
 ) : ServerPacket() {
 
   override suspend fun serialize(): ByteBuffer {
-    return buffer(INT + LONG){
+    return buffer(INT + LONG) {
       putInt(id)
       putLong(payload)
     }
