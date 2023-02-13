@@ -4,8 +4,8 @@ import java.nio.ByteBuffer
 import kotlin.experimental.and
 import kotlin.experimental.or
 
-const val SEGMENT_BITS = 0x7F
-const val CONTINUE_BIT = 0x80
+private const val SEGMENT_BITS = 0x7F
+private const val CONTINUE_BIT = 0x80
 
 inline fun buffer(capacity: Int, applier: ByteBuffer.() -> Unit = {}): ByteBuffer =
   ByteBuffer.allocate(capacity).apply(applier).flip()
