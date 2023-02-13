@@ -1,5 +1,6 @@
 package dev.pooq.ichor.gaia.server
 
+import com.github.ajalt.mordant.terminal.Terminal
 import dev.pooq.ichor.gaia.extensions.terminal
 import dev.pooq.ichor.gaia.networking.handle.PacketHandle
 import dev.pooq.ichor.gaia.networking.packet.State
@@ -9,12 +10,16 @@ import kotlinx.coroutines.launch
 
 abstract class Server {
 
+  var terminal: Terminal
+
   init {
     Runtime.getRuntime().addShutdownHook(Thread {
       MainScope().launch {
         shutdown()
       }
     })
+
+    terminal = terminal()
   }
 
   private val handles: HashSet<PacketHandle> = hashSetOf()
@@ -24,8 +29,6 @@ abstract class Server {
     handles.add(handle)
     handle
   }
-
-  val terminal = terminal()
 
   abstract suspend fun startup(args: Array<String>)
 
