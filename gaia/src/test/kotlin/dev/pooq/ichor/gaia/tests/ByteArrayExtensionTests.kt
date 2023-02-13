@@ -7,7 +7,7 @@ import kotlin.test.Test
 class ByteArrayExtensionTests {
 
   @Test
-  fun compressAndDecompress(){
+  fun compressAndDecompress() {
     val original = "My name is Paul"
 
     val array = original.toByteArray()

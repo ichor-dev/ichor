@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 class ByteBufferExtensionTests {
 
   @Test
-  fun `read and write string`(){
+  fun `read and write string`() {
     val expected = "Hokus Pokus fidupus"
 
     val buffer = ByteBuffer.allocate(expected.length)
@@ -22,7 +22,7 @@ class ByteBufferExtensionTests {
   }
 
   @Test
-  fun `read and write int`(){
+  fun `read and write int`() {
     val expected = 69
 
     val buffer = ByteBuffer.allocate(expected)
@@ -34,7 +34,7 @@ class ByteBufferExtensionTests {
   }
 
   @Test
-  fun `read and write long`(){
+  fun `read and write long`() {
     val expected = 420L
 
     val buffer = ByteBuffer.allocate(expected.toInt())

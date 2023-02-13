@@ -15,7 +15,7 @@ enum class ClientPackets(
   val id: Int,
   val state: State,
   val deserializer: ClientPacket.PacketDeserializer<*>
-){
+) {
 
   //State = Handshake
   HANDSHAKE(0x00, State.HANDSHAKING, Handshake),
@@ -28,15 +28,15 @@ enum class ClientPackets(
   ;
 
   companion object {
-    suspend fun deserializeAndHandle(originalBuffer: ByteBuffer, packetHandle: PacketHandle) : Packet {
+    suspend fun deserializeAndHandle(originalBuffer: ByteBuffer, packetHandle: PacketHandle): Packet {
       val compression = packetHandle.compression
 
       val packetLength = originalBuffer.varInt()
-      val dataLength = if(compression) packetLength else originalBuffer.varInt()
+      val dataLength = if (compression) packetLength else originalBuffer.varInt()
 
-      var id: Int? = if(compression) null else originalBuffer.varInt()
+      var id: Int? = if (compression) null else originalBuffer.varInt()
 
-      val buffer = if(compression) ByteBuffer.wrap(originalBuffer.array().decompress(dataLength)).apply {
+      val buffer = if (compression) ByteBuffer.wrap(originalBuffer.array().decompress(dataLength)).apply {
         id = this.varInt()
       } else originalBuffer
 

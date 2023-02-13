@@ -19,7 +19,7 @@ class PacketHandle(
     MainScope().launch {
       socket.openWriteChannel(true).writeAvailable(
         packet.serialize().run {
-          if(compression && limit() >= threshhold) ByteBuffer.wrap(array().compress()) else this
+          if (compression && limit() >= threshhold) ByteBuffer.wrap(array().compress()) else this
         }
       )
     }

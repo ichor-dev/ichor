@@ -12,7 +12,7 @@ class StatusResponse(
 ) : ServerPacket() {
 
   override suspend fun serialize(): ByteBuffer {
-    return buffer(INT + jsonResponse.length){
+    return buffer(INT + jsonResponse.length) {
       putInt(id)
       string(jsonResponse)
     }
