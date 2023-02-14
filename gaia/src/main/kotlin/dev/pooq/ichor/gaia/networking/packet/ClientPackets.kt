@@ -18,7 +18,7 @@ import java.nio.ByteBuffer
 enum class ClientPackets(
   val id: Int,
   val state: State,
-  val deserializer: ClientPacket.PacketProcessor<*>
+  val processor: ClientPacket.PacketProcessor<*>
 ) {
 
   // State = Handshake
@@ -51,12 +51,13 @@ enum class ClientPackets(
       } else originalBuffer
 
       val clientPacket = values().first { clientPacket ->
+        terminal.debug(TextColors.brightGreen("Iterating ClientPacket: ${clientPacket.name}"))
         clientPacket.id == id && clientPacket.state == packetHandle.state
       }
 
-      val deserializer = clientPacket.deserializer
+      val processor = clientPacket.processor
 
-      return deserializer.deserializeAndHandle(buffer, packetHandle)
+      return processor.deserializeAndHandle(buffer, packetHandle)
     }
   }
 }
