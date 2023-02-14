@@ -8,7 +8,6 @@ import dev.pooq.ichor.gaia.server.Server
 import io.ktor.network.selector.*
 import io.ktor.network.sockets.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 object Hephaistos : Server() {
@@ -27,7 +26,7 @@ object Hephaistos : Server() {
       val read = socket.openReadChannel()
 
       read.read { buffer ->
-        MainScope().launch {
+        launch {
           val packet = ClientPackets.deserializeAndHandle(buffer, client)
           terminal.log(brightGreen("Packet: ${packet.id}"))
           terminal.log(brightYellow("State: ${packet.state}"))
@@ -41,6 +40,7 @@ object Hephaistos : Server() {
   override suspend fun shutdown() {
     terminal.log(red("Shutdown"))
   }
+
 }
 
 suspend fun main(args: Array<String>) {
