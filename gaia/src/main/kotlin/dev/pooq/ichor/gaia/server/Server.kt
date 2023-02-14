@@ -31,9 +31,9 @@ abstract class Server : CoroutineScope {
   private val handles: HashSet<PacketHandle> = hashSetOf()
 
   fun Socket.handle() = handles.find { it.socket == this } ?: run {
-    val handle = PacketHandle(state = State.STATUS, socket = this@handle, coroutineContext = this@Server.coroutineContext)
-    handles.add(handle)
-    handle
+    return PacketHandle(state = State.STATUS, socket = this@handle, coroutineContext = this@Server.coroutineContext).apply {
+      handles.add(this)
+    }
   }
 
   abstract suspend fun startup(args: Array<String>)
