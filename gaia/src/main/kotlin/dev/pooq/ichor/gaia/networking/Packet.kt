@@ -15,7 +15,7 @@ abstract class ClientPacket : Packet {
   abstract class PacketProcessor<P : ClientPacket>(private vararg val handlers: PacketReceiver<P>) {
     protected abstract suspend fun deserialize(byteBuffer: ByteBuffer): P
 
-    suspend fun deserializeAndHandle(byteBuffer: ByteBuffer, packetHandle: PacketHandle): P {
+    suspend fun process(byteBuffer: ByteBuffer, packetHandle: PacketHandle): P {
       return deserialize(byteBuffer).apply {
         handlers.forEach { handler -> handler.onReceive(this, packetHandle) }
       }

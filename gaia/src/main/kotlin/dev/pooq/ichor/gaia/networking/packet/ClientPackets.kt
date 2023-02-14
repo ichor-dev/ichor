@@ -56,7 +56,7 @@ enum class ClientPackets(
 
       val processor = clientPacket.processor
 
-      return processor.deserializeAndHandle(buffer, packetHandle)
+      return processor.process(buffer, packetHandle)
     }
   }
 }
