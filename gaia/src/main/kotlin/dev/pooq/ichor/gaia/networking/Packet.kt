@@ -16,13 +16,9 @@ abstract class ClientPacket : Packet {
     protected abstract suspend fun deserialize(byteBuffer: ByteBuffer): P
 
     suspend fun deserializeAndHandle(byteBuffer: ByteBuffer, packetHandle: PacketHandle): P {
-      val packet = deserialize(byteBuffer)
-
-      handlers.forEach {
-        it.onReceive(packet, packetHandle)
+      return deserialize(byteBuffer).apply {
+        handlers.forEach { it.onReceive(this, packetHandle) }
       }
-
-      return packet
     }
   }
 }
