@@ -13,7 +13,7 @@ class PacketHandle(
   var state: State,
   val socket: Socket,
   var threshold: Int = -1,
-  var compression: Boolean = threshold < 0,
+  var compression: Boolean = threshold > 0,
   val coroutineContext: CoroutineContext
 ) {
 
