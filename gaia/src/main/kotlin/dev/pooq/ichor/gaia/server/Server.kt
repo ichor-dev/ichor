@@ -1,6 +1,7 @@
 package dev.pooq.ichor.gaia.server
 
 import com.github.ajalt.mordant.terminal.Terminal
+import dev.pooq.ichor.gaia.extensions.debug.debug
 import dev.pooq.ichor.gaia.extensions.terminal
 import dev.pooq.ichor.gaia.networking.packet.PacketHandle
 import dev.pooq.ichor.gaia.networking.packet.State
@@ -29,6 +30,8 @@ abstract class Server : CoroutineScope {
     })
 
     terminal = terminal()
+
+    terminal.debug("Debug is enabled")
   }
 
   private val handles: HashSet<PacketHandle> = hashSetOf()
