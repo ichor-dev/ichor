@@ -13,10 +13,14 @@ import kotlinx.coroutines.launch
 object Hephaistos : Server() {
 
   override suspend fun startup(args: Array<String>) {
+    terminal.log(brightGreen("Starting server..."))
+    
     args.forEach { terminal.debug(it) }
 
     val manager = SelectorManager(Dispatchers.Default)
     val serverSocket = aSocket(manager).tcp().bind("127.0.0.1", 25565)
+
+    terminal.log(brightGreen("Server started successfully!"))
 
     while (true) {
       val socket = serverSocket.accept()
