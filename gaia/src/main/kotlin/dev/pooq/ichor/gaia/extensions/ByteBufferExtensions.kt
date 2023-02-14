@@ -48,6 +48,14 @@ fun ByteBuffer.varLong(): Long {
   return value
 }
 
+fun ByteBuffer.boolean(): Boolean{
+  return get().toInt() == 0x01
+}
+
+fun ByteBuffer.boolean(boolean: Boolean){
+  put(if(boolean) 1 else 0)
+}
+
 fun ByteBuffer.string(): String {
   val maxLength = Short.MAX_VALUE
   val length = varInt()
