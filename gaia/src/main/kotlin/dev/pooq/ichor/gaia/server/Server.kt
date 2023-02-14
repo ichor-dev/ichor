@@ -35,7 +35,7 @@ abstract class Server : CoroutineScope {
 
   fun Socket.handle() = handles.find { it.socket == this } ?: run {
     val handle =
-      PacketHandle(state = State.STATUS, socket = this@handle, coroutineContext = this@Server.coroutineContext)
+      PacketHandle(state = State.HANDSHAKING, socket = this@handle, coroutineContext = this@Server.coroutineContext)
     handles.add(handle)
     handle
   }

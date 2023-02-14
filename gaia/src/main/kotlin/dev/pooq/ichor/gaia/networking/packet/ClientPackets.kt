@@ -1,6 +1,9 @@
 package dev.pooq.ichor.gaia.networking.packet
 
+import com.github.ajalt.mordant.rendering.TextColors
+import dev.pooq.ichor.gaia.extensions.debug.debug
 import dev.pooq.ichor.gaia.extensions.decompress
+import dev.pooq.ichor.gaia.extensions.terminal
 import dev.pooq.ichor.gaia.extensions.varInt
 import dev.pooq.ichor.gaia.networking.ClientPacket
 import dev.pooq.ichor.gaia.networking.Packet
@@ -39,6 +42,9 @@ enum class ClientPackets(
       val dataLength = if (compression) packetLength else originalBuffer.varInt()
 
       var id: Int? = if (compression) null else originalBuffer.varInt()
+
+      terminal.debug(TextColors.brightGreen("Packet: $id"))
+      terminal.debug(TextColors.brightYellow("State: ${packetHandle.state}"))
 
       val buffer = if (compression) ByteBuffer.wrap(originalBuffer.array().decompress(dataLength)).apply {
         id = this.varInt()
