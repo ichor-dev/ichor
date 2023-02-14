@@ -4,7 +4,7 @@ import dev.pooq.ichor.gaia.extensions.short
 import dev.pooq.ichor.gaia.extensions.string
 import dev.pooq.ichor.gaia.extensions.varInt
 import dev.pooq.ichor.gaia.networking.ClientPacket
-import dev.pooq.ichor.gaia.networking.handle.handlers.handshaking.HandshakeHandler
+import dev.pooq.ichor.gaia.networking.packet.receive.receivers.handshaking.HandshakeReceiver
 import dev.pooq.ichor.gaia.networking.packet.State
 import java.nio.ByteBuffer
 
@@ -21,7 +21,7 @@ data class Handshake(
   override val state: State
     get() = State.HANDSHAKING
 
-  companion object : PacketProcessor<Handshake>(HandshakeHandler()) {
+  companion object : PacketProcessor<Handshake>(HandshakeReceiver()) {
     override suspend fun deserialize(byteBuffer: ByteBuffer): Handshake {
       return Handshake(
         byteBuffer.varInt(),

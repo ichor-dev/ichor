@@ -7,7 +7,6 @@ import dev.pooq.ichor.gaia.extensions.terminal
 import dev.pooq.ichor.gaia.extensions.varInt
 import dev.pooq.ichor.gaia.networking.ClientPacket
 import dev.pooq.ichor.gaia.networking.Packet
-import dev.pooq.ichor.gaia.networking.handle.PacketHandle
 import dev.pooq.ichor.gaia.networking.packet.client.handshaking.Handshake
 import dev.pooq.ichor.gaia.networking.packet.client.handshaking.LegacyServerListPing
 import dev.pooq.ichor.gaia.networking.packet.client.login.LoginStart

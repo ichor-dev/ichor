@@ -1,8 +1,7 @@
-package dev.pooq.ichor.gaia.networking.handle
+package dev.pooq.ichor.gaia.networking.packet
 
 import dev.pooq.ichor.gaia.extensions.compress
 import dev.pooq.ichor.gaia.networking.ServerPacket
-import dev.pooq.ichor.gaia.networking.packet.State
 import io.ktor.network.sockets.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

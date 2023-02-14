@@ -1,7 +1,7 @@
 package dev.pooq.ichor.gaia.networking
 
-import dev.pooq.ichor.gaia.networking.handle.PacketHandle
-import dev.pooq.ichor.gaia.networking.packet.PacketHandler
+import dev.pooq.ichor.gaia.networking.packet.PacketHandle
+import dev.pooq.ichor.gaia.networking.packet.receive.PacketReceiver
 import dev.pooq.ichor.gaia.networking.packet.State
 import java.nio.ByteBuffer
 
@@ -12,7 +12,7 @@ interface Packet {
 
 abstract class ClientPacket : Packet {
 
-  abstract class PacketProcessor<P : ClientPacket>(private vararg val handlers: PacketHandler<P>) {
+  abstract class PacketProcessor<P : ClientPacket>(private vararg val handlers: PacketReceiver<P>) {
     protected abstract suspend fun deserialize(byteBuffer: ByteBuffer): P
 
     suspend fun deserializeAndHandle(byteBuffer: ByteBuffer, packetHandle: PacketHandle): P {
