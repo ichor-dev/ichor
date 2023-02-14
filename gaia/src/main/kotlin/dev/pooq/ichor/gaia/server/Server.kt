@@ -5,17 +5,23 @@ import dev.pooq.ichor.gaia.extensions.terminal
 import dev.pooq.ichor.gaia.networking.handle.PacketHandle
 import dev.pooq.ichor.gaia.networking.packet.State
 import io.ktor.network.sockets.*
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
-abstract class Server {
+abstract class Server : CoroutineScope {
+
+  private val job: Job = Job()
+
+  override val coroutineContext: CoroutineContext
+    get() = Dispatchers.Default + job
 
   var terminal: Terminal
 
   init {
     Runtime.getRuntime().addShutdownHook(Thread {
-      MainScope().launch {
+      runBlocking {
         shutdown()
+        job.cancel()
       }
     })
 
