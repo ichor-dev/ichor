@@ -17,7 +17,7 @@ abstract class ClientPacket : Packet {
 
     suspend fun deserializeAndHandle(byteBuffer: ByteBuffer, packetHandle: PacketHandle): P {
       return deserialize(byteBuffer).apply {
-        handlers.forEach { it.onReceive(this, packetHandle) }
+        handlers.forEach { handler -> handler.onReceive(this, packetHandle) }
       }
     }
   }
