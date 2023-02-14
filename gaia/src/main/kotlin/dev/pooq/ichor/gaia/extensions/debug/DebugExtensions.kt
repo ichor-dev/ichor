@@ -3,8 +3,9 @@ package dev.pooq.ichor.gaia.extensions.debug
 import com.github.ajalt.mordant.rendering.TextColors.*
 import com.github.ajalt.mordant.rendering.TextStyles.bold
 import com.github.ajalt.mordant.terminal.Terminal
+import dev.pooq.ichor.gaia.extensions.env
 
-var debug: Boolean = false
+var debug: Boolean = env("debug").toBoolean()
 
 fun Terminal.debug(message: Any) {
   if (!debug) return
