@@ -12,7 +12,7 @@ class LegacyServerListPing : ClientPacket() {
   override val state: State
     get() = State.HANDSHAKING
 
-  companion object : PacketDeserializer<LegacyServerListPing>() {
+  companion object : PacketProcessor<LegacyServerListPing>() {
     override suspend fun deserialize(byteBuffer: ByteBuffer): LegacyServerListPing {
       return LegacyServerListPing()
     }

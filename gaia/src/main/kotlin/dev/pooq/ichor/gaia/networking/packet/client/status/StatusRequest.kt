@@ -12,7 +12,7 @@ class StatusRequest : ClientPacket() {
   override val state: State
     get() = State.STATUS
 
-  companion object : PacketDeserializer<StatusRequest>() {
+  companion object : PacketProcessor<StatusRequest>() {
     override suspend fun deserialize(byteBuffer: ByteBuffer): StatusRequest {
       return StatusRequest()
     }

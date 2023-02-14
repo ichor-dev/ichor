@@ -14,7 +14,7 @@ class PingRequest(
   override val state: State
     get() = State.STATUS
 
-  companion object : PacketDeserializer<PingRequest>() {
+  companion object : PacketProcessor<PingRequest>() {
     override suspend fun deserialize(byteBuffer: ByteBuffer): PingRequest {
       return PingRequest(
         byteBuffer.long
