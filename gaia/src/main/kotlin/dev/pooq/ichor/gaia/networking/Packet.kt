@@ -12,7 +12,7 @@ interface Packet {
 
 abstract class ClientPacket : Packet {
 
-  abstract class PacketDeserializer<P : ClientPacket>(private vararg val handlers: PacketHandler<P>) {
+  abstract class PacketProcessor<P : ClientPacket>(private vararg val handlers: PacketHandler<P>) {
     protected abstract suspend fun deserialize(byteBuffer: ByteBuffer): P
 
     suspend fun deserializeAndHandle(byteBuffer: ByteBuffer, packetHandle: PacketHandle): P {

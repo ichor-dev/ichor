@@ -21,7 +21,7 @@ data class Handshake(
   override val state: State
     get() = State.HANDSHAKING
 
-  companion object : PacketDeserializer<Handshake>(HandshakeHandler()) {
+  companion object : PacketProcessor<Handshake>(HandshakeHandler()) {
     override suspend fun deserialize(byteBuffer: ByteBuffer): Handshake {
       return Handshake(
         byteBuffer.varInt(),

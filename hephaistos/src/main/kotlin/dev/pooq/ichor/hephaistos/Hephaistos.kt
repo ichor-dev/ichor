@@ -1,6 +1,7 @@
 package dev.pooq.ichor.hephaistos
 
-import com.github.ajalt.mordant.rendering.TextColors.*
+import com.github.ajalt.mordant.rendering.TextColors.brightGreen
+import com.github.ajalt.mordant.rendering.TextColors.red
 import dev.pooq.ichor.gaia.extensions.debug.debug
 import dev.pooq.ichor.gaia.extensions.log
 import dev.pooq.ichor.gaia.networking.packet.ClientPackets
@@ -14,7 +15,7 @@ object Hephaistos : Server() {
 
   override suspend fun startup(args: Array<String>) {
     terminal.log(brightGreen("Starting server..."))
-    
+
     args.forEach { terminal.debug(it) }
 
     val manager = SelectorManager(Dispatchers.Default)
@@ -31,12 +32,8 @@ object Hephaistos : Server() {
 
       read.read { buffer ->
         launch {
-          val packet = ClientPackets.deserializeAndHandle(buffer, client)
-          terminal.log(brightGreen("Packet: ${packet.id}"))
-          terminal.log(brightYellow("State: ${packet.state}"))
+          ClientPackets.deserializeAndHandle(buffer, client)
         }
-
-        terminal.log("---".repeat(10))
       }
     }
   }

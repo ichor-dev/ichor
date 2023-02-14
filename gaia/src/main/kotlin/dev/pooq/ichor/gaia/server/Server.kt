@@ -5,7 +5,10 @@ import dev.pooq.ichor.gaia.extensions.terminal
 import dev.pooq.ichor.gaia.networking.handle.PacketHandle
 import dev.pooq.ichor.gaia.networking.packet.State
 import io.ktor.network.sockets.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.runBlocking
 import kotlin.coroutines.CoroutineContext
 
 abstract class Server : CoroutineScope {
@@ -30,10 +33,12 @@ abstract class Server : CoroutineScope {
 
   private val handles: HashSet<PacketHandle> = hashSetOf()
 
-  fun Socket.handle() = handles.find { it.socket == this } ?: run {
-    return PacketHandle(state = State.STATUS, socket = this@handle, coroutineContext = this@Server.coroutineContext).apply {
-      handles.add(this)
-    }
+  fun Socket.handle() = handles.find { it.socket == this } ?: PacketHandle(
+    state = State.HANDSHAKING,
+    socket = this@handle,
+    coroutineContext = this@Server.coroutineContext
+  ).apply {
+    handles.add(this)
   }
 
   abstract suspend fun startup(args: Array<String>)
