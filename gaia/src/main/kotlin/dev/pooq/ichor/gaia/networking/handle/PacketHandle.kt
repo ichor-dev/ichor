@@ -12,8 +12,8 @@ import kotlin.coroutines.CoroutineContext
 class PacketHandle(
   var state: State,
   val socket: Socket,
-  var threshhold: Int = -1,
-  var compression: Boolean = threshhold < 0,
+  var threshold: Int = -1,
+  var compression: Boolean = threshold < 0,
   val coroutineContext: CoroutineContext
 ) {
 
@@ -22,7 +22,7 @@ class PacketHandle(
       launch {
         socket.openWriteChannel(true).writeAvailable(
           packet.serialize().run {
-            if (compression && limit() >= threshhold) ByteBuffer.wrap(array().compress()) else this
+            if (compression && limit() >= threshold) ByteBuffer.wrap(array().compress()) else this
           }
         )
       }
