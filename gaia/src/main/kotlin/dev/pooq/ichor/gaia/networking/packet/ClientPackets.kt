@@ -7,6 +7,7 @@ import dev.pooq.ichor.gaia.networking.Packet
 import dev.pooq.ichor.gaia.networking.handle.PacketHandle
 import dev.pooq.ichor.gaia.networking.packet.client.handshaking.Handshake
 import dev.pooq.ichor.gaia.networking.packet.client.handshaking.LegacyServerListPing
+import dev.pooq.ichor.gaia.networking.packet.client.login.LoginStart
 import dev.pooq.ichor.gaia.networking.packet.client.status.PingRequest
 import dev.pooq.ichor.gaia.networking.packet.client.status.StatusRequest
 import java.nio.ByteBuffer
@@ -14,16 +15,19 @@ import java.nio.ByteBuffer
 enum class ClientPackets(
   val id: Int,
   val state: State,
-  val deserializer: ClientPacket.PacketDeserializer<*>
+  val deserializer: ClientPacket.PacketProcessor<*>
 ) {
 
-  //State = Handshake
+  // State = Handshake
   HANDSHAKE(0x00, State.HANDSHAKING, Handshake),
   LEGACY_SERVER_LIST_PING(0xFE, State.HANDSHAKING, LegacyServerListPing),
 
-  //State = Status
+  // State = Status
   STATUS_REQUEST(0x00, State.STATUS, StatusRequest),
   PING_REQUEST(0x01, State.STATUS, PingRequest),
+
+  // State = Login
+  LOGIN_START(0x00, State.LOGIN, LoginStart)
 
   ;
 
