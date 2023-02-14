@@ -38,10 +38,11 @@ enum class ClientPackets(
       val compression = packetHandle.compression
 
       val packetLength = originalBuffer.varInt()
-      val dataLength = if (compression) packetLength else originalBuffer.varInt()
+      val dataLength = if (compression) originalBuffer.varInt() else packetLength
 
       var id: Int? = if (compression) null else originalBuffer.varInt()
 
+      terminal.debug("PacketLength: $packetLength, DataLength: $dataLength, Compression: $compression")
       terminal.debug(TextColors.brightGreen("Packet: $id"))
       terminal.debug(TextColors.brightYellow("State: ${packetHandle.state}"))
 
@@ -50,7 +51,6 @@ enum class ClientPackets(
       } else originalBuffer
 
       val clientPacket = values().first { clientPacket ->
-        terminal.debug(TextColors.brightGreen("Iterating ClientPacket: ${clientPacket.name}"))
         clientPacket.id == id && clientPacket.state == packetHandle.state
       }
 
