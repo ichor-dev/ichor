@@ -14,7 +14,7 @@ object Hephaistos : Server() {
 
   override suspend fun startup(args: Array<String>) {
     terminal.log(brightGreen("Starting server..."))
-    
+
     args.forEach { terminal.debug(it) }
 
     val manager = SelectorManager(Dispatchers.Default)
