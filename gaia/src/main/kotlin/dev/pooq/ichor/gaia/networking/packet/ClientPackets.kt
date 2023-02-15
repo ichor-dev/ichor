@@ -12,6 +12,7 @@ import dev.pooq.ichor.gaia.networking.packet.client.handshaking.LegacyServerList
 import dev.pooq.ichor.gaia.networking.packet.client.login.LoginStart
 import dev.pooq.ichor.gaia.networking.packet.client.status.PingRequest
 import dev.pooq.ichor.gaia.networking.packet.client.status.StatusRequest
+import dev.pooq.ichor.gaia.server.Server
 import java.nio.ByteBuffer
 
 enum class ClientPackets(
@@ -34,7 +35,7 @@ enum class ClientPackets(
   ;
 
   companion object {
-    suspend fun deserializeAndHandle(originalBuffer: ByteBuffer, packetHandle: PacketHandle): Packet {
+    suspend fun deserializeAndHandle(originalBuffer: ByteBuffer, packetHandle: PacketHandle, server: Server): Packet {
       terminal.debug(TextColors.brightMagenta("--- Incoming packet ---"))
 
       val compression = packetHandle.compression
@@ -60,7 +61,7 @@ enum class ClientPackets(
 
       terminal.debug(TextColors.brightMagenta("-----------------------"))
 
-      return processor.process(buffer, packetHandle)
+      return processor.process(buffer, packetHandle, server)
     }
   }
 }

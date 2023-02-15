@@ -32,7 +32,7 @@ object Hephaistos : Server() {
 
       read.read { buffer ->
         launch {
-          ClientPackets.deserializeAndHandle(buffer, client)
+          ClientPackets.deserializeAndHandle(buffer, client, this@Hephaistos)
         }
       }
     }

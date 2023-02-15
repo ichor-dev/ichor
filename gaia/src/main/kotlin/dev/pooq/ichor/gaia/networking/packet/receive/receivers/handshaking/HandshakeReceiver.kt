@@ -1,26 +1,15 @@
 package dev.pooq.ichor.gaia.networking.packet.receive.receivers.handshaking
 
-import com.github.ajalt.mordant.rendering.TextColors.brightYellow
-import com.github.ajalt.mordant.rendering.TextColors.green
 import dev.pooq.ichor.gaia.extensions.debug.debug
-import dev.pooq.ichor.gaia.extensions.terminal
 import dev.pooq.ichor.gaia.networking.packet.PacketHandle
 import dev.pooq.ichor.gaia.networking.packet.client.handshaking.Handshake
 import dev.pooq.ichor.gaia.networking.packet.receive.PacketReceiver
+import dev.pooq.ichor.gaia.server.Server
 
 class HandshakeReceiver : PacketReceiver<Handshake> {
 
-  override suspend fun onReceive(packet: Handshake, packetHandle: PacketHandle) {
-    terminal.debug(
-      """${green("Handshake:")}
-      ${brightYellow("Protocol Version: ${packet.protocolVersion}")}
-      ${brightYellow("Server Address: ${packet.serverAddress}")}
-      ${brightYellow("Server Port: ${packet.serverPort}")}
-      ${brightYellow("Next State: ${packet.nextState}")}
-      ${brightYellow("Client State: ${packetHandle.state}")}
-    """.trimIndent()
-    )
-
+  override suspend fun onReceive(packet: Handshake, packetHandle: PacketHandle, server: Server) {
     packetHandle.state = packet.nextState
+    server.terminal.debug("Changed state of ${packetHandle.socket.remoteAddress} to ${packetHandle.state}")
   }
 }
