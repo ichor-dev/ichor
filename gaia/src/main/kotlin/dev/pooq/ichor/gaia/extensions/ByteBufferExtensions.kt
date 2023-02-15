@@ -120,3 +120,5 @@ fun ByteBuffer.short(short: Short) {
     }
   }
 }
+
+fun ByteBuffer.byteArray(length: Int) = ByteArray(length).also(this::get)
