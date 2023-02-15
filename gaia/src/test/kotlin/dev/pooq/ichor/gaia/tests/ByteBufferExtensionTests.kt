@@ -1,5 +1,6 @@
 package dev.pooq.ichor.gaia.tests
 
+import dev.pooq.ichor.gaia.extensions.short
 import dev.pooq.ichor.gaia.extensions.string
 import dev.pooq.ichor.gaia.extensions.varInt
 import dev.pooq.ichor.gaia.extensions.varLong
@@ -41,6 +42,18 @@ class ByteBufferExtensionTests {
     buffer.varLong(expected)
 
     val found = buffer.flip().varLong()
+
+    assertEquals(expected, found)
+  }
+
+  @Test
+  fun `read and write short`() {
+    val expected = Short.MAX_VALUE
+
+    val buffer = ByteBuffer.allocate(expected.toInt())
+    buffer.short(expected)
+
+    val found = buffer.flip().short()
 
     assertEquals(expected, found)
   }
