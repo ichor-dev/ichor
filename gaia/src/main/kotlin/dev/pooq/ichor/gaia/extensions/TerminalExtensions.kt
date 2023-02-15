@@ -5,11 +5,16 @@ import com.github.ajalt.mordant.rendering.TextStyles.bold
 import com.github.ajalt.mordant.rendering.Theme
 import com.github.ajalt.mordant.terminal.Terminal
 
-fun Terminal.error(message: Any, error: Throwable) {
+fun Terminal.error(message: Any? = null, error: Throwable) {
   val errorStyle = (brightRed + bold)
 
-  this.println(errorStyle("[ERROR]") + white(" > ") + red(message.toString()))
-  this.println(errorStyle("[ERROR]") + white(" > ") + red(error.stackTraceToString()))
+  this.println(errorStyle("[ERROR]") + white(" > ") + red("${message?.let { "$it: " } ?: ""}${error.stackTraceToString()}"))
+}
+
+fun Terminal.warn(message: Any?) {
+  val logStyle = (brightYellow + bold)
+
+  this.println(logStyle("[WARN]") + white("  > ") + yellow(message.toString()))
 }
 
 fun Terminal.log(message: Any) {

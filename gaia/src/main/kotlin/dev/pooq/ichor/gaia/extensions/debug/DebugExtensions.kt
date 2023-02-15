@@ -7,8 +7,8 @@ import dev.pooq.ichor.gaia.extensions.env
 
 var debug: Boolean = env("debug").toBoolean()
 
-fun Terminal.debug(message: Any) {
-  if (!debug) return
-  val debugStyle = (brightYellow + bold)
-  this.println(debugStyle("[DEBUG]") + white(" > ") + yellow(message.toString()))
+fun Terminal.debug(message: Any, force: Boolean = false) {
+  if (!debug && !force) return
+  val debugStyle = (brightBlue + bold)
+  this.println(debugStyle("[DEBUG]") + white(" > ") + blue(message.toString()))
 }
