@@ -4,8 +4,8 @@ import dev.pooq.ichor.gaia.extensions.short
 import dev.pooq.ichor.gaia.extensions.string
 import dev.pooq.ichor.gaia.extensions.varInt
 import dev.pooq.ichor.gaia.networking.ClientPacket
-import dev.pooq.ichor.gaia.networking.packet.receive.receivers.handshaking.HandshakeReceiver
 import dev.pooq.ichor.gaia.networking.packet.State
+import dev.pooq.ichor.gaia.networking.packet.receive.receivers.handshaking.HandshakeReceiver
 import java.nio.ByteBuffer
 
 data class Handshake(
