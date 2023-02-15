@@ -57,35 +57,17 @@ fun ByteBuffer.boolean(boolean: Boolean) {
 }
 
 fun ByteBuffer.string(): String {
-  val maxLength = Short.MAX_VALUE
   val length = varInt()
+  val bytes = ByteArray(length)
 
-  if (length > (maxLength * 4) + 3) throw IllegalArgumentException("String is too long")
-
-  if (hasArray()) return String(array())
-
-  val bytes = ByteArray(remaining())
   get(bytes)
-  return String(ByteArray(remaining()))
+
+  return String(bytes, Charsets.UTF_8)
 }
 
+
 fun ByteBuffer.short(): Short {
-  var value: Short = 0
-  var position = 0
-  var currentByte: Byte
-
-  while (true) {
-    currentByte = get()
-    value = value or (((currentByte.toInt() and SEGMENT_BITS) shl position).toShort())
-
-    if (currentByte.toInt() and CONTINUE_BIT == 0) break
-
-    position += 7
-
-    if (position >= 64) throw RuntimeException("Short is too big")
-  }
-
-  return value
+  return (get().toInt() and 0xFF shl 8 or (get().toInt() and 0xFF)).toShort()
 }
 
 fun ByteBuffer.varLong(long: Long) {

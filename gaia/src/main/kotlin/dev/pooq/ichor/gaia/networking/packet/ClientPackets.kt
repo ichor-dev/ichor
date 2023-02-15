@@ -35,6 +35,8 @@ enum class ClientPackets(
 
   companion object {
     suspend fun deserializeAndHandle(originalBuffer: ByteBuffer, packetHandle: PacketHandle): Packet {
+      terminal.debug(TextColors.brightMagenta("--- Incoming packet ---"))
+
       val compression = packetHandle.compression
 
       val packetLength = originalBuffer.varInt()
@@ -55,6 +57,8 @@ enum class ClientPackets(
       }
 
       val processor = clientPacket.processor
+
+      terminal.debug(TextColors.brightMagenta("-----------------------"))
 
       return processor.process(buffer, packetHandle)
     }

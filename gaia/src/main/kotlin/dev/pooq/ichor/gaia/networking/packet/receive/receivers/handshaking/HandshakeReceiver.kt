@@ -2,16 +2,17 @@ package dev.pooq.ichor.gaia.networking.packet.receive.receivers.handshaking
 
 import com.github.ajalt.mordant.rendering.TextColors.brightYellow
 import com.github.ajalt.mordant.rendering.TextColors.green
+import dev.pooq.ichor.gaia.extensions.debug.debug
 import dev.pooq.ichor.gaia.extensions.terminal
 import dev.pooq.ichor.gaia.networking.packet.PacketHandle
-import dev.pooq.ichor.gaia.networking.packet.receive.PacketReceiver
 import dev.pooq.ichor.gaia.networking.packet.client.handshaking.Handshake
+import dev.pooq.ichor.gaia.networking.packet.receive.PacketReceiver
 
 class HandshakeReceiver : PacketReceiver<Handshake> {
 
   override suspend fun onReceive(packet: Handshake, packetHandle: PacketHandle) {
-    terminal.info(
-      """${green}("Handshake:")
+    terminal.debug(
+      """${green("Handshake:")}
       ${brightYellow("Protocol Version: ${packet.protocolVersion}")}
       ${brightYellow("Server Address: ${packet.serverAddress}")}
       ${brightYellow("Server Port: ${packet.serverPort}")}
