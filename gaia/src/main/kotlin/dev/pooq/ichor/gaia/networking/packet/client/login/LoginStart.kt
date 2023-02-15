@@ -10,7 +10,7 @@ import java.util.*
 class LoginStart(
   val name: String,
   val hasPlayerUUID: Boolean,
-  val uuid: UUID
+  var uuid: UUID? = null
 ) : ClientPacket() {
 
   override val id: Int
@@ -21,7 +21,9 @@ class LoginStart(
 
   companion object : PacketProcessor<LoginStart>() {
     override suspend fun deserialize(byteBuffer: ByteBuffer): LoginStart {
-      return LoginStart(byteBuffer.string(), byteBuffer.boolean(), UUID.fromString(byteBuffer.string()))
+      return LoginStart(byteBuffer.string(), byteBuffer.boolean()).apply {
+        if(hasPlayerUUID) uuid = UUID.fromString(byteBuffer.string())
+      }
     }
   }
 
