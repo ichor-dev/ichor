@@ -36,18 +36,12 @@ enum class ClientPackets(
 
   companion object {
     suspend fun deserializeAndHandle(originalBuffer: ByteBuffer, packetHandle: PacketHandle, server: Server): Packet {
-      terminal.debug(TextColors.magenta("--- Incoming packet ---"))
-
       val compression = packetHandle.compression
 
       val packetLength = originalBuffer.varInt()
       val dataLength = if (compression) originalBuffer.varInt() else packetLength
 
       var id: Int? = if (compression) null else originalBuffer.varInt()
-
-      terminal.debug("PacketLength: $packetLength, DataLength: $dataLength, Compression: $compression")
-      terminal.debug(TextColors.brightGreen("Packet: $id"))
-      terminal.debug(TextColors.brightYellow("State: ${packetHandle.state}"))
 
       val buffer = if (compression) ByteBuffer.wrap(originalBuffer.array().decompress(dataLength)).apply {
         id = this.varInt()
@@ -59,9 +53,16 @@ enum class ClientPackets(
 
       val processor = clientPacket.processor
 
-      terminal.debug(TextColors.yellow("Name: ${clientPacket.name}"))
-
-      terminal.debug(TextColors.magenta("-----------------------"))
+      terminal.debug(
+        """
+          ${TextColors.magenta("--- Incoming packet ---")}
+                    ${TextColors.cyan("PacketLength: $packetLength, DataLength: $dataLength, Compression: $compression")}
+                    ${TextColors.yellow("Packet: $id")}
+                    ${TextColors.yellow("State: ${packetHandle.state}")}
+                    ${TextColors.green("Name: ${clientPacket.name}")}
+                    ${TextColors.magenta("-----------------------")}
+      """.trimIndent()
+      )
 
       return processor.process(buffer, packetHandle, server)
     }
