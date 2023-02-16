@@ -27,19 +27,13 @@ data class Handshake(
         byteBuffer.varInt(),
         byteBuffer.string(),
         byteBuffer.short(),
-        NextState.of(byteBuffer.varInt())
+        when (byteBuffer.varInt()) {
+          1 -> State.STATUS
+          2 -> State.LOGIN
+
+          else -> throw IllegalArgumentException("StateId must be 1 or 2.")
+        }
       )
-    }
-  }
-
-  object NextState {
-    fun of(stateId: Int): State {
-      return when (stateId) {
-        1 -> State.STATUS
-        2 -> State.LOGIN
-
-        else -> throw IllegalArgumentException("StateId must be 1 or 2.")
-      }
     }
   }
 }
