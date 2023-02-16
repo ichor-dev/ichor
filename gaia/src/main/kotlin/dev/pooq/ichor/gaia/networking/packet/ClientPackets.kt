@@ -51,11 +51,10 @@ enum class ClientPackets(
         clientPacket.id == id && clientPacket.state == packetHandle.state
       }
 
-      val processor = clientPacket.processor
-
       terminal.debug(
         """
           ${TextColors.magenta("--- Incoming packet ---")}
+                    ${TextColors.cyan("Socket: ${packetHandle.connection.socket.remoteAddress}")}
                     ${TextColors.cyan("PacketLength: $packetLength, DataLength: $dataLength, Compression: $compression")}
                     ${TextColors.yellow("Packet: $id")}
                     ${TextColors.yellow("State: ${packetHandle.state}")}
@@ -64,7 +63,7 @@ enum class ClientPackets(
       """.trimIndent()
       )
 
-      return processor.process(buffer, packetHandle, server)
+      return clientPacket.processor.process(buffer, packetHandle, server)
     }
   }
 }
