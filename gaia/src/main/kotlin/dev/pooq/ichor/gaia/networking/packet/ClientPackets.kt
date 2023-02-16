@@ -8,7 +8,6 @@ import dev.pooq.ichor.gaia.extensions.varInt
 import dev.pooq.ichor.gaia.networking.ClientPacket
 import dev.pooq.ichor.gaia.networking.Packet
 import dev.pooq.ichor.gaia.networking.packet.client.handshaking.Handshake
-import dev.pooq.ichor.gaia.networking.packet.client.handshaking.LegacyServerListPing
 import dev.pooq.ichor.gaia.networking.packet.client.login.LoginStart
 import dev.pooq.ichor.gaia.networking.packet.client.status.PingRequest
 import dev.pooq.ichor.gaia.networking.packet.client.status.StatusRequest
@@ -23,7 +22,6 @@ enum class ClientPackets(
 
   // State = Handshake
   HANDSHAKE(0x00, State.HANDSHAKING, Handshake),
-  LEGACY_SERVER_LIST_PING(0xFE, State.HANDSHAKING, LegacyServerListPing),
 
   // State = Status
   STATUS_REQUEST(0x00, State.STATUS, StatusRequest),
