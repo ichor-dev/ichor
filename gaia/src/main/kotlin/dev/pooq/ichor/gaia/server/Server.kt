@@ -50,9 +50,9 @@ abstract class Server : CoroutineScope {
   private val handles: HashSet<PacketHandle> = hashSetOf()
   val players: HashSet<Player> = hashSetOf()
 
-  fun Socket.handle() = handles.find { it.socket == this } ?: PacketHandle(
+  fun Socket.handle(connection: Connection) = handles.find { it.connection.socket == this } ?: PacketHandle(
     state = State.HANDSHAKING,
-    socket = this@handle,
+    connection = connection,
     coroutineContext = this@Server.coroutineContext
   ).apply {
     handles.add(this)

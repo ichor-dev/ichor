@@ -19,18 +19,18 @@ object Hephaistos : Server() {
     args.forEach { terminal.debug(it) }
 
     val manager = SelectorManager(Dispatchers.Default)
-    val serverSocket = aSocket(manager).tcp().bind("127.0.0.1", 25565)
+    val serverSocket = aSocket(manager).tcp().bind(InetSocketAddress("127.0.0.1", 25565))
 
     terminal.log(brightGreen("Server started successfully!"))
 
     while (true) {
       val socket = serverSocket.accept()
 
-      val client = socket.handle()
+      val connection = socket.connection()
 
-      val read = socket.openReadChannel()
+      val client = socket.handle(connection)
 
-      read.read { buffer ->
+      connection.input.read { buffer ->
         launch {
           ClientPackets.deserializeAndHandle(buffer, client, this@Hephaistos)
         }
