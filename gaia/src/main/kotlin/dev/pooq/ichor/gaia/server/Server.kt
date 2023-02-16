@@ -4,9 +4,7 @@ import com.github.ajalt.mordant.terminal.Terminal
 import dev.pooq.ichor.gaia.entity.player.Player
 import dev.pooq.ichor.gaia.extensions.debug.debug
 import dev.pooq.ichor.gaia.extensions.error
-import dev.pooq.ichor.gaia.extensions.log
 import dev.pooq.ichor.gaia.extensions.terminal
-import dev.pooq.ichor.gaia.extensions.warn
 import dev.pooq.ichor.gaia.networking.packet.PacketHandle
 import dev.pooq.ichor.gaia.networking.packet.State
 import io.ktor.network.sockets.*
@@ -14,6 +12,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.runBlocking
+import java.security.KeyPair
+import java.security.KeyPairGenerator
 import kotlin.coroutines.CoroutineContext
 
 abstract class Server : CoroutineScope {
@@ -25,6 +25,11 @@ abstract class Server : CoroutineScope {
 
   var terminal: Terminal
 
+  val encryptionPair: KeyPair = KeyPairGenerator.getInstance("RSA").apply {
+    initialize(1024)
+  }.genKeyPair()
+  val verifyToken = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789".toByteArray()
+
   init {
     Runtime.getRuntime().addShutdownHook(Thread {
       runBlocking {
@@ -35,18 +40,11 @@ abstract class Server : CoroutineScope {
 
     terminal = terminal()
 
-    terminal.log("Example log")
-    terminal.warn("Example warn")
-    terminal.debug("Example debug forced", true)
-    terminal.error("Example error", NullPointerException("Idfk"))
-    terminal.error(error = NullPointerException("Idfk"))
-
     terminal.debug("Debug is enabled")
 
     Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
       terminal.error("${throwable.message} | Thread: ${thread.name}", throwable)
     }
-
   }
 
   private val handles: HashSet<PacketHandle> = hashSetOf()

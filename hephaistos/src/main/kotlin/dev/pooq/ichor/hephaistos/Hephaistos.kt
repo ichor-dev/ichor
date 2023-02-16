@@ -41,7 +41,6 @@ object Hephaistos : Server() {
   override suspend fun shutdown() {
     terminal.log(red("Shutdown"))
   }
-
 }
 
 suspend fun main(args: Array<String>) {
