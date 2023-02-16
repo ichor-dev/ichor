@@ -1,6 +1,9 @@
 package dev.pooq.ichor.gaia.networking.packet
 
+import com.github.ajalt.mordant.rendering.TextColors
 import dev.pooq.ichor.gaia.extensions.compress
+import dev.pooq.ichor.gaia.extensions.debug.debug
+import dev.pooq.ichor.gaia.extensions.terminal
 import dev.pooq.ichor.gaia.networking.ServerPacket
 import io.ktor.network.sockets.*
 import kotlinx.coroutines.launch
@@ -19,10 +22,22 @@ class PacketHandle(
   suspend fun sendPacket(packet: ServerPacket) {
     withContext(coroutineContext) {
       launch {
-        socket.openWriteChannel(true).writeAvailable(
-          packet.serialize().run {
-            if (compression && limit() >= threshold) ByteBuffer.wrap(array().compress()) else this
+        socket.openWriteChannel(true).writeAvailable(packet.serialize().run {
+          if (compression && limit() >= threshold) ByteBuffer.wrap(array().compress()) else this
+        })
+        terminal.debug(
+          """
+            ${TextColors.brightMagenta("--- Sent packet ---")}
+                      ${TextColors.brightGreen("Packet: ${packet.id}")}
+                      ${
+            TextColors.brightYellow(
+              "Name: ${
+                ClientPackets.values().first { it.id == packet.id && it.state == packet.state }.name
+              }"
+            )
           }
+                      ${TextColors.brightMagenta("-----------------------")}
+          """.trimIndent()
         )
       }
     }
