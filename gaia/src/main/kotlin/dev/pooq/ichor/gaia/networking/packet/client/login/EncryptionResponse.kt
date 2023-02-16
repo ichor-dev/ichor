@@ -4,6 +4,7 @@ import dev.pooq.ichor.gaia.extensions.byteArray
 import dev.pooq.ichor.gaia.extensions.varInt
 import dev.pooq.ichor.gaia.networking.ClientPacket
 import dev.pooq.ichor.gaia.networking.packet.State
+import dev.pooq.ichor.gaia.networking.packet.receive.receivers.login.EncryptionResponseReceiver
 import java.nio.ByteBuffer
 
 class EncryptionResponse(
@@ -19,7 +20,7 @@ class EncryptionResponse(
   override val state: State
     get() = State.LOGIN
 
-  companion object : PacketProcessor<EncryptionResponse>() {
+  companion object : PacketProcessor<EncryptionResponse>(EncryptionResponseReceiver) {
     override suspend fun deserialize(byteBuffer: ByteBuffer): EncryptionResponse {
       val sharedSecretLength = byteBuffer.varInt()
       val sharedSecret = byteBuffer.byteArray(sharedSecretLength)
