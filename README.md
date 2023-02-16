@@ -8,7 +8,7 @@ Ichor is the blood of the gods (greek). It is gold. <s>Like this project.</s>
 Ichor is my pitiful attempt to reimplement Minecraft Server. \
 Do not ask, **emphasis on not**, why!
 
-## <a href="https://github.com/kxmpxtxnt/Ichor/tree/master/gaia">Gaia</a>: The mother of all gods and titans (networking)
+## <a href="https://github.com/kxmpxtxnt/Ichor/tree/master/gaia">Gaia</a>: The mother of all gods and titans (core functionalities + networking)
 
 ## <a href="https://github.com/kxmpxtxnt/Ichor/tree/master/hermes">Hermes</a>: The messenger of the gods (proxy) that nobody needed.
 
