@@ -19,7 +19,7 @@ class StatusResponse(
   }
 
   override val id: Int
-    get() = TODO("Not yet implemented")
+    get() = 0x00
 
   override val state: State
     get() = State.STATUS
