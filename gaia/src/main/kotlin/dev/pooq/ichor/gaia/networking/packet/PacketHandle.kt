@@ -1,6 +1,7 @@
 package dev.pooq.ichor.gaia.networking.packet
 
 import com.github.ajalt.mordant.rendering.TextColors
+import com.github.ajalt.mordant.rendering.TextStyles
 import dev.pooq.ichor.gaia.extensions.compress
 import dev.pooq.ichor.gaia.extensions.debug.debug
 import dev.pooq.ichor.gaia.extensions.terminal
@@ -26,18 +27,18 @@ class PacketHandle(
           if (compression && limit() >= threshold) ByteBuffer.wrap(array().compress()) else this
         })
         terminal.debug(
-          """
+          TextStyles.bold(
+            """
             ${TextColors.brightMagenta("--- Sent packet ---")}
                       ${TextColors.brightGreen("Packet: ${packet.id}")}
                       ${
-            TextColors.brightYellow(
-              "Name: ${
-                ClientPackets.values().first { it.id == packet.id && it.state == packet.state }.name
-              }"
-            )
-          }
+              TextColors.brightYellow(
+                "Name: ${packet.javaClass.simpleName}"
+              )
+            }
                       ${TextColors.brightMagenta("-----------------------")}
           """.trimIndent()
+          )
         )
       }
     }

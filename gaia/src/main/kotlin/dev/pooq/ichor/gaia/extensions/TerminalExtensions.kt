@@ -8,7 +8,7 @@ import com.github.ajalt.mordant.terminal.Terminal
 fun Terminal.error(message: Any? = null, error: Throwable) {
   val errorStyle = (brightRed + bold)
 
-  this.println(errorStyle("[ERROR]") + white(" > ") + red("${message?.let { "$it: " } ?: ""}${error.stackTraceToString()}"))
+  this.println(errorStyle("[ERROR]") + white(" > ") + red("${message.let { "${it ?: ""}: " }}${error.stackTraceToString()}"))
 }
 
 fun Terminal.warn(message: Any?) {

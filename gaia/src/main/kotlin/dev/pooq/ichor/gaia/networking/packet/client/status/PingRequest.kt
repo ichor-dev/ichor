@@ -1,5 +1,6 @@
 package dev.pooq.ichor.gaia.networking.packet.client.status
 
+import dev.pooq.ichor.gaia.extensions.varLong
 import dev.pooq.ichor.gaia.networking.ClientPacket
 import dev.pooq.ichor.gaia.networking.packet.PacketHandle
 import dev.pooq.ichor.gaia.networking.packet.State
@@ -26,7 +27,7 @@ class PingRequest(
   }) {
     override suspend fun deserialize(byteBuffer: ByteBuffer): PingRequest {
       return PingRequest(
-        byteBuffer.long
+        byteBuffer.varLong()
       )
     }
   }

@@ -8,6 +8,7 @@ import dev.pooq.ichor.gaia.networking.packet.ClientPackets
 import dev.pooq.ichor.gaia.server.Server
 import io.ktor.network.selector.*
 import io.ktor.network.sockets.*
+import io.ktor.util.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -23,7 +24,7 @@ object Hephaistos : Server() {
 
     terminal.log(brightGreen("Server started successfully!"))
 
-    while (true) {
+    while (serverSocket.isClosed.not()) {
       val socket = serverSocket.accept()
 
       val connection = socket.connection()
@@ -32,9 +33,13 @@ object Hephaistos : Server() {
 
       connection.input.read { buffer ->
         launch {
-          ClientPackets.deserializeAndHandle(buffer, client, this@Hephaistos)
+          do {
+            println(buffer.copy().array().size)
+            ClientPackets.deserializeAndHandle(buffer, client, this@Hephaistos)
+          } while (!connection.input.isClosedForRead)
         }
       }
+
     }
   }
 

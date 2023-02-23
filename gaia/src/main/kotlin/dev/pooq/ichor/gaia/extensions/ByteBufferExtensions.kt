@@ -9,27 +9,41 @@ inline fun buffer(capacity: Int, applier: ByteBuffer.() -> Unit = {}): ByteBuffe
   ByteBuffer.allocate(capacity).apply(applier).flip()
 
 fun ByteBuffer.varInt(): Int {
-  var result = 0
-  var shift = 0
-  var b: Byte
-  do {
-    b = this.get()
-    result = result or ((b.toInt() and SEGMENT_BITS) shl shift)
-    shift += 7
-  } while (b < 0)
-  return result
+  var value = 0
+  var position = 0
+  var currentByte: Byte
+
+  while (true) {
+    currentByte = get()
+    value = value or ((currentByte.toInt() and SEGMENT_BITS) shl position)
+
+    if (currentByte.toInt() and CONTINUE_BIT == 0) break
+
+    position += 7
+
+    if (position >= 32) throw RuntimeException("VarInt is too big")
+  }
+
+  return value
 }
 
 fun ByteBuffer.varLong(): Long {
-  var result: Long = 0
-  var shift = 0
-  var b: Byte
-  do {
-    b = this.get()
-    result = result or ((b.toLong() and SEGMENT_BITS.toLong()) shl shift)
-    shift += 7
-  } while (b < 0)
-  return result
+  var value: Long = 0
+  var position = 0
+  var currentByte: Byte
+
+  while (true) {
+    currentByte = get()
+    value = value or (((currentByte.toInt() and SEGMENT_BITS) shl position).toLong())
+
+    if (currentByte.toInt() and CONTINUE_BIT == 0) break
+
+    position += 7
+
+    if (position >= 64) throw RuntimeException("VarLong is too big")
+  }
+
+  return value
 }
 
 fun ByteBuffer.boolean(): Boolean {
@@ -70,9 +84,15 @@ fun ByteBuffer.varInt(int: Int) {
 }
 
 fun ByteBuffer.string(string: String) {
-  val encoded = string.toByteArray(Charsets.UTF_8)
-  varInt(encoded.size)
-  put(encoded)
+  val maxLength = Short.MAX_VALUE
+
+  if (string.length > maxLength) throw IllegalArgumentException("String is too long.")
+
+  val bytes = string.toByteArray(Charsets.UTF_8)
+
+  if (bytes.size > (maxLength * 4) + 3) throw throw IllegalArgumentException("String bytearray is too long.")
+
+  put(bytes)
 }
 
 fun ByteBuffer.short(short: Short) {
