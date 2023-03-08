@@ -22,7 +22,6 @@ class HandshakeReceiver : PacketReceiver<Handshake> {
       """.trimIndent()
     )
 
-    terminal.debug(TextColors.brightBlue("Handshake Packet with next state: ${packet.nextState}, protocol version: ${packet.protocolVersion}"))
     packetHandle.state = packet.nextState
   }
 }

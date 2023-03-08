@@ -1,6 +1,7 @@
 package dev.pooq.ichor.gaia.extensions
 
 import java.nio.ByteBuffer
+import kotlin.experimental.and
 
 private const val SEGMENT_BITS = 0x7F
 private const val CONTINUE_BIT = 0x80
@@ -11,13 +12,15 @@ inline fun buffer(capacity: Int, applier: ByteBuffer.() -> Unit = {}): ByteBuffe
 fun ByteBuffer.varInt(): Int {
   var result = 0
   var shift = 0
-  var b: Byte
-  do {
-    b = this.get()
+  while (shift < 32) {
+    val b = get()
     result = result or ((b.toInt() and SEGMENT_BITS) shl shift)
+    if ((b and CONTINUE_BIT.toByte()) == 0.toByte()) {
+      return result
+    }
     shift += 7
-  } while (b < 0)
-  return result
+  }
+  throw IllegalArgumentException("Malformed VarInt")
 }
 
 fun ByteBuffer.varLong(): Long {
