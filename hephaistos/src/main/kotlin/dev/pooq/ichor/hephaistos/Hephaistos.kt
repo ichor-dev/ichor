@@ -37,7 +37,6 @@ object Hephaistos : Server() {
           } while (!connection.input.isClosedForRead)
         }
       }
-
     }
   }
 
