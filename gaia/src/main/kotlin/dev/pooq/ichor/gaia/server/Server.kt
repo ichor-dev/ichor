@@ -26,7 +26,7 @@ abstract class Server : CoroutineScope {
   var terminal: Terminal
 
   val encryptionPair: KeyPair = KeyPairGenerator.getInstance("RSA").apply {
-    initialize(2048)
+    initialize(1024)
   }.genKeyPair()
   val verifyToken = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789".toByteArray()
 
