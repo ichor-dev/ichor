@@ -1,6 +1,7 @@
 package dev.pooq.ichor.gaia.extensions
 
 import java.nio.ByteBuffer
+import java.util.*
 import kotlin.experimental.and
 
 private const val SEGMENT_BITS = 0x7F
@@ -52,6 +53,10 @@ fun ByteBuffer.string(): String {
 
 fun ByteBuffer.short(): Short {
   return (get().toInt() and 0xFF shl 8 or (get().toInt() and 0xFF)).toShort()
+}
+
+fun ByteBuffer.uuid(): UUID {
+  return UUID(varLong(), varLong())
 }
 
 fun ByteBuffer.varLong(long: Long) {
