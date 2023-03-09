@@ -30,7 +30,7 @@ object Hephaistos : Server() {
 
       val client = socket.handle(connection)
 
-      connection.input.read { buffer ->
+      connection.input.read(min = 10) { buffer ->
         launch {
           do {
             ClientPackets.deserializeAndHandle(buffer, client, this@Hephaistos)
