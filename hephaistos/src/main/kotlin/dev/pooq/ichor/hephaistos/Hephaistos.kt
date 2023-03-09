@@ -26,7 +26,7 @@ object Hephaistos : Server() {
     while (!serverSocket.isClosed) {
       val socket = serverSocket.accept()
 
-      val connection = socket.connection()
+      val connection = Connection(socket, socket.openReadChannel(), socket.openWriteChannel(true))
 
       val client = socket.handle(connection)
 
