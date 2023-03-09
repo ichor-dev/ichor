@@ -8,6 +8,7 @@ import dev.pooq.ichor.gaia.extensions.varInt
 import dev.pooq.ichor.gaia.networking.ClientPacket
 import dev.pooq.ichor.gaia.networking.Packet
 import dev.pooq.ichor.gaia.networking.packet.client.handshaking.Handshake
+import dev.pooq.ichor.gaia.networking.packet.client.login.EncryptionResponse
 import dev.pooq.ichor.gaia.networking.packet.client.login.LoginStart
 import dev.pooq.ichor.gaia.networking.packet.client.status.PingRequest
 import dev.pooq.ichor.gaia.networking.packet.client.status.StatusRequest
@@ -28,8 +29,8 @@ enum class ClientPackets(
   PING_REQUEST(0x01, State.STATUS, PingRequest),
 
   // State = Login
-  LOGIN_START(0x00, State.LOGIN, LoginStart)
-
+  LOGIN_START(0x00, State.LOGIN, LoginStart),
+  ENCRYPTION_RESPONSE(0x01, State.LOGIN, EncryptionResponse)
   ;
 
   companion object {
@@ -37,6 +38,7 @@ enum class ClientPackets(
       val compression = packetHandle.compression
 
       val packetLength = originalBuffer.varInt()
+
       val dataLength = if (compression) originalBuffer.varInt() else packetLength
 
       var id: Int? = if (compression) null else originalBuffer.varInt()
