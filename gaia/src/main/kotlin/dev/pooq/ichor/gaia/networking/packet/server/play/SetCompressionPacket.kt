@@ -1,7 +1,8 @@
 package dev.pooq.ichor.gaia.networking.packet.server.play
 
-import dev.pooq.ichor.gaia.extensions.buffer
-import dev.pooq.ichor.gaia.extensions.varInt
+import dev.pooq.ichor.gaia.extensions.bytes.buffer
+import dev.pooq.ichor.gaia.extensions.bytes.uncompressedBuffer
+import dev.pooq.ichor.gaia.extensions.bytes.varInt
 import dev.pooq.ichor.gaia.networking.INT
 import dev.pooq.ichor.gaia.networking.ServerPacket
 import dev.pooq.ichor.gaia.networking.VAR_INT
@@ -13,7 +14,7 @@ class SetCompressionPacket(
 ) : ServerPacket() {
 
   override suspend fun serialize(): ByteBuffer {
-    return buffer(INT + VAR_INT) {
+    return uncompressedBuffer(INT + VAR_INT) {
       putInt(id)
       varInt(threshold)
     }

@@ -1,8 +1,8 @@
 package dev.pooq.ichor.gaia.networking.packet.client.handshaking
 
-import dev.pooq.ichor.gaia.extensions.short
-import dev.pooq.ichor.gaia.extensions.string
-import dev.pooq.ichor.gaia.extensions.varInt
+import dev.pooq.ichor.gaia.extensions.bytes.short
+import dev.pooq.ichor.gaia.extensions.bytes.string
+import dev.pooq.ichor.gaia.extensions.bytes.varInt
 import dev.pooq.ichor.gaia.networking.ClientPacket
 import dev.pooq.ichor.gaia.networking.packet.State
 import dev.pooq.ichor.gaia.networking.packet.receive.receivers.handshaking.HandshakeReceiver

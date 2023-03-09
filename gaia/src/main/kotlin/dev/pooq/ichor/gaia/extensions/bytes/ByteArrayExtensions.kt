@@ -1,4 +1,4 @@
-package dev.pooq.ichor.gaia.extensions
+package dev.pooq.ichor.gaia.extensions.bytes
 
 import java.io.ByteArrayOutputStream
 import java.util.zip.Deflater

@@ -1,5 +1,7 @@
-package dev.pooq.ichor.gaia.extensions
+package dev.pooq.ichor.gaia.extensions.bytes
 
+import dev.pooq.ichor.gaia.networking.INT
+import dev.pooq.ichor.gaia.networking.ServerPacket
 import java.nio.ByteBuffer
 import java.util.*
 import kotlin.experimental.and
@@ -9,6 +11,14 @@ private const val CONTINUE_BIT = 0x80
 
 inline fun buffer(capacity: Int, applier: ByteBuffer.() -> Unit = {}): ByteBuffer =
   ByteBuffer.allocate(capacity).apply(applier).flip()
+
+inline fun ServerPacket.uncompressedBuffer(length: Int, applier: ByteBuffer.() -> Unit = {}) =
+  ByteBuffer.allocate(
+    INT + INT + length
+  ).apply {
+    varInt(length + INT)
+    varInt(id)
+  }.apply(applier)
 
 fun ByteBuffer.varInt(): Int {
   var result = 0

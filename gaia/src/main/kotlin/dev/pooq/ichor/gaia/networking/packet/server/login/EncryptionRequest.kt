@@ -1,8 +1,9 @@
 package dev.pooq.ichor.gaia.networking.packet.server.login
 
-import dev.pooq.ichor.gaia.extensions.buffer
-import dev.pooq.ichor.gaia.extensions.string
-import dev.pooq.ichor.gaia.extensions.varInt
+import dev.pooq.ichor.gaia.extensions.bytes.byteSize
+import dev.pooq.ichor.gaia.extensions.bytes.string
+import dev.pooq.ichor.gaia.extensions.bytes.uncompressedBuffer
+import dev.pooq.ichor.gaia.extensions.bytes.varInt
 import dev.pooq.ichor.gaia.networking.INT
 import dev.pooq.ichor.gaia.networking.ServerPacket
 import dev.pooq.ichor.gaia.networking.packet.State
@@ -17,7 +18,7 @@ class EncryptionRequest(
 ) : ServerPacket() {
 
   override suspend fun serialize(): ByteBuffer {
-    return buffer(INT + serverId.toByteArray(Charsets.UTF_8).size + INT + publicKeyLength + INT + verifyTokenLength) {
+    return uncompressedBuffer(serverId.byteSize() + INT + publicKeyLength + INT + verifyTokenLength) {
       putInt(id)
       string(serverId)
       varInt(publicKeyLength)

@@ -2,9 +2,9 @@ package dev.pooq.ichor.gaia.networking.packet
 
 import com.github.ajalt.mordant.rendering.TextColors
 import dev.pooq.ichor.gaia.extensions.debug.debug
-import dev.pooq.ichor.gaia.extensions.decompress
+import dev.pooq.ichor.gaia.extensions.bytes.decompress
 import dev.pooq.ichor.gaia.extensions.terminal
-import dev.pooq.ichor.gaia.extensions.varInt
+import dev.pooq.ichor.gaia.extensions.bytes.varInt
 import dev.pooq.ichor.gaia.networking.ClientPacket
 import dev.pooq.ichor.gaia.networking.Packet
 import dev.pooq.ichor.gaia.networking.packet.client.handshaking.Handshake

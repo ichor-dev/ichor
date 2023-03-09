@@ -1,8 +1,8 @@
 package dev.pooq.ichor.gaia.networking.packet.client.login
 
-import dev.pooq.ichor.gaia.extensions.boolean
-import dev.pooq.ichor.gaia.extensions.string
-import dev.pooq.ichor.gaia.extensions.uuid
+import dev.pooq.ichor.gaia.extensions.bytes.boolean
+import dev.pooq.ichor.gaia.extensions.bytes.string
+import dev.pooq.ichor.gaia.extensions.bytes.uuid
 import dev.pooq.ichor.gaia.networking.ClientPacket
 import dev.pooq.ichor.gaia.networking.packet.State
 import dev.pooq.ichor.gaia.networking.packet.receive.receivers.login.LoginStartReceiver

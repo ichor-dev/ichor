@@ -1,6 +1,7 @@
 package dev.pooq.ichor.gaia.networking.packet.server.status
 
-import dev.pooq.ichor.gaia.extensions.buffer
+import dev.pooq.ichor.gaia.extensions.bytes.buffer
+import dev.pooq.ichor.gaia.extensions.bytes.uncompressedBuffer
 import dev.pooq.ichor.gaia.networking.INT
 import dev.pooq.ichor.gaia.networking.LONG
 import dev.pooq.ichor.gaia.networking.ServerPacket
@@ -12,7 +13,7 @@ class PingResponse(
 ) : ServerPacket() {
 
   override suspend fun serialize(): ByteBuffer {
-    return buffer(INT + LONG) {
+    return uncompressedBuffer(INT + LONG) {
       putInt(id)
       putLong(payload)
     }

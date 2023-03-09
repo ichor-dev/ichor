@@ -1,7 +1,7 @@
 package dev.pooq.ichor.gaia.tests
 
-import dev.pooq.ichor.gaia.extensions.compress
-import dev.pooq.ichor.gaia.extensions.decompress
+import dev.pooq.ichor.gaia.extensions.bytes.compress
+import dev.pooq.ichor.gaia.extensions.bytes.decompress
 import kotlin.test.Test
 
 class ByteArrayExtensionTests {

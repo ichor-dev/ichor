@@ -1,7 +1,7 @@
 package dev.pooq.ichor.gaia.networking.packet.client.login
 
-import dev.pooq.ichor.gaia.extensions.byteArray
-import dev.pooq.ichor.gaia.extensions.varInt
+import dev.pooq.ichor.gaia.extensions.bytes.byteArray
+import dev.pooq.ichor.gaia.extensions.bytes.varInt
 import dev.pooq.ichor.gaia.networking.ClientPacket
 import dev.pooq.ichor.gaia.networking.packet.State
 import dev.pooq.ichor.gaia.networking.packet.receive.receivers.login.EncryptionResponseReceiver

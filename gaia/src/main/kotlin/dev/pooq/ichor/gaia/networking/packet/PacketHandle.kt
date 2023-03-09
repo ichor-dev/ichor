@@ -2,7 +2,7 @@ package dev.pooq.ichor.gaia.networking.packet
 
 import com.github.ajalt.mordant.rendering.TextColors
 import com.github.ajalt.mordant.rendering.TextStyles
-import dev.pooq.ichor.gaia.extensions.compress
+import dev.pooq.ichor.gaia.extensions.bytes.compress
 import dev.pooq.ichor.gaia.extensions.debug.debug
 import dev.pooq.ichor.gaia.extensions.terminal
 import dev.pooq.ichor.gaia.networking.ServerPacket
