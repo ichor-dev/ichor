@@ -30,11 +30,30 @@ object Hephaistos : Server() {
 
       val client = socket.handle(connection)
 
-      connection.input.read(min = 10) { buffer ->
-        launch {
-          do {
+      launch {
+        try {
+          while (!connection.input.isClosedForRead) {
+            var value = 0
+            var i = 0
+            var b: Byte
+            do {
+              b = connection.input.readByte()
+              value = value or ((b.toInt() and 0x7F) shl (i * 7))
+              i++
+            } while ((b.toInt() and 0x80) != 0 && i < 5)
+
+            val buffer = ByteBuffer.allocate(value)
+            connection.input.readAvailable(buffer)
+            buffer.flip()
+
             ClientPackets.deserializeAndHandle(buffer, client, this@Hephaistos)
-          } while (!connection.input.isClosedForRead)
+          }
+        } catch (e: Throwable) {
+          if (e !is ClosedReceiveChannelException)
+            terminal.log("Error while reading packets: ${e.message}")
+        } finally {
+          connection.input.cancel()
+          connection.output.close()
         }
       }
     }

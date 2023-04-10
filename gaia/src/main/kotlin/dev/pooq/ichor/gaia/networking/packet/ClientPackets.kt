@@ -1,10 +1,10 @@
 package dev.pooq.ichor.gaia.networking.packet
 
 import com.github.ajalt.mordant.rendering.TextColors
-import dev.pooq.ichor.gaia.extensions.debug.debug
 import dev.pooq.ichor.gaia.extensions.bytes.decompress
-import dev.pooq.ichor.gaia.extensions.terminal
 import dev.pooq.ichor.gaia.extensions.bytes.varInt
+import dev.pooq.ichor.gaia.extensions.debug.debug
+import dev.pooq.ichor.gaia.extensions.terminal
 import dev.pooq.ichor.gaia.networking.ClientPacket
 import dev.pooq.ichor.gaia.networking.Packet
 import dev.pooq.ichor.gaia.networking.packet.client.handshaking.Handshake
@@ -37,14 +37,12 @@ enum class ClientPackets(
     suspend fun deserializeAndHandle(originalBuffer: ByteBuffer, packetHandle: PacketHandle, server: Server): Packet {
       val compression = packetHandle.compression
 
-      val packetLength = originalBuffer.varInt()
-
-      val dataLength = if (compression) originalBuffer.varInt() else packetLength
+      val dataLength = if (compression) originalBuffer.varInt() else 0
 
       var id: Int? = if (compression) null else originalBuffer.varInt()
 
-      val buffer = if (compression) ByteBuffer.wrap(originalBuffer.array().decompress(dataLength)).apply {
-        id = this.varInt()
+      val buffer = if (compression) ByteBuffer.wrap(originalBuffer.array().decompress(dataLength)).also {
+        id = it.varInt()
       } else originalBuffer
 
       val clientPacket = values().first { clientPacket ->
@@ -55,7 +53,7 @@ enum class ClientPackets(
         """
           ${TextColors.magenta("--- Incoming packet ---")}
                     ${TextColors.cyan("Socket: ${packetHandle.connection.socket.remoteAddress}")}
-                    ${TextColors.cyan("PacketLength: $packetLength, DataLength: $dataLength, Compression: $compression")}
+                    ${TextColors.cyan("${if (compression) "DataLength: $dataLength, " else "" }Compression: $compression")}
                     ${TextColors.yellow("Packet: $id")}
                     ${TextColors.yellow("State: ${packetHandle.state}")}
                     ${TextColors.green("Name: ${clientPacket.name}")}
