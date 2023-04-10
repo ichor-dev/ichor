@@ -7,7 +7,11 @@ import dev.pooq.ichor.gaia.extensions.error
 import dev.pooq.ichor.gaia.extensions.terminal
 import dev.pooq.ichor.gaia.networking.packet.PacketHandle
 import dev.pooq.ichor.gaia.networking.packet.State
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.network.sockets.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -24,6 +28,9 @@ abstract class Server : CoroutineScope {
     get() = Dispatchers.Default + job
 
   var terminal: Terminal
+  var httpClient = HttpClient(CIO) {
+    install(ContentNegotiation) { json() }
+  }
 
   val encryptionPair: KeyPair = KeyPairGenerator.getInstance("RSA").apply {
     initialize(1024)
