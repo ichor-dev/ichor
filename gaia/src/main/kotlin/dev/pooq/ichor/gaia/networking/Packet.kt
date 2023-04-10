@@ -25,5 +25,5 @@ abstract class ClientPacket : Packet {
 }
 
 abstract class ServerPacket : Packet {
-  abstract suspend fun serialize(): ByteBuffer
+  abstract fun serialize(): ByteBuffer
 }

@@ -45,9 +45,9 @@ enum class ClientPackets(
         id = it.varInt()
       } else originalBuffer
 
-      val clientPacket = values().first { clientPacket ->
+      val clientPacket = values().firstOrNull { clientPacket ->
         clientPacket.id == id && clientPacket.state == packetHandle.state
-      }
+      } ?: error("Cannot find packet with id $id in state ${packetHandle.state}")
 
       terminal.debug(
         """

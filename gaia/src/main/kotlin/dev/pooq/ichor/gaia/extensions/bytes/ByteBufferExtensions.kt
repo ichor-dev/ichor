@@ -11,11 +11,16 @@ private const val SEGMENT_BITS_LONG = (0x7F).toLong()
 private const val CONTINUE_BIT = 0x80
 private const val CONTINUE_BIT_LONG = (0x80).toLong()
 
-inline fun ServerPacket.uncompressedBuffer(length: Int, applier: ByteBuffer.() -> Unit = {}): ByteBuffer =
-  ByteBuffer.allocate(INT + INT + length).apply {
-    varInt(INT + length)
-    varInt(id)
-  }.apply(applier)
+inline fun ServerPacket.uncompressedBuffer(applier: ByteBuffer.() -> Unit = {}): ByteBuffer {
+  val data = ByteBuffer.allocate(1024).apply { varInt(id) }.apply(applier)
+  val dataSize = data.position()
+
+  return ByteBuffer.allocate(INT + dataSize).apply {
+    varInt(dataSize)
+    put(data.array(), 0, dataSize)
+  }
+}
+
 
 fun ByteBuffer.varInt(): Int {
   var value = 0

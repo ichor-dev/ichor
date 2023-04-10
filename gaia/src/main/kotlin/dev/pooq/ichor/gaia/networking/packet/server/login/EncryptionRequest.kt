@@ -1,10 +1,8 @@
 package dev.pooq.ichor.gaia.networking.packet.server.login
 
-import dev.pooq.ichor.gaia.extensions.bytes.byteSize
 import dev.pooq.ichor.gaia.extensions.bytes.string
 import dev.pooq.ichor.gaia.extensions.bytes.uncompressedBuffer
 import dev.pooq.ichor.gaia.extensions.bytes.varInt
-import dev.pooq.ichor.gaia.networking.INT
 import dev.pooq.ichor.gaia.networking.ServerPacket
 import dev.pooq.ichor.gaia.networking.packet.State
 import java.nio.ByteBuffer
@@ -17,8 +15,8 @@ class EncryptionRequest(
   val verifyToken: ByteArray
 ) : ServerPacket() {
 
-  override suspend fun serialize(): ByteBuffer {
-    return uncompressedBuffer(serverId.byteSize() + INT + publicKeyLength + INT + verifyTokenLength) {
+  override fun serialize(): ByteBuffer {
+    return uncompressedBuffer {
       string(serverId)
       varInt(publicKeyLength)
       put(publicKey)

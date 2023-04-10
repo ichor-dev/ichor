@@ -1,6 +1,5 @@
 package dev.pooq.ichor.gaia.networking.packet.server.status
 
-import dev.pooq.ichor.gaia.extensions.bytes.byteSize
 import dev.pooq.ichor.gaia.extensions.bytes.string
 import dev.pooq.ichor.gaia.extensions.bytes.uncompressedBuffer
 import dev.pooq.ichor.gaia.networking.ServerPacket
@@ -11,8 +10,8 @@ class StatusResponse(
   val jsonResponse: String
 ) : ServerPacket() {
 
-  override suspend fun serialize(): ByteBuffer {
-    return uncompressedBuffer(jsonResponse.byteSize()) {
+  override fun serialize(): ByteBuffer {
+    return uncompressedBuffer {
       string(jsonResponse)
     }
   }

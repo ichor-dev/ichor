@@ -23,9 +23,9 @@ class PacketHandle(
   suspend fun sendPacket(packet: ServerPacket) {
     withContext(coroutineContext) {
       launch {
-        connection.output.writeAvailable(packet.serialize().apply {
-          if (compression && limit() >= threshold) ByteBuffer.wrap(array().compress())
-        })
+        connection.output.write {
+          it.put(packet.serialize().run { if (compression) ByteBuffer.wrap(array().compress()) else this.flip() })
+        }
         terminal.debug(
           TextStyles.bold(
             """
