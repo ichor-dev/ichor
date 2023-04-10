@@ -3,13 +3,17 @@ package dev.pooq.ichor.hephaistos
 import com.github.ajalt.mordant.rendering.TextColors.brightGreen
 import com.github.ajalt.mordant.rendering.TextColors.red
 import dev.pooq.ichor.gaia.extensions.debug.debug
+import dev.pooq.ichor.gaia.extensions.env
 import dev.pooq.ichor.gaia.extensions.log
 import dev.pooq.ichor.gaia.networking.packet.ClientPackets
 import dev.pooq.ichor.gaia.server.Server
 import io.ktor.network.selector.*
 import io.ktor.network.sockets.*
+import io.ktor.utils.io.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.launch
+import java.nio.ByteBuffer
 
 object Hephaistos : Server() {
 
@@ -18,8 +22,14 @@ object Hephaistos : Server() {
 
     args.forEach { terminal.debug(it) }
 
-    val manager = SelectorManager(Dispatchers.Default)
-    val serverSocket = aSocket(manager).tcp().bind(InetSocketAddress("127.0.0.1", 25565))
+    val manager = SelectorManager(Dispatchers.IO)
+    val serverSocket =
+      aSocket(manager).tcp().bind(
+        InetSocketAddress(
+          env("HEPHAISTOS_SERVER_ADDRESS") ?: "127.0.0.1",
+          env("HEPHAISTOS_SERVER_PORT")?.toIntOrNull() ?: 25565
+        )
+      )
 
     terminal.log(brightGreen("Server started successfully!"))
 
