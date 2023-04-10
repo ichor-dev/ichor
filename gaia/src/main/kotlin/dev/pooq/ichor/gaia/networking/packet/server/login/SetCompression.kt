@@ -1,4 +1,4 @@
-package dev.pooq.ichor.gaia.networking.packet.server.play
+package dev.pooq.ichor.gaia.networking.packet.server.login
 
 import dev.pooq.ichor.gaia.extensions.bytes.uncompressedBuffer
 import dev.pooq.ichor.gaia.extensions.bytes.varInt
@@ -6,10 +6,7 @@ import dev.pooq.ichor.gaia.networking.ServerPacket
 import dev.pooq.ichor.gaia.networking.packet.State
 import java.nio.ByteBuffer
 
-class SetCompressionPacket(
-  val threshold: Int
-) : ServerPacket() {
-
+class SetCompression(val threshold: Int) : ServerPacket() {
   override fun serialize(): ByteBuffer {
     return uncompressedBuffer {
       varInt(threshold)
@@ -18,7 +15,6 @@ class SetCompressionPacket(
 
   override val id: Int
     get() = 0x03
-
   override val state: State
-    get() = State.PLAY
+    get() = State.LOGIN
 }
