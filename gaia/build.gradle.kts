@@ -1,7 +1,7 @@
 plugins {
   application
-  kotlin("jvm") version "1.8.10"
-  kotlin("plugin.serialization") version "1.8.10"
+  kotlin("jvm") version "1.8.20"
+  kotlin("plugin.serialization") version "1.8.20"
 }
 
 val ktorVersion: String by project
@@ -16,19 +16,17 @@ repositories {
 
 dependencies {
   api("io.ktor", "ktor-server-core", ktorVersion)
-  api("io.ktor", "ktor-server-netty", ktorVersion)
+  api("io.ktor", "ktor-server-cio", ktorVersion)
   api("io.ktor", "ktor-network", ktorVersion)
   api("io.ktor", "ktor-server-content-negotiation", ktorVersion)
   api("io.ktor", "ktor-serialization-kotlinx-json", ktorVersion)
 
   api("org.jetbrains.kotlinx", "kotlinx-serialization-json", serializationVersion)
-  api("org.jetbrains.kotlinx", "kotlinx-coroutines-core-jvm", coroutinesVersion)
+  api("org.jetbrains.kotlinx", "kotlinx-coroutines-core", coroutinesVersion)
 
   api("com.akuleshov7", "ktoml-core-jvm", ktomlVersion)
 
   api("com.github.ajalt.mordant", "mordant", mordantVersion)
-
-  testImplementation(kotlin("test"))
 }
 
 tasks.test {
