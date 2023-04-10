@@ -8,11 +8,11 @@ import dev.pooq.ichor.gaia.server.Server
 
 class StatusRequestReceiver : PacketReceiver<StatusRequest> {
 
-  val exampleResponse = """
+  private val exampleResponse = """
     {
         "version": {
-            "name": "1.19.3",
-            "protocol": 761
+            "name": "1.19.4",
+            "protocol": 762
         },
         "players": {
             "max": 420,
@@ -28,8 +28,7 @@ class StatusRequestReceiver : PacketReceiver<StatusRequest> {
             "text": "Hello world"
         },
         "favicon": "data:image/png;base64,<data>",
-        "previewsChat": true,
-        "enforcesSecureChat": true,
+        "enforcesSecureChat": true
     }
   """.trimIndent()
 
