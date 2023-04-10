@@ -60,7 +60,7 @@ object Hephaistos : Server() {
           }
         } catch (e: Throwable) {
           if (e !is ClosedReceiveChannelException)
-            terminal.log("Error while reading packets: ${e.message}")
+            terminal.log("Error while reading packets: ${e.stackTraceToString()}")
         } finally {
           connection.input.cancel()
           connection.output.close()
