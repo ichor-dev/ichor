@@ -5,7 +5,7 @@ import dev.pooq.ichor.gaia.extensions.bytes.string
 import dev.pooq.ichor.gaia.extensions.bytes.uuid
 import dev.pooq.ichor.gaia.networking.ClientPacket
 import dev.pooq.ichor.gaia.networking.packet.State
-import dev.pooq.ichor.gaia.networking.packet.receive.receivers.login.LoginStartReceiver
+import dev.pooq.ichor.gaia.networking.packet.receive.receivers.login.LoginReceivers
 import java.nio.ByteBuffer
 import java.util.*
 
@@ -21,7 +21,7 @@ class LoginStart(
   override val state: State
     get() = State.LOGIN
 
-  companion object : PacketProcessor<LoginStart>(LoginStartReceiver) {
+  companion object : PacketProcessor<LoginStart>(LoginReceivers.LoginStartReceiver) {
     override suspend fun deserialize(byteBuffer: ByteBuffer): LoginStart {
       return LoginStart(byteBuffer.string(), byteBuffer.boolean()).apply {
         if (hasPlayerUUID) uuid = byteBuffer.uuid()

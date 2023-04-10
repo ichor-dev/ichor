@@ -2,6 +2,8 @@ package dev.pooq.ichor.gaia.networking.packet
 
 import com.github.ajalt.mordant.rendering.TextColors
 import com.github.ajalt.mordant.rendering.TextStyles
+import dev.pooq.ichor.gaia.entity.player.Player
+import dev.pooq.ichor.gaia.entity.player.UserProfile
 import dev.pooq.ichor.gaia.extensions.bytes.compress
 import dev.pooq.ichor.gaia.extensions.debug.debug
 import dev.pooq.ichor.gaia.extensions.terminal
@@ -19,7 +21,8 @@ class PacketHandle(
   var compression: Boolean = threshold > 0,
   val coroutineContext: CoroutineContext
 ) {
-
+  var player: Player? = null
+  var gameProfile: UserProfile? = null
   suspend fun sendPacket(packet: ServerPacket) {
     withContext(coroutineContext) {
       launch {
