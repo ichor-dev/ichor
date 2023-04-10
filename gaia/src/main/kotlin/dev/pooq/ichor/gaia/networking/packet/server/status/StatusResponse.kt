@@ -1,9 +1,8 @@
 package dev.pooq.ichor.gaia.networking.packet.server.status
 
-import dev.pooq.ichor.gaia.extensions.bytes.buffer
+import dev.pooq.ichor.gaia.extensions.bytes.byteSize
 import dev.pooq.ichor.gaia.extensions.bytes.string
 import dev.pooq.ichor.gaia.extensions.bytes.uncompressedBuffer
-import dev.pooq.ichor.gaia.networking.INT
 import dev.pooq.ichor.gaia.networking.ServerPacket
 import dev.pooq.ichor.gaia.networking.packet.State
 import java.nio.ByteBuffer
@@ -13,8 +12,7 @@ class StatusResponse(
 ) : ServerPacket() {
 
   override suspend fun serialize(): ByteBuffer {
-    return uncompressedBuffer(INT + jsonResponse.length) {
-      putInt(id)
+    return uncompressedBuffer(jsonResponse.byteSize()) {
       string(jsonResponse)
     }
   }

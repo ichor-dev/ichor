@@ -54,8 +54,8 @@ abstract class Server : CoroutineScope {
     state = State.HANDSHAKING,
     connection = connection,
     coroutineContext = this@Server.coroutineContext
-  ).apply {
-    handles.add(this)
+  ).also {
+    handles.add(it)
   }
 
   abstract suspend fun startup(args: Array<String>)

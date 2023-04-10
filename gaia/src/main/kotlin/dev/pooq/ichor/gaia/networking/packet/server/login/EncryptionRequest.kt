@@ -19,7 +19,6 @@ class EncryptionRequest(
 
   override suspend fun serialize(): ByteBuffer {
     return uncompressedBuffer(serverId.byteSize() + INT + publicKeyLength + INT + verifyTokenLength) {
-      putInt(id)
       string(serverId)
       varInt(publicKeyLength)
       put(publicKey)

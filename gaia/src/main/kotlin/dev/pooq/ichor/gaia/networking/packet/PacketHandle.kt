@@ -23,8 +23,8 @@ class PacketHandle(
   suspend fun sendPacket(packet: ServerPacket) {
     withContext(coroutineContext) {
       launch {
-        connection.output.writeAvailable(packet.serialize().run {
-          if (compression && limit() >= threshold) ByteBuffer.wrap(array().compress()) else this
+        connection.output.writeAvailable(packet.serialize().apply {
+          if (compression && limit() >= threshold) ByteBuffer.wrap(array().compress())
         })
         terminal.debug(
           TextStyles.bold(
