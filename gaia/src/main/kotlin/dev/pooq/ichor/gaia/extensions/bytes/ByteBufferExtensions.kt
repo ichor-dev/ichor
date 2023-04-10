@@ -21,6 +21,20 @@ inline fun ServerPacket.uncompressedBuffer(applier: ByteBuffer.() -> Unit = {}):
   }
 }
 
+inline fun ServerPacket.compressedBuffer(applier: ByteBuffer.() -> Unit = {}): ByteBuffer {
+  val uncompressed = ByteBuffer.allocate(1024).apply { varInt(id) }.apply(applier)
+  val uncompressedDataSize = uncompressed.position()
+
+  val compressed = ByteBuffer.wrap(uncompressed.array().compress())
+  val compressedDataSize = compressed.remaining()
+
+  return ByteBuffer.allocate(INT + INT + compressedDataSize).apply {
+    varInt(uncompressedDataSize)
+    varInt(compressedDataSize)
+    put(compressed.array(), 0, compressedDataSize)
+  }
+}
+
 
 fun ByteBuffer.varInt(): Int {
   var value = 0
