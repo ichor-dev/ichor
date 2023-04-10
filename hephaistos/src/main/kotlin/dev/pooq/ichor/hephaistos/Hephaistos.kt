@@ -38,7 +38,7 @@ object Hephaistos : Server() {
 
       val connection = Connection(socket, socket.openReadChannel(), socket.openWriteChannel(true))
 
-      val client = socket.handle(connection)
+      val handle = socket.handle(connection)
 
       launch {
         try {
@@ -56,7 +56,7 @@ object Hephaistos : Server() {
             connection.input.readAvailable(buffer)
             buffer.flip()
 
-            ClientPackets.deserializeAndHandle(buffer, client, this@Hephaistos)
+            ClientPackets.deserializeAndHandle(buffer, handle, this@Hephaistos)
           }
         } catch (e: Throwable) {
           if (e !is ClosedReceiveChannelException)
