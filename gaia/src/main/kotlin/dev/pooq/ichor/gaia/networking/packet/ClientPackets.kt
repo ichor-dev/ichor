@@ -53,7 +53,7 @@ enum class ClientPackets(
         """
           ${TextColors.magenta("--- Incoming packet ---")}
                     ${TextColors.cyan("Socket: ${packetHandle.connection.socket.remoteAddress}")}
-                    ${TextColors.cyan("${if (compression) "DataLength: $dataLength, " else "" }Compression: $compression")}
+                    ${TextColors.cyan("${if (compression) "DataLength: $dataLength, " else ""}Compression: $compression")}
                     ${TextColors.yellow("Packet: $id")}
                     ${TextColors.yellow("State: ${packetHandle.state}")}
                     ${TextColors.green("Name: ${clientPacket.name}")}

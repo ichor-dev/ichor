@@ -2,16 +2,11 @@ package dev.pooq.ichor.gaia.networking.packet.client.status
 
 import dev.pooq.ichor.gaia.extensions.bytes.varLong
 import dev.pooq.ichor.gaia.networking.ClientPacket
-import dev.pooq.ichor.gaia.networking.packet.PacketHandle
 import dev.pooq.ichor.gaia.networking.packet.State
-import dev.pooq.ichor.gaia.networking.packet.receive.PacketReceiver
-import dev.pooq.ichor.gaia.networking.packet.server.status.PingResponse
-import dev.pooq.ichor.gaia.server.Server
+import dev.pooq.ichor.gaia.networking.packet.receive.receivers.login.PingRequestReceiver
 import java.nio.ByteBuffer
 
-class PingRequest(
-  val payload: Long
-) : ClientPacket() {
+class PingRequest(val payload: Long) : ClientPacket() {
 
   override val id: Int
     get() = 0x01
@@ -19,12 +14,7 @@ class PingRequest(
   override val state: State
     get() = State.STATUS
 
-  companion object : PacketProcessor<PingRequest>(object : PacketReceiver<PingRequest>{
-    override suspend fun onReceive(packet: PingRequest, packetHandle: PacketHandle, server: Server) {
-      packetHandle.sendPacket(PingResponse(payload = packet.payload))
-    }
-
-  }) {
+  companion object : PacketProcessor<PingRequest>(PingRequestReceiver) {
     override suspend fun deserialize(byteBuffer: ByteBuffer): PingRequest {
       return PingRequest(
         byteBuffer.varLong()
