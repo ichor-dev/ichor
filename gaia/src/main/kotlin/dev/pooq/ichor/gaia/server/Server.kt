@@ -12,10 +12,7 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.network.sockets.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import java.security.KeyPair
 import java.security.KeyPairGenerator
 import kotlin.coroutines.CoroutineContext
@@ -57,12 +54,17 @@ abstract class Server : CoroutineScope {
   private val handles: HashSet<PacketHandle> = hashSetOf()
   val players: HashSet<Player> = hashSetOf()
 
-  fun Socket.handle(connection: Connection) = handles.find { it.connection.socket == this } ?: PacketHandle(
+  fun Connection.handle() = PacketHandle(
     state = State.HANDSHAKING,
-    connection = connection,
+    connection = this,
     coroutineContext = this@Server.coroutineContext
   ).also {
     handles.add(it)
+
+    launch {
+      this@handle.socket.awaitClosed()
+      handles.removeIf { handle -> handle.connection.socket == this@handle.socket }
+    }
   }
 
   abstract suspend fun startup(args: Array<String>)

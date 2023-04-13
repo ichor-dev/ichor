@@ -13,6 +13,7 @@ import io.ktor.utils.io.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.launch
+import java.net.SocketException
 import java.nio.ByteBuffer
 
 object Hephaistos : Server() {
@@ -38,7 +39,7 @@ object Hephaistos : Server() {
 
       val connection = Connection(socket, socket.openReadChannel(), socket.openWriteChannel(true))
 
-      val handle = socket.handle(connection)
+      val handle = connection.handle()
 
       launch {
         try {
@@ -59,8 +60,8 @@ object Hephaistos : Server() {
             ClientPackets.deserializeAndHandle(buffer, handle, this@Hephaistos)
           }
         } catch (e: Throwable) {
-          if (e !is ClosedReceiveChannelException)
-            terminal.log("Error while reading packets: ${e.stackTraceToString()}")
+          if (e !is ClosedReceiveChannelException && e !is SocketException)
+            terminal.log("Error in channel: ${e.stackTraceToString()}")
         } finally {
           connection.input.cancel()
           connection.output.close()
