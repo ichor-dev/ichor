@@ -26,7 +26,9 @@ abstract class Server : CoroutineScope {
 
   var terminal: Terminal
   var httpClient = HttpClient(CIO) {
-    install(ContentNegotiation) { json() }
+    install(ContentNegotiation) {
+      json()
+    }
   }
 
   val encryptionPair: KeyPair = KeyPairGenerator.getInstance("RSA").apply {

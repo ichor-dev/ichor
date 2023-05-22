@@ -1,7 +1,7 @@
 package dev.pooq.ichor.gaia.extensions.debug
 
-import com.github.ajalt.mordant.rendering.TextColors.*
-import com.github.ajalt.mordant.rendering.TextStyles.bold
+import com.github.ajalt.mordant.rendering.TextColors.blue
+import com.github.ajalt.mordant.rendering.TextColors.white
 import com.github.ajalt.mordant.terminal.Terminal
 import dev.pooq.ichor.gaia.extensions.debugStyle
 import dev.pooq.ichor.gaia.extensions.env

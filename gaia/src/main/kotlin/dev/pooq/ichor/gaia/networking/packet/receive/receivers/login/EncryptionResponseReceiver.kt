@@ -41,11 +41,13 @@ object LoginReceivers {
     override suspend fun onReceive(packet: EncryptionResponse, packetHandle: PacketHandle, server: Server) {
       // TODO kick player if he didn't send an login start packet
       val loginStartPacket = loginStartPackets[packetHandle]
+
       if (loginStartPacket == null) {
         terminal.debug("No login start packet sent!")
         return
       }
-      terminal.debug("Authenticating ${loginStartPacket.name}")
+
+      terminal.debug("Authenticating ${loginStartPacket.name}...")
 
       val userProfile = requestUserProfile(server, loginStartPacket, packet)
       packetHandle.gameProfile = userProfile

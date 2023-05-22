@@ -2,6 +2,8 @@ package dev.pooq.ichor.gaia.networking.packet.server.status
 
 import dev.pooq.ichor.gaia.extensions.bytes.string
 import dev.pooq.ichor.gaia.extensions.bytes.uncompressedBuffer
+import dev.pooq.ichor.gaia.extensions.debug.debug
+import dev.pooq.ichor.gaia.extensions.terminal
 import dev.pooq.ichor.gaia.networking.ServerPacket
 import dev.pooq.ichor.gaia.networking.packet.State
 import java.nio.ByteBuffer
@@ -11,6 +13,9 @@ class StatusResponse(
 ) : ServerPacket() {
 
   override fun serialize(): ByteBuffer {
+
+    terminal.debug(jsonResponse)
+
     return uncompressedBuffer {
       string(jsonResponse)
     }
