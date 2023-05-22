@@ -13,7 +13,7 @@ dependencies {
 
   testImplementation(kotlin("test"))
   testImplementation(project(":gaia"))
-  testImplementation("io.ktor:ktor-network:$ktorVersion")
+  testImplementation(libs.ktor.network)
 }
 
 tasks.test {
