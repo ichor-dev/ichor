@@ -20,78 +20,82 @@ import java.security.MessageDigest
 import javax.crypto.Cipher
 
 object LoginReceivers {
-  var loginStartPackets = mutableMapOf<PacketHandle, LoginStart>()
+	var loginStartPackets = mutableMapOf<PacketHandle, LoginStart>()
 
-  object LoginStartReceiver : PacketReceiver<LoginStart> {
-    override suspend fun onReceive(packet: LoginStart, packetHandle: PacketHandle, server: Server) {
-      loginStartPackets[packetHandle] = packet
-      packetHandle.sendPacket(
-        EncryptionRequest(
-          "",
-          server.encryptionPair.public.encoded.size,
-          server.encryptionPair.public.encoded,
-          server.verifyToken.size,
-          server.verifyToken
-        )
-      )
-    }
-  }
+	object LoginStartReceiver : PacketReceiver<LoginStart> {
+		override suspend fun onReceive(packet: LoginStart, packetHandle: PacketHandle, server: Server) {
+			loginStartPackets[packetHandle] = packet
+			packetHandle.sendPacket(
+				EncryptionRequest(
+					"",
+					server.encryptionPair.public.encoded.size,
+					server.encryptionPair.public.encoded,
+					server.verifyToken.size,
+					server.verifyToken
+				)
+			)
+		}
+	}
 
-  object EncryptionResponseReceiver : PacketReceiver<EncryptionResponse> {
-    override suspend fun onReceive(packet: EncryptionResponse, packetHandle: PacketHandle, server: Server) {
-      // TODO kick player if he didn't send an login start packet
-      val loginStartPacket = loginStartPackets[packetHandle]
+	object EncryptionResponseReceiver : PacketReceiver<EncryptionResponse> {
+		override suspend fun onReceive(
+			packet: EncryptionResponse,
+			packetHandle: PacketHandle,
+			server: Server
+		) {
+			// TODO kick player if he didn't send an login start packet
+			val loginStartPacket = loginStartPackets[packetHandle]
 
-      if (loginStartPacket == null) {
-        terminal.debug("No login start packet sent!")
-        return
-      }
+			if (loginStartPacket == null) {
+				terminal.debug("No login start packet sent!")
+				return
+			}
 
-      terminal.debug("Authenticating ${loginStartPacket.name}...")
+			terminal.debug("Authenticating ${loginStartPacket.name}...")
 
-      val userProfile = requestUserProfile(server, loginStartPacket, packet)
-      packetHandle.gameProfile = userProfile
+			val userProfile = requestUserProfile(server, loginStartPacket, packet)
+			packetHandle.gameProfile = userProfile
 
-      terminal.debug("${loginStartPacket.name} has uuid ${userProfile.id}")
+			terminal.debug("${loginStartPacket.name} has uuid ${userProfile.id}")
 
-      enableCompression(packetHandle)
-      sendLoginSuccess(packetHandle, userProfile)
-    }
+			enableCompression(packetHandle)
+			sendLoginSuccess(packetHandle, userProfile)
+		}
 
-    private suspend fun requestUserProfile(
-      server: Server,
-      loginStartPacket: LoginStart,
-      encryptionResponsePacket: EncryptionResponse
-    ): UserProfile {
-      val digest = MessageDigest.getInstance("SHA-1")
-      digest.update("".toByteArray(Charsets.US_ASCII))
-      digest.update(
-        Cipher.getInstance(server.encryptionPair.private.algorithm)
-          .also { it.init(Cipher.DECRYPT_MODE, server.encryptionPair.private) }
-          .doFinal(encryptionResponsePacket.sharedSecret)
-      )
-      digest.update(server.encryptionPair.public.encoded)
-      val hash = BigInteger(digest.digest()).toString(16)
+		private suspend fun requestUserProfile(
+			server: Server,
+			loginStartPacket: LoginStart,
+			encryptionResponsePacket: EncryptionResponse
+		): UserProfile {
+			val digest = MessageDigest.getInstance("SHA-1")
+			digest.update("".toByteArray(Charsets.US_ASCII))
+			digest.update(
+				Cipher.getInstance(server.encryptionPair.private.algorithm)
+					.also { it.init(Cipher.DECRYPT_MODE, server.encryptionPair.private) }
+					.doFinal(encryptionResponsePacket.sharedSecret)
+			)
+			digest.update(server.encryptionPair.public.encoded)
+			val hash = BigInteger(digest.digest()).toString(16)
 
-      return server.httpClient.get(Url("https://sessionserver.mojang.com/session/minecraft/hasJoined?username=${loginStartPacket.name}&serverId=$hash"))
-        .body<UserProfile>()
-    }
+			return server.httpClient.get(Url("https://sessionserver.mojang.com/session/minecraft/hasJoined?username=${loginStartPacket.name}&serverId=$hash"))
+				.body<UserProfile>()
+		}
 
-    private suspend fun enableCompression(packetHandle: PacketHandle) {
-      packetHandle.sendPacket(SetCompression(1))
-      packetHandle.threshold = 1
-      packetHandle.compression = true
-    }
+		private suspend fun enableCompression(packetHandle: PacketHandle) {
+			packetHandle.sendPacket(SetCompression(1))
+			packetHandle.threshold = 1
+			packetHandle.compression = true
+		}
 
-    private suspend fun sendLoginSuccess(packetHandle: PacketHandle, userProfile: UserProfile) {
-      packetHandle.sendPacket(
-        LoginSuccess(
-          userProfile.id,
-          userProfile.name,
-          userProfile.properties.size,
-          userProfile.properties
-        )
-      )
-    }
-  }
+		private suspend fun sendLoginSuccess(packetHandle: PacketHandle, userProfile: UserProfile) {
+			packetHandle.sendPacket(
+				LoginSuccess(
+					userProfile.id,
+					userProfile.name,
+					userProfile.properties.size,
+					userProfile.properties
+				)
+			)
+		}
+	}
 }

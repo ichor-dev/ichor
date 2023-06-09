@@ -10,7 +10,7 @@ lateinit var writeChannel: ByteWriteChannel
 lateinit var readChannel: ByteReadChannel
 
 suspend fun connect() {
-  socket = aSocket(SelectorManager(Dispatchers.IO)).tcp().connect("127.0.0.1", 25565)
-  readChannel = socket.openReadChannel()
-  writeChannel = socket.openWriteChannel(true)
+	socket = aSocket(SelectorManager(Dispatchers.IO)).tcp().connect("127.0.0.1", 25565)
+	readChannel = socket.openReadChannel()
+	writeChannel = socket.openWriteChannel(true)
 }

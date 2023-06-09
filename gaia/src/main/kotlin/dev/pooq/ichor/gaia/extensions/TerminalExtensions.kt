@@ -6,37 +6,33 @@ import com.github.ajalt.mordant.rendering.TextStyles.bold
 import com.github.ajalt.mordant.rendering.Theme
 import com.github.ajalt.mordant.terminal.Terminal
 
-
-val Terminal.debugStyle: TextStyle
-  get() = (brightBlue + bold)
-
 val Terminal.errorStyle: TextStyle
-  get() = (brightRed + bold)
+	get() = (brightRed + bold)
 
 val Terminal.warnStyle: TextStyle
-  get() = (brightYellow + bold)
+	get() = (brightYellow + bold)
 
 val Terminal.logStyle: TextStyle
-  get() = (brightGreen + bold)
+	get() = (brightGreen + bold)
 
 fun Terminal.error(message: Any? = null, error: Throwable) {
-  this.println(errorStyle("[ERROR]") + white(" > ") + red("${message.let { "${it ?: ""}: " }}${error.stackTraceToString()}"))
+	this.println(errorStyle("[ERROR]") + white(" > ") + red("${message.let { "${it ?: ""}: " }}${error.stackTraceToString()}"))
 }
 
 fun Terminal.warn(message: Any?) {
-  this.println(warnStyle("[WARN]") + white("  > ") + yellow(message.toString()))
+	this.println(warnStyle("[WARN]") + white("  > ") + yellow(message.toString()))
 }
 
-fun Terminal.log(message: Any) {
-  this.println(logStyle("[INF0]") + white("  > ") + brightWhite(message.toString()))
+fun Terminal.info(message: Any) {
+	this.println(logStyle("[INF0]") + white("  > ") + brightWhite(message.toString()))
 }
 
 val terminal = terminal()
 
 fun terminal(
-  theme: Theme = Theme.PlainAscii,
-  tabWidth: Int = 8
+	theme: Theme = Theme.PlainAscii,
+	tabWidth: Int = 8
 ): Terminal = Terminal(
-  theme = theme,
-  tabWidth = tabWidth
+	theme = theme,
+	tabWidth = tabWidth
 )

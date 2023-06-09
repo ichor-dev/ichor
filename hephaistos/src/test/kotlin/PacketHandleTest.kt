@@ -4,10 +4,10 @@ import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
 
 suspend fun mainA() = coroutineScope {
-  connect()
-  repeat(10) {
-    delay(2.seconds)
-    sendHandshake(State.STATUS)
-    println("sent!")
-  }
+	connect()
+	repeat(10) {
+		delay(2.seconds)
+		sendHandshake(State.STATUS)
+		println("sent!")
+	}
 }

@@ -5,7 +5,7 @@ import dev.pooq.ichor.gaia.networking.packet.PacketHandle
 import java.util.*
 
 class Player(
-  val uuid: UUID,
-  val name: String,
-  val handle: PacketHandle
+	val uuid: UUID,
+	val name: String,
+	val handle: PacketHandle
 ) : Entity.Creature

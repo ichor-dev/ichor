@@ -9,21 +9,21 @@ import dev.pooq.ichor.gaia.networking.packet.State
 import java.nio.ByteBuffer
 
 class StatusResponse(
-  val jsonResponse: String
+	val jsonResponse: String
 ) : ServerPacket() {
 
-  override fun serialize(): ByteBuffer {
+	override fun serialize(): ByteBuffer {
 
-    terminal.debug(jsonResponse)
+		terminal.debug(jsonResponse)
 
-    return uncompressedBuffer {
-      string(jsonResponse)
-    }
-  }
+		return uncompressedBuffer {
+			string(jsonResponse)
+		}
+	}
 
-  override val id: Int
-    get() = 0x00
+	override val id: Int
+		get() = 0x00
 
-  override val state: State
-    get() = State.STATUS
+	override val state: State
+		get() = State.STATUS
 }

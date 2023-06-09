@@ -10,23 +10,23 @@ import java.nio.ByteBuffer
 import java.util.*
 
 class LoginStart(
-  val name: String,
-  val hasPlayerUUID: Boolean,
-  var uuid: UUID? = null
+	val name: String,
+	val hasPlayerUUID: Boolean,
+	var uuid: UUID? = null
 ) : ClientPacket() {
 
-  override val id: Int
-    get() = 0x00
+	override val id: Int
+		get() = 0x00
 
-  override val state: State
-    get() = State.LOGIN
+	override val state: State
+		get() = State.LOGIN
 
-  companion object : PacketProcessor<LoginStart>(LoginReceivers.LoginStartReceiver) {
-    override suspend fun deserialize(byteBuffer: ByteBuffer): LoginStart {
-      return LoginStart(byteBuffer.string(), byteBuffer.boolean()).apply {
-        if (hasPlayerUUID) uuid = byteBuffer.uuid()
-      }
-    }
-  }
+	companion object : PacketProcessor<LoginStart>(LoginReceivers.LoginStartReceiver) {
+		override suspend fun deserialize(byteBuffer: ByteBuffer): LoginStart {
+			return LoginStart(byteBuffer.string(), byteBuffer.boolean()).apply {
+				if (hasPlayerUUID) uuid = byteBuffer.uuid()
+			}
+		}
+	}
 
 }

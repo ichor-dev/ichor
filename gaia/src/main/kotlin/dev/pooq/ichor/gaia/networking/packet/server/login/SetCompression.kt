@@ -7,14 +7,14 @@ import dev.pooq.ichor.gaia.networking.packet.State
 import java.nio.ByteBuffer
 
 class SetCompression(val threshold: Int) : ServerPacket() {
-  override fun serialize(): ByteBuffer {
-    return uncompressedBuffer {
-      varInt(threshold)
-    }
-  }
+	override fun serialize(): ByteBuffer {
+		return uncompressedBuffer {
+			varInt(threshold)
+		}
+	}
 
-  override val id: Int
-    get() = 0x03
-  override val state: State
-    get() = State.LOGIN
+	override val id: Int
+		get() = 0x03
+	override val state: State
+		get() = State.LOGIN
 }

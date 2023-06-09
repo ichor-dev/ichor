@@ -25,6 +25,8 @@ dependencies {
   api(libs.ktoml)
 
   api(libs.mordant)
+
+  api(libs.logback)
 }
 
 tasks.test {

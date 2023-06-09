@@ -6,7 +6,7 @@ include("hermes")
 
 dependencyResolutionManagement {
   versionCatalogs {
-    create("libs"){
+    create("libs") {
 
       version("ktor", "2.2.4")
       version("kotlinx", "1.5.0")
@@ -14,6 +14,7 @@ dependencyResolutionManagement {
       version("mordant", "2.0.0-beta12")
       version("coroutines", "1.6.4")
       version("hoplite", "2.7.2")
+      version("logback", "1.4.7")
 
       //ktor
 
@@ -58,6 +59,10 @@ dependencyResolutionManagement {
       //mordant
 
       library("mordant", "com.github.ajalt.mordant", "mordant").versionRef("mordant")
+
+      //logback
+
+      library("logback", "ch.qos.logback", "logback-classic").versionRef("logback")
     }
   }
 }
