@@ -1,6 +1,7 @@
 package dev.pooq.ichor.gaia.server
 
 import com.github.ajalt.mordant.terminal.Terminal
+import dev.pooq.ichor.gaia.config.BaseConfig
 import dev.pooq.ichor.gaia.entity.player.Player
 import dev.pooq.ichor.gaia.extensions.debug.debug
 import dev.pooq.ichor.gaia.extensions.error
@@ -19,57 +20,59 @@ import kotlin.coroutines.CoroutineContext
 
 abstract class Server : CoroutineScope {
 
-  private val job: Job = Job()
+	private val job: Job = Job()
 
-  override val coroutineContext: CoroutineContext
-    get() = Dispatchers.Default + job
+	val config: BaseConfig = BaseConfig.loadConfig()
 
-  var terminal: Terminal
-  var httpClient = HttpClient(CIO) {
-    install(ContentNegotiation) {
-      json()
-    }
-  }
+	override val coroutineContext: CoroutineContext
+		get() = Dispatchers.Default + job
 
-  val encryptionPair: KeyPair = KeyPairGenerator.getInstance("RSA").apply {
-    initialize(1024)
-  }.genKeyPair()
-  val verifyToken = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789".toByteArray()
+	var terminal: Terminal
+	var httpClient = HttpClient(CIO) {
+		install(ContentNegotiation) {
+			json()
+		}
+	}
 
-  init {
-    Runtime.getRuntime().addShutdownHook(Thread {
-      runBlocking {
-        shutdown()
-        job.cancel()
-      }
-    })
+	val encryptionPair: KeyPair = KeyPairGenerator.getInstance("RSA").apply {
+		initialize(1024)
+	}.genKeyPair()
+	val verifyToken = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789".toByteArray()
 
-    terminal = terminal()
+	init {
+		Runtime.getRuntime().addShutdownHook(Thread {
+			runBlocking {
+				shutdown()
+				job.cancel()
+			}
+		})
 
-    terminal.debug("Debug is enabled")
+		terminal = terminal()
 
-    Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
-      terminal.error("${throwable.message} | Thread: ${thread.name}", throwable)
-    }
-  }
+		terminal.debug("Debug is enabled")
 
-  private val handles: HashSet<PacketHandle> = hashSetOf()
-  val players: HashSet<Player> = hashSetOf()
+		Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
+			terminal.error("${throwable.message} | Thread: ${thread.name}", throwable)
+		}
+	}
 
-  fun Connection.handle() = PacketHandle(
-    state = State.HANDSHAKING,
-    connection = this,
-    coroutineContext = this@Server.coroutineContext
-  ).also {
-    handles.add(it)
+	private val handles: HashSet<PacketHandle> = hashSetOf()
+	val players: HashSet<Player> = hashSetOf()
 
-    launch {
-      this@handle.socket.awaitClosed()
-      handles.removeIf { handle -> handle.connection.socket == this@handle.socket }
-    }
-  }
+	fun Connection.handle() = PacketHandle(
+		state = State.HANDSHAKING,
+		connection = this,
+		coroutineContext = this@Server.coroutineContext
+	).also {
+		handles.add(it)
 
-  abstract suspend fun startup(args: Array<String>)
+		launch {
+			this@handle.socket.awaitClosed()
+			handles.removeIf { handle -> handle.connection.socket == this@handle.socket }
+		}
+	}
 
-  abstract suspend fun shutdown()
+	abstract suspend fun startup(args: Array<String>)
+
+	abstract suspend fun shutdown()
 }
