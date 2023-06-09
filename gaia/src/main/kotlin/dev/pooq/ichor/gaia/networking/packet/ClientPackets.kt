@@ -16,41 +16,46 @@ import dev.pooq.ichor.gaia.server.Server
 import java.nio.ByteBuffer
 
 enum class ClientPackets(
-  val id: Int,
-  val state: State,
-  val processor: ClientPacket.PacketProcessor<*>
+	val id: Int,
+	val state: State,
+	val processor: ClientPacket.PacketProcessor<*>
 ) {
 
-  // State = Handshake
-  HANDSHAKE(0x00, State.HANDSHAKING, Handshake),
+	// State = Handshake
+	HANDSHAKE(0x00, State.HANDSHAKING, Handshake),
 
-  // State = Status
-  STATUS_REQUEST(0x00, State.STATUS, StatusRequest),
-  PING_REQUEST(0x01, State.STATUS, PingRequest),
+	// State = Status
+	STATUS_REQUEST(0x00, State.STATUS, StatusRequest),
+	PING_REQUEST(0x01, State.STATUS, PingRequest),
 
-  // State = Login
-  LOGIN_START(0x00, State.LOGIN, LoginStart),
-  ENCRYPTION_RESPONSE(0x01, State.LOGIN, EncryptionResponse)
-  ;
+	// State = Login
+	LOGIN_START(0x00, State.LOGIN, LoginStart),
+	ENCRYPTION_RESPONSE(0x01, State.LOGIN, EncryptionResponse)
+	;
 
-  companion object {
-    suspend fun deserializeAndHandle(originalBuffer: ByteBuffer, packetHandle: PacketHandle, server: Server): Packet {
-      val compression = packetHandle.compression
+	companion object {
+		suspend fun deserializeAndHandle(
+			originalBuffer: ByteBuffer,
+			packetHandle: PacketHandle,
+			server: Server
+		): Packet {
+			val compression = packetHandle.compression
 
-      val dataLength = if (compression) originalBuffer.varInt() else 0
+			val dataLength = if (compression) originalBuffer.varInt() else 0
 
-      var id: Int? = if (compression) null else originalBuffer.varInt()
+			var id: Int? = if (compression) null else originalBuffer.varInt()
 
-      val buffer = if (compression) ByteBuffer.wrap(originalBuffer.array().decompress(dataLength)).also {
-        id = it.varInt()
-      } else originalBuffer
+			val buffer =
+				if (compression) ByteBuffer.wrap(originalBuffer.array().decompress(dataLength)).also {
+					id = it.varInt()
+				} else originalBuffer
 
-      val clientPacket = values().firstOrNull { clientPacket ->
-        clientPacket.id == id && clientPacket.state == packetHandle.state
-      } ?: error("Cannot find packet with id $id in state ${packetHandle.state}")
+			val clientPacket = values().firstOrNull { clientPacket ->
+				clientPacket.id == id && clientPacket.state == packetHandle.state
+			} ?: error("Cannot find packet with id $id in state ${packetHandle.state}")
 
-      terminal.debug(
-        """
+			terminal.debug(
+				"""
           ${TextColors.magenta("--- Incoming packet ---")}
                     ${TextColors.cyan("Socket: ${packetHandle.connection.socket.remoteAddress}")}
                     ${TextColors.cyan("${if (compression) "DataLength: $dataLength, " else ""}Compression: $compression")}
@@ -59,9 +64,9 @@ enum class ClientPackets(
                     ${TextColors.green("Name: ${clientPacket.name}")}
                     ${TextColors.magenta("-----------------------")}
       """.trimIndent()
-      )
+			)
 
-      return clientPacket.processor.process(buffer, packetHandle, server)
-    }
-  }
+			return clientPacket.processor.process(buffer, packetHandle, server)
+		}
+	}
 }

@@ -8,31 +8,32 @@ import dev.pooq.ichor.gaia.networking.packet.receive.receivers.login.LoginReceiv
 import java.nio.ByteBuffer
 
 class EncryptionResponse(
-  val sharedSecretLength: Int,
-  val sharedSecret: ByteArray,
-  val verifyTokenLength: Int,
-  val verifyToken: ByteArray
+	val sharedSecretLength: Int,
+	val sharedSecret: ByteArray,
+	val verifyTokenLength: Int,
+	val verifyToken: ByteArray
 ) : ClientPacket() {
 
-  override val id: Int
-    get() = 0x01
+	override val id: Int
+		get() = 0x01
 
-  override val state: State
-    get() = State.LOGIN
+	override val state: State
+		get() = State.LOGIN
 
-  companion object : PacketProcessor<EncryptionResponse>(LoginReceivers.EncryptionResponseReceiver) {
-    override suspend fun deserialize(byteBuffer: ByteBuffer): EncryptionResponse {
-      val sharedSecretLength = byteBuffer.varInt()
-      val sharedSecret = byteBuffer.byteArray(sharedSecretLength)
-      val verifyTokenLength = byteBuffer.varInt()
-      val verifyToken = byteBuffer.byteArray(verifyTokenLength)
+	companion object :
+		PacketProcessor<EncryptionResponse>(LoginReceivers.EncryptionResponseReceiver) {
+		override suspend fun deserialize(byteBuffer: ByteBuffer): EncryptionResponse {
+			val sharedSecretLength = byteBuffer.varInt()
+			val sharedSecret = byteBuffer.byteArray(sharedSecretLength)
+			val verifyTokenLength = byteBuffer.varInt()
+			val verifyToken = byteBuffer.byteArray(verifyTokenLength)
 
-      return EncryptionResponse(
-        sharedSecretLength,
-        sharedSecret,
-        verifyTokenLength,
-        verifyToken
-      )
-    }
-  }
+			return EncryptionResponse(
+				sharedSecretLength,
+				sharedSecret,
+				verifyTokenLength,
+				verifyToken
+			)
+		}
+	}
 }

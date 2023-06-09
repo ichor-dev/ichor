@@ -8,26 +8,26 @@ import dev.pooq.ichor.gaia.networking.packet.State
 import java.nio.ByteBuffer
 
 class EncryptionRequest(
-  val serverId: String = "",
-  val publicKeyLength: Int,
-  val publicKey: ByteArray,
-  val verifyTokenLength: Int,
-  val verifyToken: ByteArray
+	val serverId: String = "",
+	val publicKeyLength: Int,
+	val publicKey: ByteArray,
+	val verifyTokenLength: Int,
+	val verifyToken: ByteArray
 ) : ServerPacket() {
 
-  override fun serialize(): ByteBuffer {
-    return uncompressedBuffer {
-      string(serverId)
-      varInt(publicKeyLength)
-      put(publicKey)
-      varInt(verifyTokenLength)
-      put(verifyToken)
-    }
-  }
+	override fun serialize(): ByteBuffer {
+		return uncompressedBuffer {
+			string(serverId)
+			varInt(publicKeyLength)
+			put(publicKey)
+			varInt(verifyTokenLength)
+			put(verifyToken)
+		}
+	}
 
-  override val id: Int
-    get() = 0x01
+	override val id: Int
+		get() = 0x01
 
-  override val state: State
-    get() = State.LOGIN
+	override val state: State
+		get() = State.LOGIN
 }

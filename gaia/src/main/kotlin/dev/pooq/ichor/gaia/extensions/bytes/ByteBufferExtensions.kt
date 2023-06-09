@@ -12,124 +12,124 @@ private const val CONTINUE_BIT = 0x80
 private const val CONTINUE_BIT_LONG = (0x80).toLong()
 
 inline fun ServerPacket.uncompressedBuffer(applier: ByteBuffer.() -> Unit = {}): ByteBuffer {
-  val data = ByteBuffer.allocate(1024).apply { varInt(id) }.apply(applier)
-  val dataSize = data.position()
+	val data = ByteBuffer.allocate(1024).apply { varInt(id) }.apply(applier)
+	val dataSize = data.position()
 
-  return ByteBuffer.allocate(INT + dataSize).apply {
-    varInt(dataSize)
-    put(data.array(), 0, dataSize)
-  }
+	return ByteBuffer.allocate(INT + dataSize).apply {
+		varInt(dataSize)
+		put(data.array(), 0, dataSize)
+	}
 }
 
 inline fun ServerPacket.compressedBuffer(applier: ByteBuffer.() -> Unit = {}): ByteBuffer {
-  val uncompressed = ByteBuffer.allocate(1024).apply { varInt(id) }.apply(applier)
-  val uncompressedDataSize = uncompressed.position()
+	val uncompressed = ByteBuffer.allocate(1024).apply { varInt(id) }.apply(applier)
+	val uncompressedDataSize = uncompressed.position()
 
-  val compressed = ByteBuffer.wrap(uncompressed.array().compress())
-  val compressedDataSize = compressed.remaining()
+	val compressed = ByteBuffer.wrap(uncompressed.array().compress())
+	val compressedDataSize = compressed.remaining()
 
-  return ByteBuffer.allocate(INT + INT + compressedDataSize).apply {
-    varInt(uncompressedDataSize)
-    varInt(compressedDataSize)
-    put(compressed.array(), 0, compressedDataSize)
-  }
+	return ByteBuffer.allocate(INT + INT + compressedDataSize).apply {
+		varInt(uncompressedDataSize)
+		varInt(compressedDataSize)
+		put(compressed.array(), 0, compressedDataSize)
+	}
 }
 
 
 fun ByteBuffer.varInt(): Int {
-  var value = 0
-  var position = 0
-  var currentByte: Byte
+	var value = 0
+	var position = 0
+	var currentByte: Byte
 
-  while (true) {
-    currentByte = get()
-    value = value or (currentByte.toInt() and SEGMENT_BITS shl position)
-    if (currentByte.toInt() and CONTINUE_BIT == 0) break
-    position += 7
-    if (position >= 32) throw RuntimeException("VarInt is too big")
-  }
+	while (true) {
+		currentByte = get()
+		value = value or (currentByte.toInt() and SEGMENT_BITS shl position)
+		if (currentByte.toInt() and CONTINUE_BIT == 0) break
+		position += 7
+		if (position >= 32) throw RuntimeException("VarInt is too big")
+	}
 
-  return value
+	return value
 }
 
 fun ByteBuffer.varLong(): Long {
-  var value: Long = 0
-  var position = 0
-  var currentByte: Byte
+	var value: Long = 0
+	var position = 0
+	var currentByte: Byte
 
-  while (true) {
-    currentByte = get()
-    value = value or ((currentByte.toInt() and SEGMENT_BITS).toLong() shl position)
-    if (currentByte.toInt() and CONTINUE_BIT == 0) break
-    position += 7
-    if (position >= 64) throw java.lang.RuntimeException("VarLong is too big")
-  }
+	while (true) {
+		currentByte = get()
+		value = value or ((currentByte.toInt() and SEGMENT_BITS).toLong() shl position)
+		if (currentByte.toInt() and CONTINUE_BIT == 0) break
+		position += 7
+		if (position >= 64) throw java.lang.RuntimeException("VarLong is too big")
+	}
 
-  return value
+	return value
 }
 
 fun ByteBuffer.boolean(): Boolean {
-  return get().toInt() == 0x01
+	return get().toInt() == 0x01
 }
 
 fun ByteBuffer.boolean(boolean: Boolean) {
-  put(if (boolean) 1 else 0)
+	put(if (boolean) 1 else 0)
 }
 
 fun ByteBuffer.string(): String {
-  val length = varInt()
-  val bytes = ByteArray(length)
-  get(bytes)
-  return String(bytes, Charsets.UTF_8)
+	val length = varInt()
+	val bytes = ByteArray(length)
+	get(bytes)
+	return String(bytes, Charsets.UTF_8)
 }
 
 fun ByteBuffer.short(): Short {
-  return (get().toInt() and 0xFF shl 8 or (get().toInt() and 0xFF)).toShort()
+	return (get().toInt() and 0xFF shl 8 or (get().toInt() and 0xFF)).toShort()
 }
 
 fun ByteBuffer.uuid(): UUID {
-  return UUID(varLong(), varLong())
+	return UUID(varLong(), varLong())
 }
 
 fun ByteBuffer.varLong(value: Long) {
-  var remainingValue = value
-  while (true) {
-    if ((remainingValue and SEGMENT_BITS_LONG.inv()) == 0L) {
-      this.put(remainingValue.toByte())
-      return
-    }
+	var remainingValue = value
+	while (true) {
+		if ((remainingValue and SEGMENT_BITS_LONG.inv()) == 0L) {
+			this.put(remainingValue.toByte())
+			return
+		}
 
-    val byteToWrite = (remainingValue and SEGMENT_BITS_LONG) or CONTINUE_BIT_LONG
-    this.put(byteToWrite.toByte())
+		val byteToWrite = (remainingValue and SEGMENT_BITS_LONG) or CONTINUE_BIT_LONG
+		this.put(byteToWrite.toByte())
 
-    remainingValue = remainingValue ushr 7
-  }
+		remainingValue = remainingValue ushr 7
+	}
 }
 
 fun ByteBuffer.varInt(value: Int) {
-  var remainingValue = value
-  while (true) {
-    if ((remainingValue and SEGMENT_BITS.inv()) == 0) {
-      this.put(remainingValue.toByte())
-      return
-    }
+	var remainingValue = value
+	while (true) {
+		if ((remainingValue and SEGMENT_BITS.inv()) == 0) {
+			this.put(remainingValue.toByte())
+			return
+		}
 
-    val byteToWrite = (remainingValue and SEGMENT_BITS) or CONTINUE_BIT
-    this.put(byteToWrite.toByte())
+		val byteToWrite = (remainingValue and SEGMENT_BITS) or CONTINUE_BIT
+		this.put(byteToWrite.toByte())
 
-    remainingValue = remainingValue ushr 7
-  }
+		remainingValue = remainingValue ushr 7
+	}
 }
 
 fun ByteBuffer.string(string: String) {
-  val encoded = string.toByteArray(Charsets.UTF_8)
-  varInt(encoded.size)
-  put(encoded)
+	val encoded = string.toByteArray(Charsets.UTF_8)
+	varInt(encoded.size)
+	put(encoded)
 }
 
 fun ByteBuffer.short(short: Short) {
-  this.put((short.toInt() ushr 8 and 0xFF).toByte())
-  this.put((short.toInt() and 0xFF).toByte())
+	this.put((short.toInt() ushr 8 and 0xFF).toByte())
+	this.put((short.toInt() and 0xFF).toByte())
 }
 
 fun ByteBuffer.byteArray(length: Int) = ByteArray(length).also(this::get)

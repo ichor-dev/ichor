@@ -7,9 +7,9 @@ import java.util.*
 
 @Serializable
 data class UserProfile(
-  val id: @Serializable(with = OldUUIDSerializer::class) UUID,
-  val name: String,
-  val properties: List<Property>
+	val id: @Serializable(with = OldUUIDSerializer::class) UUID,
+	val name: String,
+	val properties: List<Property>
 )
 
 @Serializable

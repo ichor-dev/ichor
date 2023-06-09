@@ -10,17 +10,17 @@ import dev.pooq.ichor.gaia.server.Server
 
 class HandshakeReceiver : PacketReceiver<Handshake> {
 
-  override suspend fun onReceive(packet: Handshake, packetHandle: PacketHandle, server: Server) {
-    terminal.debug(
-      """
+	override suspend fun onReceive(packet: Handshake, packetHandle: PacketHandle, server: Server) {
+		terminal.debug(
+			"""
           ${TextColors.magenta("--- Handshake Receiver ---")}
                     ${TextColors.cyan("Socket: ${packetHandle.connection.socket.remoteAddress}")}
                     ${TextColors.red("Old state: ${packetHandle.state}")}
                     ${TextColors.green("New state: ${packet.nextState}")}
                     ${TextColors.magenta("-----------------------")}
       """.trimIndent()
-    )
+		)
 
-    packetHandle.state = packet.nextState
-  }
+		packetHandle.state = packet.nextState
+	}
 }

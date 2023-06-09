@@ -6,5 +6,5 @@ import dev.pooq.ichor.gaia.server.Server
 
 interface PacketReceiver<P : ClientPacket> {
 
-  suspend fun onReceive(packet: P, packetHandle: PacketHandle, server: Server)
+	suspend fun onReceive(packet: P, packetHandle: PacketHandle, server: Server)
 }

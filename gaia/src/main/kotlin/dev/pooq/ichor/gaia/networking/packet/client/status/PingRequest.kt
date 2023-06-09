@@ -8,17 +8,17 @@ import java.nio.ByteBuffer
 
 class PingRequest(val payload: Long) : ClientPacket() {
 
-  override val id: Int
-    get() = 0x01
+	override val id: Int
+		get() = 0x01
 
-  override val state: State
-    get() = State.STATUS
+	override val state: State
+		get() = State.STATUS
 
-  companion object : PacketProcessor<PingRequest>(PingRequestReceiver) {
-    override suspend fun deserialize(byteBuffer: ByteBuffer): PingRequest {
-      return PingRequest(
-        byteBuffer.varLong()
-      )
-    }
-  }
+	companion object : PacketProcessor<PingRequest>(PingRequestReceiver) {
+		override suspend fun deserialize(byteBuffer: ByteBuffer): PingRequest {
+			return PingRequest(
+				byteBuffer.varLong()
+			)
+		}
+	}
 }
