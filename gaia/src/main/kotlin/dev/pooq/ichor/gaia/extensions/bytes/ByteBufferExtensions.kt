@@ -77,10 +77,16 @@ fun ByteBuffer.boolean(boolean: Boolean) {
 }
 
 fun ByteBuffer.string(): String {
+	val maxLength = Short.MAX_VALUE
 	val length = varInt()
-	val bytes = ByteArray(length)
+
+	require(length <= (maxLength * 4) + 3) { "String is too long" }
+
+	if (hasArray()) return String(array())
+
+	val bytes = ByteArray(remaining())
 	get(bytes)
-	return String(bytes, Charsets.UTF_8)
+	return String(ByteArray(remaining()))
 }
 
 fun ByteBuffer.short(): Short {
@@ -122,9 +128,15 @@ fun ByteBuffer.varInt(value: Int) {
 }
 
 fun ByteBuffer.string(string: String) {
-	val encoded = string.toByteArray(Charsets.UTF_8)
-	varInt(encoded.size)
-	put(encoded)
+	val maxLength = Short.MAX_VALUE
+
+	require(string.length <= maxLength) { "String is too long." }
+
+	val bytes = string.toByteArray(Charsets.UTF_8)
+
+	if (bytes.size > (maxLength * 4) + 3) throw throw IllegalArgumentException("String bytearray is too long.")
+
+	put(bytes)
 }
 
 fun ByteBuffer.short(short: Short) {

@@ -27,6 +27,8 @@ dependencies {
   api(libs.mordant)
 
   api(libs.logback)
+
+  testImplementation(kotlin("test"))
 }
 
 tasks.test {
