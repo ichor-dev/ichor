@@ -58,7 +58,7 @@ class StatusRequestReceiver : PacketReceiver<StatusRequest> {
 
 		@Serializable
 		class Description(
-			val text: String = "Hello ihr da"
+			val text: String = "<red>Hello ihr da"
 		)
 	}
 }
