@@ -1,16 +1,16 @@
-package fyi.pauli.ichor.gaia.networking.packet.server.status
+package fyi.pauli.ichor.gaia.networking.packet.outgoing.status
 
 import fyi.pauli.ichor.gaia.extensions.bytes.string
 import fyi.pauli.ichor.gaia.extensions.bytes.uncompressedBuffer
-import fyi.pauli.ichor.gaia.networking.ServerPacket
 import fyi.pauli.ichor.gaia.networking.packet.State
+import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import io.github.oshai.kotlinlogging.KLogger
 import org.koin.java.KoinJavaComponent.inject
 import java.nio.ByteBuffer
 
 class StatusResponse(
-	val jsonResponse: String
-) : ServerPacket() {
+	var jsonResponse: String
+) : OutgoingPacket() {
 
 	override fun serialize(): ByteBuffer {
 
