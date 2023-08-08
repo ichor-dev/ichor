@@ -1,7 +1,8 @@
 plugins {
   application
-  kotlin("jvm") version "1.8.20"
-  kotlin("plugin.serialization") version "1.8.20"
+  alias(ktorio.plugins.ktor)
+  alias(jetbrains.plugins.jvm)
+  alias(jetbrains.plugins.serialization)
 }
 
 repositories {
@@ -9,24 +10,12 @@ repositories {
 }
 
 dependencies {
-  api(libs.ktor.server.core)
-  api(libs.ktor.server.cio)
-  api(libs.ktor.server.content.negotiation)
-
-  api(libs.ktor.client.core)
-  api(libs.ktor.client.cio)
-  api(libs.ktor.client.content.negotiation)
-
-  api(libs.ktor.serialization)
-
-  api(libs.kotlinx.json)
-  api(libs.kotlinx.coroutines)
-
-  api(libs.ktoml)
-
-  api(libs.mordant)
-
-  api(libs.logback)
+  api(kotlinx.bundles.kotlinx)
+  api(ktorio.bundles.ktor)
+  api(database.bundles.exposed)
+  api(database.bundles.drivers)
+  api(koin.bundles.koin)
+  api(klogging.bundles.logging)
 
   testImplementation(kotlin("test"))
 }

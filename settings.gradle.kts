@@ -1,68 +1,82 @@
 rootProject.name = "ichor"
 
-include("gaia")
-include("hephaistos")
-include("hermes")
+include(
+  ":gaia",
+  ":hephaistos"
+)
 
 dependencyResolutionManagement {
   versionCatalogs {
-    create("libs") {
+    create("jetbrains") {
+      version("kotlin", "1.9.0")
 
-      version("ktor", "2.2.4")
-      version("kotlinx", "1.5.0")
-      version("ktoml", "0.4.1")
-      version("mordant", "2.0.0-beta12")
-      version("coroutines", "1.6.4")
-      version("hoplite", "2.7.2")
-      version("logback", "1.4.7")
+      plugin("jvm", "org.jetbrains.kotlin.jvm").versionRef("kotlin")
+      plugin("serialization", "org.jetbrains.kotlin.plugin.serialization").versionRef("kotlin")
+    }
 
-      //ktor
+    create("kotlinx") {
+      library("datetime", "org.jetbrains.kotlinx", "kotlinx-datetime").version("0.4.0")
+      library("json", "org.jetbrains.kotlinx", "kotlinx-serialization-json").version("1.6.0-RC")
+      library("coroutines", "org.jetbrains.kotlinx", "kotlinx-coroutines-core").version("1.7.3")
 
-      val ktor = "ktor"
-      val ktorGroup = "io.$ktor"
-      val ktorServer = "$ktor-server"
+      bundle("kotlinx", listOf("coroutines", "coroutines", "datetime"))
+    }
 
-      //server
+    create("ktorio") {
+      plugin("ktor", "io.ktor.plugin").version("2.3.3")
 
-      library("$ktorServer-core", ktorGroup, "$ktorServer-core").versionRef(ktor)
-      library("$ktorServer-cio", ktorGroup, "$ktorServer-cio").versionRef(ktor)
-      library("$ktorServer-content-negotiation", ktorGroup, "$ktorServer-content-negotiation").versionRef(ktor)
+      library("cio", "io.ktor", "ktor-server-cio").withoutVersion()
+      library("network", "io.ktor", "ktor-network").withoutVersion()
+      library("core", "io.ktor", "ktor-server-core").withoutVersion()
+      library("client", "io.ktor", "ktor-client-core").withoutVersion()
+      library("client-cio", "io.ktor", "ktor-client-cio").withoutVersion()
+      library("sockets", "io.ktor", "ktor-server-websockets").withoutVersion()
+      library("serialization", "io.ktor", "ktor-serialization-kotlinx-json").withoutVersion()
+      library("client-negotiation", "io.ktor", "ktor-client-content-negotiation").withoutVersion()
 
-      //client
 
-      val ktorClient = "$ktor-client"
+      bundle("ktor", listOf("cio", "core", "network", "client", "client-cio", "sockets", "serialization", "client-negotiation"))
+    }
 
-      library("$ktorClient-core", ktorGroup, "$ktorClient-core").versionRef(ktor)
-      library("$ktorClient-cio", ktorGroup, "$ktorClient-cio").versionRef(ktor)
-      library("$ktorClient-content-negotiation", ktorGroup, "$ktorClient-content-negotiation").versionRef(ktor)
+    create("database") {
+      version("exposed", "0.42.0")
 
-      //network
+      library("dao", "org.jetbrains.exposed", "exposed-dao").versionRef("exposed")
+      library("core", "org.jetbrains.exposed", "exposed-core").versionRef("exposed")
+      library("json", "org.jetbrains.exposed", "exposed-json").versionRef("exposed")
+      library("jdbc", "org.jetbrains.exposed", "exposed-jdbc").versionRef("exposed")
+      library("crypt", "org.jetbrains.exposed", "exposed-crypt").versionRef("exposed")
+      library("datetime", "org.jetbrains.exposed", "exposed-kotlin-datetime").versionRef("exposed")
 
-      library("$ktor-network", ktorGroup, "$ktor-network").versionRef(ktor)
+      bundle("exposed", listOf("dao", "core", "json", "jdbc", "crypt", "datetime"))
 
-      //serialization
+      library("h2", "com.h2database", "h2").version("2.2.220")
+      library("mariadb", "org.mariadb.jdbc", "mariadb-java-client").version("2.2.0")
+      library("mysql", "mysql", "mysql-connector-java").version("5.1.6")
+      library("oracle", "com.oracle.database.jdbc", "ojdbc8").version("23.2.0.0")
+      library("postgres", "org.postgresql", "postgresql").version("42.1.4")
+      library("sql-server", "com.microsoft.sqlserver", "mssql-jdbc").version("6.1.0.jre7")
+      library("sqlite", "org.xerial", "sqlite-jdbc").version("3.7.2")
 
-      library("$ktor-serialization", ktorGroup, "$ktor-serialization-kotlinx-json").versionRef(ktor)
+      bundle("drivers", listOf("h2", "mariadb", "mysql", "oracle", "postgres", "sql-server", "sqlite"))
+    }
 
-      val kotlinx = "kotlinx"
-      val kotlinxGroup = "org.jetbrains.$kotlinx"
+    create("koin") {
+      version("koin", "3.4.3")
 
-      //kotlinx
+      library("core", "io.insert-koin", "koin-core").versionRef("koin")
+      library("ktor", "io.insert-koin", "koin-ktor").versionRef("koin")
+      library("coroutines", "io.insert-koin", "koin-core-coroutines").versionRef("koin")
 
-      library("$kotlinx-json", kotlinxGroup, "$kotlinx-serialization-json").versionRef(kotlinx)
-      library("$kotlinx-coroutines", kotlinxGroup, "$kotlinx-coroutines-core").versionRef(kotlinx)
+      bundle("koin", listOf("core", "ktor", "coroutines"))
+    }
 
-      //ktoml
+    create("klogging") {
 
-      library("ktoml", "com.akuleshov7", "ktoml-core-jvm").versionRef("ktoml")
+      library("logback", "ch.qos.logback", "logback-classic").version("1.4.9")
+      library("logging", "io.github.oshai", "kotlin-logging-jvm").version("5.0.1")
 
-      //mordant
-
-      library("mordant", "com.github.ajalt.mordant", "mordant").versionRef("mordant")
-
-      //logback
-
-      library("logback", "ch.qos.logback", "logback-classic").versionRef("logback")
+      bundle("logging", listOf("logback", "logging"))
     }
   }
 }

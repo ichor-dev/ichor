@@ -1,5 +1,8 @@
 plugins {
-  kotlin("jvm") version "1.8.20"
+  application
+  alias(jetbrains.plugins.jvm)
+  alias(jetbrains.plugins.serialization)
+  alias(ktorio.plugins.ktor)
 }
 
 repositories {
@@ -13,7 +16,10 @@ dependencies {
 
   testImplementation(kotlin("test"))
   testImplementation(project(":gaia"))
-  testImplementation(libs.ktor.network)
+}
+
+application {
+  mainClass.set("fyi.pauli.ichor.hephaistos.Hephaistos")
 }
 
 tasks.test {

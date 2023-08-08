@@ -1,11 +1,12 @@
-import dev.pooq.ichor.gaia.extensions.bytes.string
-import dev.pooq.ichor.gaia.extensions.bytes.varInt
-import dev.pooq.ichor.gaia.networking.packet.State
-import dev.pooq.ichor.hephaistos.Hephaistos
+import fyi.pauli.ichor.gaia.extensions.bytes.string
+import fyi.pauli.ichor.gaia.extensions.bytes.varInt
+import fyi.pauli.ichor.gaia.networking.packet.State
+import io.github.oshai.kotlinlogging.KLogger
 import io.ktor.utils.io.*
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import org.koin.java.KoinJavaComponent.inject
 import java.nio.ByteBuffer
 
 suspend fun main(): Unit = coroutineScope {
@@ -32,8 +33,13 @@ suspend fun main(): Unit = coroutineScope {
 				println(string)
 			}
 		} catch (e: Throwable) {
-			if (e !is ClosedReceiveChannelException)
-				Hephaistos.terminal.info("Error while reading packets: ${e.stackTraceToString()}")
+			if (e !is ClosedReceiveChannelException) {
+				val logger: KLogger by inject(KLogger::class.java)
+
+				logger.info {
+					"Error while reading packets: ${e.stackTraceToString()}"
+				}
+			}
 		} finally {
 			readChannel.cancel()
 			writeChannel.close()
