@@ -1,6 +1,6 @@
 package fyi.pauli.ichor.hephaistos
 
-import fyi.pauli.ichor.gaia.networking.packet.ClientPackets
+import fyi.pauli.ichor.gaia.networking.packet.incoming.IncomingPacketHandler
 import fyi.pauli.ichor.gaia.server.Server
 import io.github.oshai.kotlinlogging.KLogger
 import io.ktor.network.selector.*
@@ -78,7 +78,7 @@ class Hephaistos : Server("Hephaistos") {
 						connection.input.readAvailable(buffer)
 						buffer.flip()
 
-						ClientPackets.deserializeAndHandle(buffer, handle, this@Hephaistos)
+						IncomingPacketHandler.deserializeAndHandle(buffer, handle, this@Hephaistos)
 					}
 				} catch (e: Throwable) {
 					if (e !is ClosedReceiveChannelException && e !is SocketException)

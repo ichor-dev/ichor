@@ -1,9 +1,9 @@
 package fyi.pauli.ichor.gaia.networking.packet.receive.receivers.status
 
 import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
-import fyi.pauli.ichor.gaia.networking.packet.client.status.PingRequest
+import fyi.pauli.ichor.gaia.networking.packet.incoming.status.PingRequest
 import fyi.pauli.ichor.gaia.networking.packet.receive.PacketReceiver
-import fyi.pauli.ichor.gaia.networking.packet.server.status.PingResponse
+import fyi.pauli.ichor.gaia.networking.packet.outgoing.status.PingResponse
 import fyi.pauli.ichor.gaia.server.Server
 import io.ktor.utils.io.*
 
