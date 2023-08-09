@@ -1,10 +1,10 @@
-import dev.pooq.ichor.gaia.extensions.bytes.byteSize
-import dev.pooq.ichor.gaia.extensions.bytes.short
-import dev.pooq.ichor.gaia.extensions.bytes.string
-import dev.pooq.ichor.gaia.extensions.bytes.varInt
-import dev.pooq.ichor.gaia.networking.INT
-import dev.pooq.ichor.gaia.networking.SHORT
-import dev.pooq.ichor.gaia.networking.packet.State
+import fyi.pauli.ichor.gaia.extensions.bytes.byteSize
+import fyi.pauli.ichor.gaia.extensions.bytes.short
+import fyi.pauli.ichor.gaia.extensions.bytes.string
+import fyi.pauli.ichor.gaia.extensions.bytes.varInt
+import fyi.pauli.ichor.gaia.networking.INT
+import fyi.pauli.ichor.gaia.networking.SHORT
+import fyi.pauli.ichor.gaia.networking.packet.State
 
 suspend fun sendHandshake(state: State) {
 	writeChannel.write {

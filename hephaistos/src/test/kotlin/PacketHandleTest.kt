@@ -1,4 +1,4 @@
-import dev.pooq.ichor.gaia.networking.packet.State
+import fyi.pauli.ichor.gaia.networking.packet.State
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
