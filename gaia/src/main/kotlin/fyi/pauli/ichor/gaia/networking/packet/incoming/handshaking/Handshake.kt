@@ -11,7 +11,7 @@ data class Handshake(
 	val protocolVersion: Int, val serverAddress: String, val serverPort: Short, val nextState: State
 ) : IncomingPacket() {
 
-	companion object : PacketDeserializer<Handshake>() {
+	companion object : PacketProcessor<Handshake>() {
 		override suspend fun deserialize(byteBuffer: ByteBuffer): Handshake {
 			return Handshake(
 				byteBuffer.varInt(), byteBuffer.string(), byteBuffer.short(), when (byteBuffer.varInt()) {

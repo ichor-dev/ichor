@@ -13,7 +13,7 @@ class EncryptionResponse(
 ) : IncomingPacket() {
 
 	companion object :
-		PacketDeserializer<EncryptionResponse>() {
+		PacketProcessor<EncryptionResponse>() {
 		override suspend fun deserialize(byteBuffer: ByteBuffer): EncryptionResponse {
 			val sharedSecretLength = byteBuffer.varInt()
 			val sharedSecret = byteBuffer.byteArray(sharedSecretLength)

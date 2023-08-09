@@ -11,7 +11,7 @@ class LoginStart(
 	var name: String, var hasPlayerUUID: Boolean, var uuid: UUID? = null
 ) : IncomingPacket() {
 
-	companion object : PacketDeserializer<LoginStart>() {
+	companion object : PacketProcessor<LoginStart>() {
 		override suspend fun deserialize(byteBuffer: ByteBuffer): LoginStart {
 			return LoginStart(byteBuffer.string(), byteBuffer.boolean()).apply {
 				if (hasPlayerUUID) uuid = byteBuffer.uuid()

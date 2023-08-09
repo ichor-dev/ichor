@@ -5,7 +5,7 @@ import java.nio.ByteBuffer
 
 class StatusRequest : IncomingPacket() {
 
-    companion object : PacketDeserializer<StatusRequest>() {
+    companion object : PacketProcessor<StatusRequest>() {
         override suspend fun deserialize(byteBuffer: ByteBuffer): StatusRequest {
             return StatusRequest()
         }

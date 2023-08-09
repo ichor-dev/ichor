@@ -2,8 +2,6 @@ package fyi.pauli.ichor.gaia.networking.packet.incoming
 
 import fyi.pauli.ichor.gaia.extensions.bytes.decompress
 import fyi.pauli.ichor.gaia.extensions.bytes.varInt
-import fyi.pauli.ichor.gaia.networking.IncomingPacket
-import fyi.pauli.ichor.gaia.networking.PacketIdentifier
 import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.incoming.handshaking.Handshake
@@ -44,36 +42,40 @@ object IncomingPacketHandler {
 					PacketId: $id
 					PacketName: ${clientPacket.identifier.debuggingName}
 
-					State ${packetHandle.state.stateName}
+					State ${packetHandle.state.debugName}
 					-----------------------
 				""".trimIndent()
 		}
 
-		val deserializedPacket = clientPacket.deserializer.deserialize(buffer)
+		val deserializedPacket = clientPacket.processor.deserialize(buffer)
 
-		clientPacket.receivers.forEach { it.onReceive(deserializedPacket, packetHandle, server) }
+		clientPacket.processor.invokeReceivers(deserializedPacket, clientPacket.receivers, packetHandle, server)
 	}
 
+	@Suppress("UNCHECKED_CAST")
 	fun registerLoginPackets() {
 		fun createPacket(
 			state: State,
 			id: Int,
 			name: String,
-			deserializer: IncomingPacket.PacketDeserializer<*>,
+			deserializer: IncomingPacket.PacketProcessor<*>,
 			vararg receivers: PacketReceiver<*>
-		): RegisteredIncomingPacket =
-			RegisteredIncomingPacket(PacketIdentifier(id, state, name), deserializer, receivers.toMutableList())
+		): RegisteredIncomingPacket = RegisteredIncomingPacket(
+			PacketIdentifier(id, state, name),
+			deserializer,
+			receivers.map { it as PacketReceiver<IncomingPacket> }.toMutableList()
+		)
 
 		fun createHandshakePacket(
-			id: Int, name: String, deserializer: IncomingPacket.PacketDeserializer<*>, vararg receivers: PacketReceiver<*>
+			id: Int, name: String, deserializer: IncomingPacket.PacketProcessor<*>, vararg receivers: PacketReceiver<*>
 		): RegisteredIncomingPacket = createPacket(State.HANDSHAKING, id, name, deserializer, *receivers)
 
 		fun createStatusPacket(
-			id: Int, name: String, deserializer: IncomingPacket.PacketDeserializer<*>, vararg receivers: PacketReceiver<*>
+			id: Int, name: String, deserializer: IncomingPacket.PacketProcessor<*>, vararg receivers: PacketReceiver<*>
 		): RegisteredIncomingPacket = createPacket(State.STATUS, id, name, deserializer, *receivers)
 
 		fun createLoginPacket(
-			id: Int, name: String, deserializer: IncomingPacket.PacketDeserializer<*>, vararg receivers: PacketReceiver<*>
+			id: Int, name: String, deserializer: IncomingPacket.PacketProcessor<*>, vararg receivers: PacketReceiver<*>
 		): RegisteredIncomingPacket = createPacket(State.LOGIN, id, name, deserializer, *receivers)
 
 		val handshakePackets = listOf(

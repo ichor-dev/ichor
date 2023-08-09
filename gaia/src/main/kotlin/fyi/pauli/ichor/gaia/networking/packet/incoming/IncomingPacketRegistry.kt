@@ -1,7 +1,5 @@
 package fyi.pauli.ichor.gaia.networking.packet.incoming
 
-import fyi.pauli.ichor.gaia.networking.IncomingPacket.PacketDeserializer
-import fyi.pauli.ichor.gaia.networking.PacketIdentifier
 import fyi.pauli.ichor.gaia.networking.packet.receive.PacketReceiver
 
 object PacketRegistry {
@@ -10,6 +8,6 @@ object PacketRegistry {
 
 data class RegisteredIncomingPacket(
 	val identifier: PacketIdentifier,
-	var deserializer: PacketDeserializer<*>,
-	val receivers: MutableList<PacketReceiver<*>>
+	var processor: IncomingPacket.PacketProcessor<*>,
+	val receivers: MutableList<PacketReceiver<IncomingPacket>>
 )

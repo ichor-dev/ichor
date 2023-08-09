@@ -6,7 +6,7 @@ import java.nio.ByteBuffer
 
 class PingRequest(var payload: Long) : IncomingPacket() {
 
-    companion object : PacketDeserializer<PingRequest>() {
+    companion object : PacketProcessor<PingRequest>() {
         override suspend fun deserialize(byteBuffer: ByteBuffer): PingRequest {
             return PingRequest(
                 byteBuffer.varLong()
