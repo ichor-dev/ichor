@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.gaia.networking.packet
 
 import fyi.pauli.ichor.gaia.extensions.bytes.compress
-import fyi.pauli.ichor.gaia.networking.ServerPacket
+import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import fyi.pauli.ichor.gaia.server.Server
 import io.ktor.network.sockets.*
 import kotlinx.coroutines.launch
@@ -16,13 +16,11 @@ class PacketHandle(
 	val server: Server
 ) {
 
-	suspend fun sendPacket(packet: ServerPacket) {
+	suspend fun sendPacket(packet: OutgoingPacket) {
 		withContext(server.coroutineContext) {
 			launch {
 				connection.output.write {
-					it.put(
-						packet.serialize()
-							.run { if (compression) ByteBuffer.wrap(array().compress()) else this.flip() })
+					it.put(packet.serialize().run { if (compression) ByteBuffer.wrap(array().compress()) else this.flip() })
 				}
 
 				server.logger.debug {

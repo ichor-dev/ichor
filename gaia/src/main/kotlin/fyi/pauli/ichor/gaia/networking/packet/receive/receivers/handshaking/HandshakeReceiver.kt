@@ -1,11 +1,11 @@
 package fyi.pauli.ichor.gaia.networking.packet.receive.receivers.handshaking
 
 import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
-import fyi.pauli.ichor.gaia.networking.packet.client.handshaking.Handshake
+import fyi.pauli.ichor.gaia.networking.packet.incoming.handshaking.Handshake
 import fyi.pauli.ichor.gaia.networking.packet.receive.PacketReceiver
 import fyi.pauli.ichor.gaia.server.Server
 
-class HandshakeReceiver : PacketReceiver<Handshake> {
+object HandshakeReceiver : PacketReceiver<Handshake> {
 
 	override suspend fun onReceive(packet: Handshake, packetHandle: PacketHandle, server: Server) {
 		server.logger.debug {

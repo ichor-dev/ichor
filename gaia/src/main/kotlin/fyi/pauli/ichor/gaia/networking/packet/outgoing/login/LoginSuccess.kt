@@ -1,19 +1,15 @@
-package fyi.pauli.ichor.gaia.networking.packet.server.login
+package fyi.pauli.ichor.gaia.networking.packet.outgoing.login
 
 import fyi.pauli.ichor.gaia.entity.player.Property
 import fyi.pauli.ichor.gaia.extensions.bytes.*
-import fyi.pauli.ichor.gaia.networking.ServerPacket
 import fyi.pauli.ichor.gaia.networking.packet.State
+import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import java.nio.ByteBuffer
 import java.util.*
 
 class LoginSuccess(
-	val uuid: UUID,
-	val username: String,
-	val propertiesCount: Int,
-	val properties: List<Property>
-) :
-	ServerPacket() {
+	var uuid: UUID, var username: String, var propertiesCount: Int, var properties: List<Property>
+) : OutgoingPacket() {
 	override fun serialize(): ByteBuffer {
 		return compressedBuffer {
 			varLong(uuid.mostSignificantBits)

@@ -1,12 +1,12 @@
-package fyi.pauli.ichor.gaia.networking.packet.server.login
+package fyi.pauli.ichor.gaia.networking.packet.outgoing.login
 
 import fyi.pauli.ichor.gaia.extensions.bytes.uncompressedBuffer
 import fyi.pauli.ichor.gaia.extensions.bytes.varInt
-import fyi.pauli.ichor.gaia.networking.ServerPacket
 import fyi.pauli.ichor.gaia.networking.packet.State
+import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import java.nio.ByteBuffer
 
-class SetCompression(val threshold: Int) : ServerPacket() {
+class SetCompression(var threshold: Int) : OutgoingPacket() {
 	override fun serialize(): ByteBuffer {
 		return uncompressedBuffer {
 			varInt(threshold)

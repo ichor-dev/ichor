@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.gaia.extensions.bytes
 
 import fyi.pauli.ichor.gaia.networking.INT
-import fyi.pauli.ichor.gaia.networking.ServerPacket
+import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import java.nio.ByteBuffer
 import java.util.*
 
@@ -11,7 +11,7 @@ private const val SEGMENT_BITS_LONG = (0x7F).toLong()
 private const val CONTINUE_BIT = 0x80
 private const val CONTINUE_BIT_LONG = (0x80).toLong()
 
-inline fun ServerPacket.uncompressedBuffer(applier: ByteBuffer.() -> Unit = {}): ByteBuffer {
+inline fun OutgoingPacket.uncompressedBuffer(applier: ByteBuffer.() -> Unit = {}): ByteBuffer {
 	val data = ByteBuffer.allocate(1024).apply { varInt(id) }.apply(applier)
 	val dataSize = data.position()
 
@@ -21,7 +21,7 @@ inline fun ServerPacket.uncompressedBuffer(applier: ByteBuffer.() -> Unit = {}):
 	}
 }
 
-inline fun ServerPacket.compressedBuffer(applier: ByteBuffer.() -> Unit = {}): ByteBuffer {
+inline fun OutgoingPacket.compressedBuffer(applier: ByteBuffer.() -> Unit = {}): ByteBuffer {
 	val uncompressed = ByteBuffer.allocate(1024).apply { varInt(id) }.apply(applier)
 	val uncompressedDataSize = uncompressed.position()
 

@@ -16,7 +16,7 @@ import java.security.KeyPair
 import java.security.KeyPairGenerator
 import kotlin.coroutines.CoroutineContext
 
-abstract class Server(val serverName: String) : CoroutineScope {
+abstract class Server(private val serverName: String) : CoroutineScope {
 
 	private val job: Job = Job()
 
@@ -33,26 +33,11 @@ abstract class Server(val serverName: String) : CoroutineScope {
 	}.genKeyPair()
 	val verifyToken = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789".toByteArray()
 
-	init {
-		Runtime.getRuntime().addShutdownHook(Thread {
-			runBlocking {
-				shutdown()
-				job.cancel()
-			}
-		})
-
-		Thread.setDefaultUncaughtExceptionHandler { _, throwable ->
-			logger.error { throwable }
-		}
-	}
-
 	private val handles: HashSet<PacketHandle> = hashSetOf()
 	val players: HashSet<Player> = hashSetOf()
 
 	fun Connection.handle() = PacketHandle(
-		state = State.HANDSHAKING,
-		connection = this,
-		server = this@Server
+		state = State.HANDSHAKING, connection = this, server = this@Server
 	).also {
 		handles.add(it)
 
@@ -75,4 +60,17 @@ abstract class Server(val serverName: String) : CoroutineScope {
 	abstract suspend fun startup()
 
 	abstract suspend fun shutdown()
+
+	init {
+		Runtime.getRuntime().addShutdownHook(Thread {
+			runBlocking {
+				shutdown()
+				job.cancel()
+			}
+		})
+
+		Thread.setDefaultUncaughtExceptionHandler { _, throwable ->
+			logger.error { throwable }
+		}
+	}
 }
