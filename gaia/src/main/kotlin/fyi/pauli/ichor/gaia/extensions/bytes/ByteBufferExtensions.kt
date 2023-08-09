@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.gaia.extensions.bytes
 
 import fyi.pauli.ichor.gaia.networking.INT
-import fyi.pauli.ichor.gaia.networking.OutgoingPacket
+import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import java.nio.ByteBuffer
 import java.util.*
 
