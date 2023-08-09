@@ -2,6 +2,12 @@ package fyi.pauli.ichor.gaia.extensions.bytes
 
 import fyi.pauli.ichor.gaia.networking.INT
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
+import fyi.pauli.ichor.gaia.models.Identifier
+import fyi.pauli.ichor.gaia.models.nbt.Tag
+import fyi.pauli.ichor.gaia.models.nbt.TagType
+import fyi.pauli.ichor.gaia.models.nbt.impl.CompoundTag
+import fyi.pauli.ichor.gaia.models.nbt.putTagString
+import fyi.pauli.ichor.gaia.models.nbt.tagString
 import java.nio.ByteBuffer
 import java.util.*
 
@@ -145,3 +151,33 @@ fun ByteBuffer.short(short: Short) {
 }
 
 fun ByteBuffer.byteArray(length: Int) = ByteArray(length).also(this::get)
+
+fun ByteBuffer.identifier(): Identifier {
+	val split = string().split(':')
+	val namespace = if (split.size > 1) split[0] else "minecraft"
+	val value = if (split.size > 1) split[1] else split[0]
+
+	return Identifier(namespace, value)
+}
+
+fun ByteBuffer.identifier(identifier: Identifier) {
+	string(identifier.toString())
+}
+
+fun ByteBuffer.compoundTag(tag: CompoundTag) {
+	put(TagType.COMPOUND.id.toByte())
+	putInt(0)
+	putTagString("")
+	tag.write(this)
+}
+
+fun ByteBuffer.tag(): Tag<*> {
+	val type = TagType.entries.first { it.id == get().toInt() }
+	val name = tagString
+
+	return type.read(this, name)
+}
+
+fun ByteBuffer.compoundTag(): CompoundTag {
+	return tag() as CompoundTag
+}
