@@ -2,10 +2,9 @@ package fyi.pauli.ichor.gaia.config
 
 import fyi.pauli.ichor.gaia.extensions.env
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.util.stream.Collectors
+import kotlin.io.path.*
 
 @Serializable
 data class BaseConfig(
@@ -14,9 +13,15 @@ data class BaseConfig(
 
 	companion object {
 		fun loadConfig(): BaseConfig {
-			return Json.decodeFromString<BaseConfig>(
-				Files.lines(Paths.get(env["BASE_CONFIG_PATH"] ?: "./config.json")).collect(Collectors.joining())
-			)
+			val file = Path(env["BASE_CONFIG_PATH"] ?: "./config.json")
+			if (file.notExists() || file.readText().isBlank()) {
+				val baseConfig = BaseConfig()
+				if (file.notExists()) file.createFile()
+				file.writeText(Json.encodeToString(baseConfig))
+				return baseConfig
+			}
+
+			return Json.decodeFromString<BaseConfig>(file.readText())
 		}
 	}
 
