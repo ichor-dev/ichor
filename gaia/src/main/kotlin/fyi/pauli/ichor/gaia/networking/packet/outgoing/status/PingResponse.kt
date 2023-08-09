@@ -6,7 +6,7 @@ import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import java.nio.ByteBuffer
 
-class PingResponse(
+data class PingResponse(
 	var payload: Long
 ) : OutgoingPacket() {
 

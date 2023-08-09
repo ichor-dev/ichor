@@ -8,7 +8,7 @@ import io.github.oshai.kotlinlogging.KLogger
 import org.koin.java.KoinJavaComponent.inject
 import java.nio.ByteBuffer
 
-class StatusResponse(
+data class StatusResponse(
 	var jsonResponse: String
 ) : OutgoingPacket() {
 

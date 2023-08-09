@@ -7,7 +7,7 @@ import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import java.nio.ByteBuffer
 import java.util.*
 
-class LoginSuccess(
+data class LoginSuccess(
 	var uuid: UUID, var username: String, var propertiesCount: Int, var properties: List<Property>
 ) : OutgoingPacket() {
 	override fun serialize(): ByteBuffer {

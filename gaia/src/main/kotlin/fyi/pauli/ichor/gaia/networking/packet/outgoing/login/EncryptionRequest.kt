@@ -7,7 +7,7 @@ import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import java.nio.ByteBuffer
 
-class EncryptionRequest(
+data class EncryptionRequest(
 	var serverId: String = "",
 	var publicKeyLength: Int,
 	var publicKey: ByteArray,

@@ -6,7 +6,7 @@ import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import java.nio.ByteBuffer
 
-class SetCompression(var threshold: Int) : OutgoingPacket() {
+data class SetCompression(var threshold: Int) : OutgoingPacket() {
 	override fun serialize(): ByteBuffer {
 		return uncompressedBuffer {
 			varInt(threshold)
