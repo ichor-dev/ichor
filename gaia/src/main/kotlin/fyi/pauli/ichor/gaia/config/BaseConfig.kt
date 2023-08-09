@@ -15,7 +15,7 @@ data class BaseConfig(
 	companion object {
 		fun loadConfig(): BaseConfig {
 			return Json.decodeFromString<BaseConfig>(
-				Files.lines(Paths.get(env["BASE_CONFIG_PATH"] ?: "./config.toml")).collect(Collectors.joining())
+				Files.lines(Paths.get(env["BASE_CONFIG_PATH"] ?: "./config.json")).collect(Collectors.joining())
 			)
 		}
 	}
