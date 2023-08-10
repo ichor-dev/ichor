@@ -1,13 +1,15 @@
 package fyi.pauli.ichor.gaia.extensions.bytes
 
-import fyi.pauli.ichor.gaia.networking.INT
-import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
+import fyi.pauli.ichor.gaia.entity.player.Property
+import fyi.pauli.ichor.gaia.entity.player.UserProfile
 import fyi.pauli.ichor.gaia.models.Identifier
 import fyi.pauli.ichor.gaia.models.nbt.Tag
 import fyi.pauli.ichor.gaia.models.nbt.TagType
 import fyi.pauli.ichor.gaia.models.nbt.impl.CompoundTag
 import fyi.pauli.ichor.gaia.models.nbt.putTagString
 import fyi.pauli.ichor.gaia.models.nbt.tagString
+import fyi.pauli.ichor.gaia.networking.INT
+import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import java.nio.ByteBuffer
 import java.util.*
 
@@ -103,6 +105,11 @@ fun ByteBuffer.uuid(): UUID {
 	return UUID(varLong(), varLong())
 }
 
+fun ByteBuffer.uuid(uuid: UUID) {
+	varLong(uuid.mostSignificantBits)
+	varLong(uuid.leastSignificantBits)
+}
+
 fun ByteBuffer.varLong(value: Long) {
 	var remainingValue = value
 	while (true) {
@@ -180,4 +187,26 @@ fun ByteBuffer.tag(): Tag<*> {
 
 fun ByteBuffer.compoundTag(): CompoundTag {
 	return tag() as CompoundTag
+}
+
+fun ByteBuffer.byteArray(array: ByteArray) {
+	varInt(array.size)
+	put(array)
+}
+
+fun ByteBuffer.userProfile(profile: UserProfile) {
+	uuid(profile.uuid)
+	string(profile.username)
+
+	varInt(profile.properties.size)
+	profile.properties.forEach {
+		string(it.name)
+		string(it.value)
+		boolean(true)
+		string(it.signature)
+	}
+}
+
+fun ByteBuffer.userProfile(): UserProfile {
+	return UserProfile(uuid(), string(), List(varInt()) { Property(string(), string().also { boolean() }, string()) })
 }
