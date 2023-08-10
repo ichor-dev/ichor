@@ -10,11 +10,10 @@ import java.nio.ByteBuffer
 data class Handshake(
 	val protocolVersion: Int, val serverAddress: String, val serverPort: Short, val nextState: State
 ) : IncomingPacket() {
-
 	companion object : PacketProcessor<Handshake>() {
-		override suspend fun deserialize(byteBuffer: ByteBuffer): Handshake {
+		override suspend fun deserialize(buffer: ByteBuffer): Handshake {
 			return Handshake(
-				byteBuffer.varInt(), byteBuffer.string(), byteBuffer.short(), when (byteBuffer.varInt()) {
+				buffer.varInt(), buffer.string(), buffer.short(), when (buffer.varInt()) {
 					1 -> State.STATUS
 					2 -> State.LOGIN
 

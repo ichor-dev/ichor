@@ -4,9 +4,12 @@ import fyi.pauli.ichor.gaia.extensions.bytes.decompress
 import fyi.pauli.ichor.gaia.extensions.bytes.varInt
 import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
 import fyi.pauli.ichor.gaia.networking.packet.State
+import fyi.pauli.ichor.gaia.networking.packet.incoming.configuration.*
 import fyi.pauli.ichor.gaia.networking.packet.incoming.handshaking.Handshake
 import fyi.pauli.ichor.gaia.networking.packet.incoming.login.EncryptionResponse
+import fyi.pauli.ichor.gaia.networking.packet.incoming.login.LoginAcknowledged
 import fyi.pauli.ichor.gaia.networking.packet.incoming.login.LoginStart
+import fyi.pauli.ichor.gaia.networking.packet.incoming.login.PluginMessageResponse
 import fyi.pauli.ichor.gaia.networking.packet.incoming.status.PingRequest
 import fyi.pauli.ichor.gaia.networking.packet.incoming.status.StatusRequest
 import fyi.pauli.ichor.gaia.networking.packet.receive.PacketReceiver
@@ -53,7 +56,7 @@ object IncomingPacketHandler {
 	}
 
 	@Suppress("UNCHECKED_CAST")
-	fun registerLoginPackets() {
+	fun registerJoinPackets() {
 		fun createPacket(
 			state: State,
 			id: Int,
@@ -78,6 +81,10 @@ object IncomingPacketHandler {
 			id: Int, name: String, deserializer: IncomingPacket.PacketProcessor<*>, vararg receivers: PacketReceiver<*>
 		): RegisteredIncomingPacket = createPacket(State.LOGIN, id, name, deserializer, *receivers)
 
+		fun createConfigurationPacket(
+			id: Int, name: String, deserializer: IncomingPacket.PacketProcessor<*>, vararg receivers: PacketReceiver<*>
+		) = createPacket(State.CONFIGURATION, id, name, deserializer, *receivers)
+
 		val handshakePackets = listOf(
 			createHandshakePacket(0x00, "Handshake", Handshake, HandshakeReceiver)
 		)
@@ -89,9 +96,25 @@ object IncomingPacketHandler {
 
 		val loginPackets = listOf(
 			createLoginPacket(0x00, "Login Start", LoginStart, LoginReceivers.LoginStartReceiver),
-			createLoginPacket(0x01, "Encryption Response", EncryptionResponse, LoginReceivers.EncryptionResponseReceiver)
+			createLoginPacket(0x01, "Encryption Response", EncryptionResponse, LoginReceivers.EncryptionResponseReceiver),
+			createLoginPacket(0x02, "Plugin Message Response", PluginMessageResponse),
+			createLoginPacket(0x03, "Login Acknowledged", LoginAcknowledged)
 		)
 
-		PacketRegistry.incomingPackets.addAll(listOf(handshakePackets, statusPackets, loginPackets).flatten())
+		val configurationPackets = listOf(
+			createConfigurationPacket(0x00, "Plugin Message", PluginMessage),
+			createConfigurationPacket(0x01, "Finish Configuration", FinishConfiguration),
+			createConfigurationPacket(0x02, "Keep Alive", KeepAlive),
+			createConfigurationPacket(0x03, "Pong", Pong),
+			createConfigurationPacket(0x04, "Resource Pack Response", ResourcePackResponse)
+		)
+
+		PacketRegistry.incomingPackets.addAll(
+			listOf(
+				handshakePackets, statusPackets, loginPackets, configurationPackets
+			).flatten()
+		)
+
+		TODO("ADD receivers!!!")
 	}
 }
