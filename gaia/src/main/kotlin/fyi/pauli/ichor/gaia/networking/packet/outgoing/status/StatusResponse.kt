@@ -8,18 +8,23 @@ import io.github.oshai.kotlinlogging.KLogger
 import org.koin.java.KoinJavaComponent.inject
 import java.nio.ByteBuffer
 
+/**
+ * The response packet for StatusRequest.
+ *
+ * @param status The status response
+ */
 data class StatusResponse(
-	var jsonResponse: String
+	var status: String
 ) : OutgoingPacket() {
 
 	override fun serialize(): ByteBuffer {
 
 		val logger: KLogger by inject(KLogger::class.java)
 
-		logger.debug { jsonResponse }
+		logger.debug { status }
 
 		return uncompressedBuffer {
-			string(jsonResponse)
+			string(status)
 		}
 	}
 

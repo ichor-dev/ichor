@@ -1,29 +1,23 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.login
 
-import fyi.pauli.ichor.gaia.entity.player.Property
-import fyi.pauli.ichor.gaia.extensions.bytes.*
+import fyi.pauli.ichor.gaia.entity.player.UserProfile
+import fyi.pauli.ichor.gaia.extensions.bytes.compressedBuffer
+import fyi.pauli.ichor.gaia.extensions.bytes.userProfile
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import java.nio.ByteBuffer
-import java.util.*
 
+/**
+ * In Vanilla, this packet switches the state to Configuration
+ *
+ * @param userProfile The userprofile of the joining player.
+ */
 data class LoginSuccess(
-	var uuid: UUID, var username: String, var propertiesCount: Int, var properties: List<Property>
+	var userProfile: UserProfile
 ) : OutgoingPacket() {
 	override fun serialize(): ByteBuffer {
 		return compressedBuffer {
-			varLong(uuid.mostSignificantBits)
-			varLong(uuid.leastSignificantBits)
-
-			string(username)
-			varInt(propertiesCount)
-
-			properties.forEach {
-				string(it.name)
-				string(it.value)
-				boolean(true)
-				string(it.signature)
-			}
+			userProfile(userProfile)
 		}
 	}
 
