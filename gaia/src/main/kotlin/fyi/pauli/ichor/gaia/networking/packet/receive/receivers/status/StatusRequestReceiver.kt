@@ -1,12 +1,12 @@
 package fyi.pauli.ichor.gaia.networking.packet.receive.receivers.status
 
 import fyi.pauli.ichor.gaia.entity.player.Player
+import fyi.pauli.ichor.gaia.extensions.serializers.UUIDSerializer
 import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
 import fyi.pauli.ichor.gaia.networking.packet.client.status.StatusRequest
 import fyi.pauli.ichor.gaia.networking.packet.receive.PacketReceiver
 import fyi.pauli.ichor.gaia.networking.packet.server.status.StatusResponse
 import fyi.pauli.ichor.gaia.server.Server
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -47,7 +47,7 @@ class StatusRequestReceiver : PacketReceiver<StatusRequest> {
 			@Serializable
 			class PreviewPlayer(
 				val name: String = "Notch",
-				@Contextual val uuid: UUID = UUID.randomUUID()
+				val uuid: @Serializable(with = UUIDSerializer::class) UUID = UUID.randomUUID()
 			) {
 
 				companion object {
