@@ -33,8 +33,8 @@ abstract class Server(private val serverName: String) : CoroutineScope {
 	}.genKeyPair()
 	val verifyToken = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789".toByteArray()
 
-	private val handles: HashSet<PacketHandle> = hashSetOf()
-	val players: HashSet<Player> = hashSetOf()
+	private val handles: MutableSet<PacketHandle> = mutableSetOf()
+	val players: MutableSet<Player> = mutableSetOf()
 
 	fun Connection.handle() = PacketHandle(
 		state = State.HANDSHAKING, connection = this, server = this@Server
