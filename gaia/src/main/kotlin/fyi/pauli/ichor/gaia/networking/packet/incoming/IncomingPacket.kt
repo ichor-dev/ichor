@@ -10,7 +10,7 @@ data class PacketIdentifier(val id: Int, val state: State, val debuggingName: St
 
 abstract class IncomingPacket {
 	abstract class PacketProcessor<P : IncomingPacket> {
-		internal abstract suspend fun deserialize(byteBuffer: ByteBuffer): P
+		internal abstract suspend fun deserialize(buffer: ByteBuffer): P
 
 		@Suppress("UNCHECKED_CAST")
 		internal suspend fun invokeReceivers(

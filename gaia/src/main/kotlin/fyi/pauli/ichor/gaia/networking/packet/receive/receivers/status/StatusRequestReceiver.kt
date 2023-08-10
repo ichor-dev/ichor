@@ -51,7 +51,7 @@ object StatusRequestReceiver : PacketReceiver<StatusRequest> {
 			) {
 
 				companion object {
-					fun fromPlayer(player: Player) = PreviewPlayer(player.profile.name, player.profile.id)
+					fun fromPlayer(player: Player) = PreviewPlayer(player.profile.username, player.profile.id)
 				}
 			}
 		}

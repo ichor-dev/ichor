@@ -5,26 +5,24 @@ import fyi.pauli.ichor.gaia.extensions.bytes.varInt
 import fyi.pauli.ichor.gaia.networking.packet.incoming.IncomingPacket
 import java.nio.ByteBuffer
 
-class EncryptionResponse(
-	var sharedSecretLength: Int,
-	var sharedSecret: ByteArray,
-	var verifyTokenLength: Int,
-	var verifyToken: ByteArray
+/**
+ * Reponse packet for EncryptionRequest
+ *
+ * @param sharedSecret Shared Secret value, encrypted with the server's public key.
+ * @param verifyToken Verify Token value, encrypted with the same public key as the shared secret.
+ */
+data class EncryptionResponse(
+	var sharedSecret: ByteArray, var verifyToken: ByteArray
 ) : IncomingPacket() {
-
-	companion object :
-		PacketProcessor<EncryptionResponse>() {
-		override suspend fun deserialize(byteBuffer: ByteBuffer): EncryptionResponse {
-			val sharedSecretLength = byteBuffer.varInt()
-			val sharedSecret = byteBuffer.byteArray(sharedSecretLength)
-			val verifyTokenLength = byteBuffer.varInt()
-			val verifyToken = byteBuffer.byteArray(verifyTokenLength)
+	companion object : PacketProcessor<EncryptionResponse>() {
+		override suspend fun deserialize(buffer: ByteBuffer): EncryptionResponse {
+			val sharedSecretLength = buffer.varInt()
+			val sharedSecret = buffer.byteArray(sharedSecretLength)
+			val verifyTokenLength = buffer.varInt()
+			val verifyToken = buffer.byteArray(verifyTokenLength)
 
 			return EncryptionResponse(
-				sharedSecretLength,
-				sharedSecret,
-				verifyTokenLength,
-				verifyToken
+				sharedSecret, verifyToken
 			)
 		}
 	}
