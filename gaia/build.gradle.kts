@@ -1,7 +1,6 @@
 plugins {
-  application
-  alias(ktorio.plugins.ktor)
   alias(jetbrains.plugins.jvm)
+  alias(ktorio.plugins.ktor)
   alias(jetbrains.plugins.serialization)
 }
 

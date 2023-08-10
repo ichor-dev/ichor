@@ -1,8 +1,7 @@
 rootProject.name = "ichor"
 
 include(
-  ":gaia",
-  ":hephaistos"
+  ":gaia", ":hephaistos"
 )
 
 dependencyResolutionManagement {
@@ -35,7 +34,10 @@ dependencyResolutionManagement {
       library("client-negotiation", "io.ktor", "ktor-client-content-negotiation").withoutVersion()
 
 
-      bundle("ktor", listOf("cio", "core", "network", "client", "client-cio", "sockets", "serialization", "client-negotiation"))
+      bundle(
+        "ktor",
+        listOf("cio", "core", "network", "client", "client-cio", "sockets", "serialization", "client-negotiation")
+      )
     }
 
     create("database") {

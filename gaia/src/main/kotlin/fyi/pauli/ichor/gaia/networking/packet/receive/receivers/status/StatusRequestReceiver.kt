@@ -2,9 +2,9 @@ package fyi.pauli.ichor.gaia.networking.packet.receive.receivers.status
 
 import fyi.pauli.ichor.gaia.entity.player.Player
 import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
-import fyi.pauli.ichor.gaia.networking.packet.client.status.StatusRequest
+import fyi.pauli.ichor.gaia.networking.packet.incoming.status.StatusRequest
 import fyi.pauli.ichor.gaia.networking.packet.receive.PacketReceiver
-import fyi.pauli.ichor.gaia.networking.packet.server.status.StatusResponse
+import fyi.pauli.ichor.gaia.networking.packet.outgoing.status.StatusResponse
 import fyi.pauli.ichor.gaia.server.Server
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
@@ -12,7 +12,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.util.*
 
-class StatusRequestReceiver : PacketReceiver<StatusRequest> {
+object StatusRequestReceiver : PacketReceiver<StatusRequest> {
 
 	override suspend fun onReceive(
 		packet: StatusRequest,
@@ -51,7 +51,7 @@ class StatusRequestReceiver : PacketReceiver<StatusRequest> {
 			) {
 
 				companion object {
-					fun fromPlayer(player: Player) = PreviewPlayer(player.profile.name, player.profile.id)
+					fun fromPlayer(player: Player) = PreviewPlayer(player.profile.username, player.profile.uuid)
 				}
 			}
 		}
