@@ -52,7 +52,7 @@ object IncomingPacketHandler {
 
 		val deserializedPacket = clientPacket.processor.deserialize(buffer)
 
-		clientPacket.processor.invokeReceivers(deserializedPacket, clientPacket.receivers, packetHandle, server)
+		clientPacket.processor.invokeReceivers(deserializedPacket, clientPacket.receivers.values.toList(), packetHandle, server)
 	}
 
 	@Suppress("UNCHECKED_CAST")
