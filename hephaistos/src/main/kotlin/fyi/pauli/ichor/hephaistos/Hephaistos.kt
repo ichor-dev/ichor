@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.hephaistos
 
 import fyi.pauli.ichor.gaia.server.Server
-import fyi.pauli.ichor.hephaistos.extensions.handleIncoming
+import fyi.pauli.ichor.hephaistos.networking.extensions.handleIncoming
 import io.github.oshai.kotlinlogging.KLogger
 import io.ktor.network.selector.*
 import io.ktor.network.sockets.*
@@ -39,9 +39,7 @@ class Hephaistos : Server("Hephaistos") {
 
 		val manager = SelectorManager(Dispatchers.IO)
 		val serverSocket = aSocket(manager).tcp().bind(
-			InetSocketAddress(
-				serverConfig.host, serverConfig.port.toInt()
-			)
+			InetSocketAddress(serverConfig.host, serverConfig.port.toInt())
 		)
 
 		logger.info {

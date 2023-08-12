@@ -1,4 +1,4 @@
-package fyi.pauli.ichor.hephaistos.extensions
+package fyi.pauli.ichor.hephaistos.networking.extensions
 
 import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
 import fyi.pauli.ichor.gaia.networking.packet.incoming.IncomingPacketHandler
