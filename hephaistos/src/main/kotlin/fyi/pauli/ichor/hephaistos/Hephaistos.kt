@@ -55,7 +55,7 @@ class Hephaistos : Server("Hephaistos") {
 
 			launch {
 				try {
-					connection.handleIncoming(handle, this@Hephaistos)
+					handle.handleIncoming(this@Hephaistos)
 				} catch (e: Throwable) {
 					if (e !is ClosedReceiveChannelException && e !is SocketException) logger.error(e) {
 						"Error in channel"
