@@ -210,3 +210,9 @@ fun ByteBuffer.userProfile(profile: UserProfile) {
 fun ByteBuffer.userProfile(): UserProfile {
 	return UserProfile(uuid(), string(), List(varInt()) { Property(string(), string().also { boolean() }, string()) })
 }
+
+fun ByteBuffer.utf8String(string: String) {
+	val encodedString = string.toByteArray(Charsets.UTF_8)
+	varInt(encodedString.size)
+	put(encodedString)
+}
