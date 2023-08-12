@@ -1,4 +1,4 @@
-package fyi.pauli.ichor.gaia.networking.packet.receive.receivers.status
+package fyi.pauli.ichor.hephaistos.networking.receivers.status
 
 import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
 import fyi.pauli.ichor.gaia.networking.packet.incoming.status.PingRequest

@@ -12,11 +12,6 @@ import fyi.pauli.ichor.gaia.networking.packet.incoming.login.LoginStart
 import fyi.pauli.ichor.gaia.networking.packet.incoming.login.PluginMessageResponse
 import fyi.pauli.ichor.gaia.networking.packet.incoming.status.PingRequest
 import fyi.pauli.ichor.gaia.networking.packet.incoming.status.StatusRequest
-import fyi.pauli.ichor.gaia.networking.packet.receive.PacketReceiver
-import fyi.pauli.ichor.gaia.networking.packet.receive.receivers.handshaking.HandshakeReceiver
-import fyi.pauli.ichor.gaia.networking.packet.receive.receivers.login.LoginReceivers
-import fyi.pauli.ichor.gaia.networking.packet.receive.receivers.status.PingRequestReceiver
-import fyi.pauli.ichor.gaia.networking.packet.receive.receivers.status.StatusRequestReceiver
 import fyi.pauli.ichor.gaia.server.Server
 import java.nio.ByteBuffer
 
@@ -52,51 +47,38 @@ object IncomingPacketHandler {
 
 		val deserializedPacket = clientPacket.processor.deserialize(buffer)
 
-		clientPacket.processor.invokeReceivers(deserializedPacket, clientPacket.receivers.values.toList(), packetHandle, server)
+		clientPacket.processor.invokeReceivers(
+			deserializedPacket, clientPacket.receivers.values.toList(), packetHandle, server
+		)
 	}
 
-	@Suppress("UNCHECKED_CAST")
 	fun registerJoinPackets() {
 		fun createPacket(
-			state: State,
-			id: Int,
-			name: String,
-			deserializer: IncomingPacket.PacketProcessor<*>,
-			vararg receivers: PacketReceiver<*>
+			state: State, id: Int, name: String, deserializer: IncomingPacket.PacketProcessor<*>
 		): RegisteredIncomingPacket = RegisteredIncomingPacket(
-			PacketIdentifier(id, state, name),
-			deserializer,
-			receivers.map { it as PacketReceiver<IncomingPacket> }.toMutableList()
+			PacketIdentifier(id, state, name), deserializer, mutableMapOf()
 		)
 
-		fun createHandshakePacket(
-			id: Int, name: String, deserializer: IncomingPacket.PacketProcessor<*>, vararg receivers: PacketReceiver<*>
-		): RegisteredIncomingPacket = createPacket(State.HANDSHAKING, id, name, deserializer, *receivers)
-
-		fun createStatusPacket(
-			id: Int, name: String, deserializer: IncomingPacket.PacketProcessor<*>, vararg receivers: PacketReceiver<*>
-		): RegisteredIncomingPacket = createPacket(State.STATUS, id, name, deserializer, *receivers)
-
 		fun createLoginPacket(
-			id: Int, name: String, deserializer: IncomingPacket.PacketProcessor<*>, vararg receivers: PacketReceiver<*>
-		): RegisteredIncomingPacket = createPacket(State.LOGIN, id, name, deserializer, *receivers)
+			id: Int, name: String, deserializer: IncomingPacket.PacketProcessor<*>
+		): RegisteredIncomingPacket = createPacket(State.LOGIN, id, name, deserializer)
 
 		fun createConfigurationPacket(
-			id: Int, name: String, deserializer: IncomingPacket.PacketProcessor<*>, vararg receivers: PacketReceiver<*>
-		) = createPacket(State.CONFIGURATION, id, name, deserializer, *receivers)
+			id: Int, name: String, deserializer: IncomingPacket.PacketProcessor<*>
+		) = createPacket(State.CONFIGURATION, id, name, deserializer)
 
 		val handshakePackets = listOf(
-			createHandshakePacket(0x00, "Handshake", Handshake, HandshakeReceiver)
+			createPacket(State.HANDSHAKING, 0x00, "Handshake", Handshake)
 		)
 
 		val statusPackets = listOf(
-			createStatusPacket(0x00, "Status Request", StatusRequest, StatusRequestReceiver),
-			createStatusPacket(0x01, "Ping Request", PingRequest, PingRequestReceiver)
+			createPacket(State.STATUS, 0x00, "Status Request", StatusRequest),
+			createPacket(State.STATUS, 0x01, "Ping Request", PingRequest)
 		)
 
 		val loginPackets = listOf(
-			createLoginPacket(0x00, "Login Start", LoginStart, LoginReceivers.LoginStartReceiver),
-			createLoginPacket(0x01, "Encryption Response", EncryptionResponse, LoginReceivers.EncryptionResponseReceiver),
+			createLoginPacket(0x00, "Login Start", LoginStart),
+			createLoginPacket(0x01, "Encryption Response", EncryptionResponse),
 			createLoginPacket(0x02, "Plugin Message Response", PluginMessageResponse),
 			createLoginPacket(0x03, "Login Acknowledged", LoginAcknowledged)
 		)
@@ -114,7 +96,5 @@ object IncomingPacketHandler {
 				handshakePackets, statusPackets, loginPackets, configurationPackets
 			).flatten()
 		)
-
-		TODO("ADD receivers!!!")
 	}
 }
