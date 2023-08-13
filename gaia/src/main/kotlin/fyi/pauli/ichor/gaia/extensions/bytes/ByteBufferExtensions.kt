@@ -19,27 +19,13 @@ private const val SEGMENT_BITS_LONG = (0x7F).toLong()
 private const val CONTINUE_BIT = 0x80
 private const val CONTINUE_BIT_LONG = (0x80).toLong()
 
-inline fun OutgoingPacket.uncompressedBuffer(applier: ByteBuffer.() -> Unit = {}): ByteBuffer {
-	val data = ByteBuffer.allocate(1024).apply { varInt(id) }.apply(applier)
+inline fun OutgoingPacket.buffer(size: Int? = null, applier: ByteBuffer.() -> Unit = {}): ByteBuffer {
+	val data = ByteBuffer.allocate(size ?: 1024).apply { varInt(id) }.apply(applier)
 	val dataSize = data.position()
 
 	return ByteBuffer.allocate(INT + dataSize).apply {
 		varInt(dataSize)
 		put(data.array(), 0, dataSize)
-	}
-}
-
-inline fun OutgoingPacket.compressedBuffer(applier: ByteBuffer.() -> Unit = {}): ByteBuffer {
-	val uncompressed = ByteBuffer.allocate(1024).apply { varInt(id) }.apply(applier)
-	val uncompressedDataSize = uncompressed.position()
-
-	val compressed = ByteBuffer.wrap(uncompressed.array().compress())
-	val compressedDataSize = compressed.remaining()
-
-	return ByteBuffer.allocate(INT + INT + compressedDataSize).apply {
-		varInt(uncompressedDataSize)
-		varInt(compressedDataSize)
-		put(compressed.array(), 0, compressedDataSize)
 	}
 }
 

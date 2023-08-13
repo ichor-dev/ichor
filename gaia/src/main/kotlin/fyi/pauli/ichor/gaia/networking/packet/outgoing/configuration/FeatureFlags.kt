@@ -1,6 +1,6 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration
 
-import fyi.pauli.ichor.gaia.extensions.bytes.compressedBuffer
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer
 import fyi.pauli.ichor.gaia.extensions.bytes.identifier
 import fyi.pauli.ichor.gaia.extensions.bytes.varInt
 import fyi.pauli.ichor.gaia.models.Identifier
@@ -21,7 +21,7 @@ data class FeatureFlags(var totalFeatures: Int, var featureFlags: MutableList<Id
 		get() = State.CONFIGURATION
 
 	override fun serialize(): ByteBuffer {
-		return compressedBuffer {
+		return buffer {
 			varInt(totalFeatures)
 			featureFlags.forEach { identifier(it) }
 		}

@@ -3,8 +3,8 @@ package fyi.pauli.ichor.gaia.networking.packet.receive.receivers.status
 import fyi.pauli.ichor.gaia.entity.player.Player
 import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
 import fyi.pauli.ichor.gaia.networking.packet.incoming.status.StatusRequest
-import fyi.pauli.ichor.gaia.networking.packet.receive.PacketReceiver
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.status.StatusResponse
+import fyi.pauli.ichor.gaia.networking.packet.receive.PacketReceiver
 import fyi.pauli.ichor.gaia.server.Server
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
