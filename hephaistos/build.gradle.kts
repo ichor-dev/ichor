@@ -19,7 +19,7 @@ dependencies {
 }
 
 application {
-  mainClass.set("fyi.pauli.ichor.hephaistos.Hephaistos")
+  mainClass.set("fyi.pauli.ichor.hephaistos.HephaistosKt")
 }
 
 tasks.test {
