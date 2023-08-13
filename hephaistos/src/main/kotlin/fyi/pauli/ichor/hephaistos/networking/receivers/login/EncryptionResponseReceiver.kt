@@ -8,10 +8,7 @@ import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.incoming.login.EncryptionResponse
 import fyi.pauli.ichor.gaia.networking.packet.incoming.login.LoginStart
-import fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration.FeatureFlags
-import fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration.PluginMessage
-import fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration.RegistryData
-import fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration.UpdateTags
+import fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration.*
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.login.Disconnect
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.login.LoginSuccess
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.login.SetCompression
@@ -54,7 +51,6 @@ object EncryptionResponseReceiver : PacketReceiver<EncryptionResponse> {
 
 		enableCompression(packetHandle)
 		sendLoginSuccess(packetHandle, userProfile)
-		packetHandle.startConfiguration()
 	}
 
 	private suspend fun requestUserProfile(
@@ -80,14 +76,5 @@ object EncryptionResponseReceiver : PacketReceiver<EncryptionResponse> {
 
 	private suspend fun sendLoginSuccess(packetHandle: PacketHandle, userProfile: UserProfile) {
 		packetHandle.sendPacket(LoginSuccess(userProfile))
-	}
-
-	private suspend fun PacketHandle.startConfiguration() {
-		state = State.CONFIGURATION
-
-		sendPacket(PluginMessage(BrandPayload(Constants.serverBrand)))
-		sendPacket(FeatureFlags(mutableListOf()))
-		sendPacket(RegistryData(compoundTag(null) {}))
-		sendPacket(UpdateTags(mutableMapOf()))
 	}
 }
