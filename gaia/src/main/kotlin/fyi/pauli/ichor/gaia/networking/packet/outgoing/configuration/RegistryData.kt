@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration
 
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer
 import fyi.pauli.ichor.gaia.extensions.bytes.compoundTag
-import fyi.pauli.ichor.gaia.extensions.bytes.compressedBuffer
 import fyi.pauli.ichor.gaia.models.nbt.impl.CompoundTag
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
@@ -20,7 +20,7 @@ data class RegistryData(var registryCodec: CompoundTag) : OutgoingPacket() {
 		get() = State.CONFIGURATION
 
 	override fun serialize(): ByteBuffer {
-		return compressedBuffer {
+		return buffer {
 			compoundTag(registryCodec)
 		}
 	}

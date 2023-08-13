@@ -52,7 +52,12 @@ object IncomingPacketHandler {
 
 		val deserializedPacket = clientPacket.processor.deserialize(buffer)
 
-		clientPacket.processor.invokeReceivers(deserializedPacket, clientPacket.receivers.values.toList(), packetHandle, server)
+		clientPacket.processor.invokeReceivers(
+			deserializedPacket,
+			clientPacket.receivers.values.toList(),
+			packetHandle,
+			server
+		)
 	}
 
 	@Suppress("UNCHECKED_CAST")
@@ -66,7 +71,7 @@ object IncomingPacketHandler {
 		): RegisteredIncomingPacket = RegisteredIncomingPacket(
 			PacketIdentifier(id, state, name),
 			deserializer,
-			receivers.map { it as PacketReceiver<IncomingPacket> }.toMutableList()
+			mutableMapOf()
 		)
 
 		fun createHandshakePacket(

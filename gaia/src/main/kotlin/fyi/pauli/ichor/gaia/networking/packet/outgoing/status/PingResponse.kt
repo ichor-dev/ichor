@@ -1,6 +1,6 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.status
 
-import fyi.pauli.ichor.gaia.extensions.bytes.uncompressedBuffer
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer
 import fyi.pauli.ichor.gaia.extensions.bytes.varLong
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
@@ -16,7 +16,7 @@ data class PingResponse(
 ) : OutgoingPacket() {
 
 	override fun serialize(): ByteBuffer {
-		return uncompressedBuffer {
+		return buffer {
 			varLong(payload)
 		}
 	}

@@ -1,6 +1,6 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration
 
-import fyi.pauli.ichor.gaia.extensions.bytes.compressedBuffer
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer
 import fyi.pauli.ichor.gaia.extensions.bytes.varLong
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
@@ -21,7 +21,7 @@ data class KeepAlive(var keepAliveId: Long) : OutgoingPacket() {
 		get() = State.CONFIGURATION
 
 	override fun serialize(): ByteBuffer {
-		return compressedBuffer {
+		return buffer {
 			varLong(keepAliveId)
 		}
 	}

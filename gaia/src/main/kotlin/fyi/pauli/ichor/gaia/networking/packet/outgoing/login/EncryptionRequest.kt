@@ -1,8 +1,8 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.login
 
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer
 import fyi.pauli.ichor.gaia.extensions.bytes.byteArray
 import fyi.pauli.ichor.gaia.extensions.bytes.string
-import fyi.pauli.ichor.gaia.extensions.bytes.uncompressedBuffer
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import java.nio.ByteBuffer
@@ -21,7 +21,7 @@ data class EncryptionRequest(
 ) : OutgoingPacket() {
 
 	override fun serialize(): ByteBuffer {
-		return uncompressedBuffer {
+		return buffer {
 			string(serverId)
 			byteArray(publicKey)
 			byteArray(verifyToken)
