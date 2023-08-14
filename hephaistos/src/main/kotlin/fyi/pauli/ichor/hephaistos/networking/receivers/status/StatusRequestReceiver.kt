@@ -1,10 +1,10 @@
-package fyi.pauli.ichor.gaia.networking.packet.receive.receivers.status
+package fyi.pauli.ichor.hephaistos.networking.receivers.status
 
 import fyi.pauli.ichor.gaia.entity.player.Player
 import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
 import fyi.pauli.ichor.gaia.networking.packet.incoming.status.StatusRequest
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.status.StatusResponse
-import fyi.pauli.ichor.gaia.networking.packet.receive.PacketReceiver
+import fyi.pauli.ichor.gaia.networking.packet.PacketReceiver
 import fyi.pauli.ichor.gaia.server.Server
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
@@ -24,11 +24,11 @@ object StatusRequestReceiver : PacketReceiver<StatusRequest> {
 
 	@Serializable
 	class ServerPreview(
-		val version: Version = Version(),
-		val players: Players = Players(),
-		val description: Description = Description(),
-		val favicon: String = "data:image/png;base64,<data>",
-		val enforceSecureChat: Boolean = true
+        val version: Version = Version(),
+        val players: Players = Players(),
+        val description: Description = Description(),
+        val favicon: String = "data:image/png;base64,<data>",
+        val enforceSecureChat: Boolean = true
 	) {
 
 		@Serializable

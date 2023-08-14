@@ -8,7 +8,7 @@ import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import java.nio.ByteBuffer
 
 /**
- * In Vanilla, this packet switches the state to Configuration
+ * This packet switches the state to Configuration.
  *
  * @param userProfile The userprofile of the joining player.
  */
