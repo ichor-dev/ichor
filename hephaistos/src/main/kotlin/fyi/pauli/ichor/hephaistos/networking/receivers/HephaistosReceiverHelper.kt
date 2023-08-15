@@ -12,6 +12,8 @@ import fyi.pauli.ichor.hephaistos.networking.receivers.login.LoginAcknowledgedRe
 import fyi.pauli.ichor.hephaistos.networking.receivers.login.LoginStartReceiver
 import fyi.pauli.ichor.hephaistos.networking.receivers.ocnfiguration.FinishConfigurationReceiver
 import fyi.pauli.ichor.hephaistos.networking.receivers.ocnfiguration.PluginMessageReceiver
+import fyi.pauli.ichor.hephaistos.networking.receivers.status.PingRequestReceiver
+import fyi.pauli.ichor.hephaistos.networking.receivers.status.StatusRequestReceiver
 
 object HephaistosReceiverHelper {
 	val hephaistosReceiverIdentifier = Identifier(Constants.serverBrand, "vanilla-receiver")
@@ -28,6 +30,9 @@ object HephaistosReceiverHelper {
 		}
 
 		registerReceiver(State.HANDSHAKING, 0x00, HandshakeReceiver)
+
+		registerReceiver(State.STATUS, 0x00, StatusRequestReceiver)
+		registerReceiver(State.STATUS, 0x01, PingRequestReceiver)
 
 		registerReceiver(State.LOGIN, 0x00, LoginStartReceiver)
 		registerReceiver(State.LOGIN, 0x01, EncryptionResponseReceiver)
