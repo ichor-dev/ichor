@@ -1,7 +1,8 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration
 
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer
-import fyi.pauli.ichor.gaia.extensions.bytes.identifier
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.identifier
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.rawBytes
 import fyi.pauli.ichor.gaia.models.Identifier
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
@@ -27,7 +28,7 @@ data class PluginMessage(
 	override fun serialize(): ByteBuffer {
 		return buffer {
 			identifier(identifier)
-			put(data)
+			rawBytes(data)
 		}
 	}
 }

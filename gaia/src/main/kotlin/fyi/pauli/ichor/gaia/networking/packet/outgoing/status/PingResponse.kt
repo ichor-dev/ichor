@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.status
 
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer
-import fyi.pauli.ichor.gaia.extensions.bytes.varLong
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.long
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import java.nio.ByteBuffer
@@ -17,7 +17,7 @@ data class PingResponse(
 
 	override fun serialize(): ByteBuffer {
 		return buffer {
-			varLong(payload)
+			long(payload)
 		}
 	}
 

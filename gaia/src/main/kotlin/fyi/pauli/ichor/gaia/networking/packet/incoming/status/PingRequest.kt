@@ -1,6 +1,6 @@
 package fyi.pauli.ichor.gaia.networking.packet.incoming.status
 
-import fyi.pauli.ichor.gaia.extensions.bytes.varLong
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.long
 import fyi.pauli.ichor.gaia.networking.packet.incoming.IncomingPacket
 import java.nio.ByteBuffer
 
@@ -13,7 +13,7 @@ data class PingRequest(var payload: Long) : IncomingPacket() {
 	companion object : PacketProcessor<PingRequest>() {
 		override suspend fun deserialize(buffer: ByteBuffer): PingRequest {
 			return PingRequest(
-				buffer.varLong()
+				buffer.long()
 			)
 		}
 	}

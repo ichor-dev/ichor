@@ -1,5 +1,6 @@
 package fyi.pauli.ichor.gaia.models.nbt.impl
 
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.long
 import fyi.pauli.ichor.gaia.models.nbt.Tag
 import fyi.pauli.ichor.gaia.models.nbt.TagType
 import java.nio.ByteBuffer
@@ -9,11 +10,11 @@ data class LongTag(override val name: String?, override var value: Long?) : Tag<
 		get() = TagType.LONG
 
 	override fun write(buffer: ByteBuffer) {
-		buffer.putLong(value ?: error("Value of LongTag is null"))
+		buffer.long(value ?: error("Value of LongTag is null"))
 	}
 
 	override fun read(buffer: ByteBuffer) {
-		value = buffer.long
+		value = buffer.long()
 	}
 
 	override fun clone(name: String?): Tag<Long> {
