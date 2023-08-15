@@ -4,14 +4,11 @@ import java.io.ByteArrayOutputStream
 import java.util.zip.Deflater
 import java.util.zip.Inflater
 
-fun ByteArray.compress(): ByteArray {
-	val output = ByteArray(this.size * 4)
-	val compressor = Deflater().apply {
-		setInput(this@compress)
-		finish()
-	}
-	val compressedDataLength: Int = compressor.deflate(output)
-	return output.copyOfRange(0, compressedDataLength)
+fun ByteArray.compress(): Int {
+	val compressor = Deflater()
+	compressor.setInput(this@compress)
+	compressor.finish()
+	return compressor.deflate(this@compress)
 }
 
 fun ByteArray.decompress(length: Int): ByteArray {

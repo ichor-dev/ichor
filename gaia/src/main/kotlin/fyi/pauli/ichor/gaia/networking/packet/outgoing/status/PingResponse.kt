@@ -1,10 +1,10 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.status
 
+import fyi.pauli.ichor.gaia.extensions.bytes.RawPacket
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.long
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
-import java.nio.ByteBuffer
 
 /**
  * The response packet for PingRequest.
@@ -15,7 +15,7 @@ data class PingResponse(
 	var payload: Long
 ) : OutgoingPacket() {
 
-	override fun serialize(): ByteBuffer {
+	override fun serialize(): RawPacket {
 		return buffer {
 			long(payload)
 		}

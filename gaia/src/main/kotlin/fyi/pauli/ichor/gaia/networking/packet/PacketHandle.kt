@@ -1,5 +1,6 @@
 package fyi.pauli.ichor.gaia.networking.packet
 
+import fyi.pauli.ichor.gaia.extensions.bytes.build
 import fyi.pauli.ichor.gaia.extensions.bytes.compress
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import fyi.pauli.ichor.gaia.server.Server
@@ -20,7 +21,7 @@ class PacketHandle(
 		withContext(server.coroutineContext) {
 			launch {
 				connection.output.write {
-					it.put(packet.serialize().run { if (compression) ByteBuffer.wrap(array().compress()) else this.flip() })
+					it.put(packet.serialize().build(compression))
 				}
 
 				server.logger.debug {

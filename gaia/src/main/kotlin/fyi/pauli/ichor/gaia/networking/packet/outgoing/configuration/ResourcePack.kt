@@ -1,11 +1,11 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration
 
+import fyi.pauli.ichor.gaia.extensions.bytes.RawPacket
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.boolean
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.string
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
-import java.nio.ByteBuffer
 
 /**
  * Packet used to prompt players a resource pack.
@@ -26,7 +26,7 @@ data class ResourcePack(
 		get() = State.CONFIGURATION
 	override val debugName: String
 		get() = "Resource Pack"
-	override fun serialize(): ByteBuffer {
+	override fun serialize(): RawPacket {
 		return buffer {
 			string(url)
 			string(hash)
