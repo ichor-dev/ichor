@@ -7,10 +7,7 @@ import fyi.pauli.ichor.gaia.networking.packet.State
 import io.github.oshai.kotlinlogging.KLogger
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.network.sockets.*
-import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.*
 import java.security.KeyPair
 import java.security.KeyPairGenerator
@@ -22,11 +19,7 @@ abstract class Server(private val serverName: String) : CoroutineScope {
 
 	val config: BaseConfig = BaseConfig.loadConfig()
 
-	var httpClient = HttpClient(CIO) {
-		install(ContentNegotiation) {
-			json()
-		}
-	}
+	abstract val httpClient: HttpClient
 
 	val encryptionPair: KeyPair = KeyPairGenerator.getInstance("RSA").apply {
 		initialize(1024)
