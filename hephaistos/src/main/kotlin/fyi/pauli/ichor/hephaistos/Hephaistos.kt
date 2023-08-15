@@ -1,7 +1,10 @@
 package fyi.pauli.ichor.hephaistos
 
+import fyi.pauli.ichor.gaia.networking.packet.incoming.IncomingPacketHandler
 import fyi.pauli.ichor.gaia.server.Server
+import fyi.pauli.ichor.hephaistos.networking.extensions.NetworkingExtensions
 import fyi.pauli.ichor.hephaistos.networking.extensions.handleIncoming
+import fyi.pauli.ichor.hephaistos.networking.receivers.HephaistosReceiverHelper
 import io.github.oshai.kotlinlogging.KLogger
 import io.ktor.network.selector.*
 import io.ktor.network.sockets.*
@@ -45,6 +48,8 @@ class Hephaistos : Server("Hephaistos") {
 		logger.info {
 			"Server started successfully!"
 		}
+
+		NetworkingExtensions.initiateVanillaNetworking()
 
 		while (!serverSocket.isClosed) {
 			val socket = serverSocket.accept()

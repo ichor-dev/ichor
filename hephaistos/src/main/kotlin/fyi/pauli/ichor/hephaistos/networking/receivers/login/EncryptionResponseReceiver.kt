@@ -47,7 +47,6 @@ object EncryptionResponseReceiver : PacketReceiver<EncryptionResponse> {
 
 		enableCompression(packetHandle)
 		sendLoginSuccess(packetHandle, userProfile)
-		packetHandle.state = State.CONFIGURATION
 	}
 
 	private suspend fun requestUserProfile(

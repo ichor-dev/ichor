@@ -7,7 +7,11 @@ import fyi.pauli.ichor.gaia.networking.packet.incoming.PacketRegistry
 import fyi.pauli.ichor.gaia.networking.packet.PacketReceiver
 import fyi.pauli.ichor.hephaistos.Constants
 import fyi.pauli.ichor.hephaistos.networking.receivers.handshaking.HandshakeReceiver
+import fyi.pauli.ichor.hephaistos.networking.receivers.login.EncryptionResponseReceiver
+import fyi.pauli.ichor.hephaistos.networking.receivers.login.LoginAcknowledgedReceiver
 import fyi.pauli.ichor.hephaistos.networking.receivers.login.LoginStartReceiver
+import fyi.pauli.ichor.hephaistos.networking.receivers.ocnfiguration.FinishConfigurationReceiver
+import fyi.pauli.ichor.hephaistos.networking.receivers.ocnfiguration.PluginMessageReceiver
 
 object HephaistosReceiverHelper {
 	val hephaistosReceiverIdentifier = Identifier(Constants.serverBrand, "vanilla-receiver")
@@ -26,5 +30,10 @@ object HephaistosReceiverHelper {
 		registerReceiver(State.HANDSHAKING, 0x00, HandshakeReceiver)
 
 		registerReceiver(State.LOGIN, 0x00, LoginStartReceiver)
+		registerReceiver(State.LOGIN, 0x01, EncryptionResponseReceiver)
+		registerReceiver(State.LOGIN, 0x03, LoginAcknowledgedReceiver)
+
+		registerReceiver(State.CONFIGURATION, 0x00, PluginMessageReceiver)
+		registerReceiver(State.CONFIGURATION, 0x01, FinishConfigurationReceiver)
 	}
 }
