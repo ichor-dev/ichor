@@ -12,14 +12,14 @@ import java.nio.ByteBuffer
 import java.util.*
 
 fun ByteBuffer.compoundTag(tag: CompoundTag) {
-	byte(TagType.COMPOUND.id.toByte())
-	int(0)
-	putTagString("")
+	byte(tag.type.id.toByte())
+	putTagString(tag.name ?: "")
 	tag.write(this)
 }
 
 fun ByteBuffer.tag(): Tag<*> {
-	val type = TagType.entries.first { it.id == get().toInt() }
+	val id = byte().toInt()
+	val type = TagType.entries.first { it.id == id }
 	val name = tagString()
 
 	return type.read(this, name)
@@ -54,8 +54,7 @@ fun ByteBuffer.userProfile(value: UserProfile) {
 	uuid(value.uuid)
 	string(value.username)
 
-	varInt(value.properties.size)
-	value.properties.forEach {
+	list(value.properties) {
 		string(it.name)
 		string(it.value)
 		boolean(true)
@@ -64,5 +63,15 @@ fun ByteBuffer.userProfile(value: UserProfile) {
 }
 
 fun ByteBuffer.userProfile(): UserProfile {
-	return UserProfile(uuid(), string(), List(varInt()) { Property(string(), string().also { boolean() }, string()) })
+	return UserProfile(uuid(), string(), list { Property(string(), string().also { boolean() }, string()) })
+}
+
+inline fun <reified T> ByteBuffer.list(value: List<T>, crossinline processor: ByteBuffer.(T) -> Unit) {
+	varInt(value.size)
+	value.forEach { processor(this, it) }
+}
+
+inline fun <reified T> ByteBuffer.list(crossinline processor: ByteBuffer.() -> T): List<T> {
+	val length = varInt()
+	return List(length) { processor(this) }
 }

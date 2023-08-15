@@ -5,6 +5,7 @@ import fyi.pauli.ichor.gaia.extensions.bytes.SEGMENT_BITS
 import java.nio.ByteBuffer
 import kotlin.experimental.and
 
+
 fun ByteBuffer.unsignedShort(value: Short) {
 	putShort((value and 0xFFFF.toShort()))
 }
@@ -14,38 +15,33 @@ fun ByteBuffer.unsignedShort(): Short {
 }
 
 fun ByteBuffer.varInt(value: Int) {
-	when {
-		value and (-0x1 shl 7) == 0 -> put(value.toByte())
-		value and (-0x1 shl 14) == 0 -> putShort((value and 0x7F or 0x80 shl 8 or (value ushr 7)).toShort())
-		value and (-0x1 shl 21) == 0 -> {
-			val index = position()
-			put(index, (value and 0x7F or 0x80).toByte())
-			put(index + 1, (value ushr 7 and 0x7F or 0x80).toByte())
-			put(index + 2, (value ushr 14).toByte())
-		}
+	var processingValue = value
 
-		value and (-0x1 shl 28) == 0 -> putInt(value and 0x7F or 0x80 shl 24 or (value ushr 7 and 0x7F or 0x80 shl 16) or (value ushr 14 and 0x7F or 0x80 shl 8) or (value ushr 21))
-		else -> {
-			val index = position()
-			putInt(
-				index,
-				value and 0x7F or 0x80 shl 24 or (value ushr 7 and 0x7F or 0x80 shl 16) or (value ushr 14 and 0x7F or 0x80 shl 8) or (value ushr 21 and 0x7F or 0x80)
-			)
-			put(index + 4, (value ushr 28).toByte())
+	while (true) {
+		if (processingValue and SEGMENT_BITS.inv() == 0) {
+			put(processingValue.toByte())
+			return
 		}
+		put(((processingValue and SEGMENT_BITS) or CONTINUE_BIT).toByte())
+
+		processingValue = processingValue ushr 7
 	}
 }
 
 fun ByteBuffer.varInt(): Int {
-	var result = 0
+	var value = 0
+	var position = 0
+	var currentByte: Byte
 
-	var shift = 0
 	while (true) {
-		val b: Byte = get(position() + 1)
-		result = result or ((b.toInt() and 0x7f) shl shift)
-		if (b >= 0) return result
-		shift += 7
+		currentByte = get()
+		value = value or (currentByte and SEGMENT_BITS.toByte()).toInt() shl position
+		if ((currentByte and CONTINUE_BIT.toByte()).toInt() == 0) break
+		position += 7
+		if (position >= 32) throw java.lang.RuntimeException("VarInt is too big")
 	}
+
+	return value
 }
 
 fun ByteBuffer.varIntArray(value: IntArray) {
@@ -59,11 +55,14 @@ fun ByteBuffer.varIntArray(): IntArray {
 
 fun ByteBuffer.varLong(value: Long) {
 	var processingValue = value
+
 	while (true) {
-		if ((processingValue and (SEGMENT_BITS.toLong()).inv()) == 0L) {
+		if ((processingValue and (SEGMENT_BITS.toLong().inv())) == 0L) {
 			put(processingValue.toByte())
+			return
 		}
-		put((processingValue and SEGMENT_BITS.toLong() or CONTINUE_BIT.toLong()).toByte())
+		put(((processingValue and SEGMENT_BITS.toLong()) or CONTINUE_BIT.toLong()).toByte())
+
 		processingValue = processingValue ushr 7
 	}
 }
@@ -75,11 +74,12 @@ fun ByteBuffer.varLong(): Long {
 
 	while (true) {
 		currentByte = get()
-		value = value or (currentByte.toLong() and SEGMENT_BITS.toLong()) shl position
-		if ((currentByte and CONTINUE_BIT.toByte()) == 0.toByte()) break
+		value = value or ((currentByte and SEGMENT_BITS.toByte()).toLong() shl position)
+		if ((currentByte and CONTINUE_BIT.toByte()).toInt() == 0) break
 		position += 7
 		if (position >= 64) throw RuntimeException("VarLong is too big")
 	}
+
 	return value
 }
 

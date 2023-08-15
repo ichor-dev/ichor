@@ -26,10 +26,10 @@ fun ByteBuffer.byteArray(value: ByteArray) {
 
 fun ByteBuffer.byteArray(): ByteArray {
 	val length = varInt()
-	return byteArray(length)
+	return rawBytes(length)
 }
 
-fun ByteBuffer.byteArray(length: Int): ByteArray {
+fun ByteBuffer.rawBytes(length: Int): ByteArray {
 	val bytes = ByteArray(length)
 	get(bytes)
 	return bytes
@@ -39,9 +39,9 @@ fun ByteBuffer.rawBytes(value: ByteArray) {
 	put(value)
 }
 
-fun ByteBuffer.rawBytes(): ByteArray {
+fun ByteBuffer.rawBytes(): ByteArray? {
 	val length: Int = limit() - position()
-	assert(length > 0) { "Invalid remaining: $length" }
+	if (length <= 0) return null
 	val bytes = ByteArray(length)
 	get(bytes)
 	return bytes
@@ -108,10 +108,10 @@ fun ByteBuffer.double(): Double {
 fun ByteBuffer.string(value: String) {
 	val bytes = value.toByteArray(Charsets.UTF_8)
 	varInt(bytes.size)
-	byteArray(bytes)
+	rawBytes(bytes)
 }
 
 fun ByteBuffer.string(): String {
 	val length = varInt()
-	return String(byteArray(length), StandardCharsets.UTF_8)
+	return String(rawBytes(length), StandardCharsets.UTF_8)
 }
