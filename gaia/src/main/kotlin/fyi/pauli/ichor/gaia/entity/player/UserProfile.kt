@@ -1,12 +1,12 @@
 package fyi.pauli.ichor.gaia.entity.player
 
-import fyi.pauli.ichor.gaia.extensions.serializers.UUIDSerializer
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.util.*
 
 @Serializable
 data class UserProfile(
-	val uuid: @Serializable(with = UUIDSerializer::class) UUID,
+	val uuid: @Contextual UUID,
 	val username: String,
 	val properties: List<Property>
 )
