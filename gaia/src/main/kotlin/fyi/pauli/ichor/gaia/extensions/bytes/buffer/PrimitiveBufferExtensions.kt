@@ -63,6 +63,15 @@ fun ByteBuffer.int(): Int {
 	return getInt()
 }
 
+fun ByteBuffer.intArray(value: IntArray) {
+	varInt(value.size)
+	value.forEach { int(it) }
+}
+
+fun ByteBuffer.intArray(): IntArray {
+	return IntArray(varInt()) { int() }
+}
+
 fun ByteBuffer.long(value: Long) {
 	putLong(value)
 }
