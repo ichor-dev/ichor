@@ -3,13 +3,12 @@ package fyi.pauli.ichor.hephaistos.networking.receivers.login
 import fyi.pauli.ichor.gaia.entity.player.Player
 import fyi.pauli.ichor.gaia.entity.player.UserProfile
 import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
-import fyi.pauli.ichor.gaia.networking.packet.State
+import fyi.pauli.ichor.gaia.networking.packet.PacketReceiver
 import fyi.pauli.ichor.gaia.networking.packet.incoming.login.EncryptionResponse
 import fyi.pauli.ichor.gaia.networking.packet.incoming.login.LoginStart
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.login.Disconnect
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.login.LoginSuccess
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.login.SetCompression
-import fyi.pauli.ichor.gaia.networking.packet.PacketReceiver
 import fyi.pauli.ichor.gaia.server.Server
 import io.ktor.client.call.*
 import io.ktor.client.request.*
