@@ -18,11 +18,6 @@ data class StatusResponse(
 ) : OutgoingPacket() {
 
 	override fun serialize(): ByteBuffer {
-
-		val logger: KLogger by inject(KLogger::class.java)
-
-		logger.debug { status }
-
 		return buffer {
 			string(status)
 		}
@@ -33,4 +28,7 @@ data class StatusResponse(
 
 	override val state: State
 		get() = State.STATUS
+
+	override val debugName: String
+		get() = "Status Response"
 }

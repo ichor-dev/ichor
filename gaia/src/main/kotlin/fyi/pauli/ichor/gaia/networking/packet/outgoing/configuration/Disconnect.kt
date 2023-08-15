@@ -16,7 +16,8 @@ data class Disconnect(var reason: String) : OutgoingPacket() {
 		get() = 0x01
 	override val state: State
 		get() = State.CONFIGURATION
-
+	override val debugName: String
+		get() = "Disconnect"
 	override fun serialize(): ByteBuffer {
 		return buffer {
 			string(reason)

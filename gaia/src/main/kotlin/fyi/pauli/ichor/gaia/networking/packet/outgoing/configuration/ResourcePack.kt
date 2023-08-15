@@ -24,7 +24,8 @@ data class ResourcePack(
 		get() = 0x06
 	override val state: State
 		get() = State.CONFIGURATION
-
+	override val debugName: String
+		get() = "Resource Pack"
 	override fun serialize(): ByteBuffer {
 		return buffer {
 			string(url)

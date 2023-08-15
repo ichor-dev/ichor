@@ -16,7 +16,8 @@ class FinishConfiguration : OutgoingPacket() {
 		get() = 0x02
 	override val state: State
 		get() = State.CONFIGURATION
-
+	override val debugName: String
+		get() = "Finish Configuration"
 	override fun serialize(): ByteBuffer {
 		return buffer()
 	}

@@ -18,7 +18,8 @@ data class UpdateTags(var tags: MutableMap<Identifier, MutableMap<Identifier, In
 		get() = 0x08
 	override val state: State
 		get() = State.CONFIGURATION
-
+	override val debugName: String
+		get() = "Update Tags"
 	override fun serialize(): ByteBuffer {
 		return buffer {
 			varInt(tags.size)

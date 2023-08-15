@@ -19,7 +19,8 @@ data class KeepAlive(var keepAliveId: Long) : OutgoingPacket() {
 		get() = 0x03
 	override val state: State
 		get() = State.CONFIGURATION
-
+	override val debugName: String
+		get() = "Keep Alive"
 	override fun serialize(): ByteBuffer {
 		return buffer {
 			long(keepAliveId)

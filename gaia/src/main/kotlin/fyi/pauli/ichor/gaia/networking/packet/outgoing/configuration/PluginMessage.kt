@@ -22,7 +22,8 @@ data class PluginMessage(
 		get() = 0x00
 	override val state: State
 		get() = State.CONFIGURATION
-
+	override val debugName: String
+		get() = "Plugin Message"
 	override fun serialize(): ByteBuffer {
 		return buffer {
 			identifier(payload.identifier)

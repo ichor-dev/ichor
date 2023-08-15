@@ -26,4 +26,7 @@ data class PingResponse(
 
 	override val state: State
 		get() = State.STATUS
+
+	override val debugName: String
+		get() = "Ping Response"
 }

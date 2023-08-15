@@ -18,7 +18,8 @@ data class FeatureFlags(var featureFlags: MutableList<Identifier>) : OutgoingPac
 		get() = 0x07
 	override val state: State
 		get() = State.CONFIGURATION
-
+	override val debugName: String
+		get() = "Feature Flags"
 	override fun serialize(): ByteBuffer {
 		return buffer {
 			list(featureFlags) { identifier(it) }

@@ -16,7 +16,8 @@ data class Ping(var pingId: Int) : OutgoingPacket() {
 		get() = 0x04
 	override val state: State
 		get() = State.CONFIGURATION
-
+	override val debugName: String
+		get() = "Ping"
 	override fun serialize(): ByteBuffer {
 		return buffer {
 			int(pingId)

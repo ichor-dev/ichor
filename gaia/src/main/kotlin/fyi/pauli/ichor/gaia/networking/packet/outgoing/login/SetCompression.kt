@@ -26,4 +26,6 @@ data class SetCompression(var threshold: Int) : OutgoingPacket() {
 		get() = 0x03
 	override val state: State
 		get() = State.LOGIN
+	override val debugName: String
+		get() = "Set Compression"
 }

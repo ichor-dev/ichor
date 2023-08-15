@@ -25,4 +25,6 @@ data class LoginSuccess(
 		get() = 0x02
 	override val state: State
 		get() = State.LOGIN
+	override val debugName: String
+		get() = "Login Success"
 }

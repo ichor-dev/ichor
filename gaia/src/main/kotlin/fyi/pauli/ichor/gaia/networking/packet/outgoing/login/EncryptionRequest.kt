@@ -33,4 +33,6 @@ data class EncryptionRequest(
 
 	override val state: State
 		get() = State.LOGIN
+	override val debugName: String
+		get() = "Encryption Request"
 }

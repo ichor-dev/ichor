@@ -24,6 +24,8 @@ data class LoginPluginRequest(var messageId: Int, var channel: Identifier, var d
 		get() = 0x04
 	override val state: State
 		get() = State.LOGIN
+	override val debugName: String
+		get() = "Login Plugin Request"
 
 	override fun serialize(): ByteBuffer {
 		return buffer {
