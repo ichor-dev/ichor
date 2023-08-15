@@ -1,5 +1,6 @@
 package fyi.pauli.ichor.gaia.models.nbt.impl
 
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.byte
 import fyi.pauli.ichor.gaia.models.nbt.Tag
 import fyi.pauli.ichor.gaia.models.nbt.TagType
 import fyi.pauli.ichor.gaia.models.nbt.putTagString
@@ -16,13 +17,13 @@ data class CompoundTag(override val name: String?, override var value: CompoundM
 		value ?: error("Value of CompoundTag is null")
 
 		value!!.forEach { (name, tag) ->
-			buffer.put(tag.type.id.toByte())
+			buffer.byte(tag.type.id.toByte())
 			buffer.putTagString(name)
 
 			tag.write(buffer)
 		}
 
-		buffer.put(TagType.END.id.toByte())
+		buffer.byte(TagType.END.id.toByte())
 	}
 
 	override fun read(buffer: ByteBuffer) {
@@ -30,11 +31,11 @@ data class CompoundTag(override val name: String?, override var value: CompoundM
 
 		var nextType: TagType
 		do {
-			nextType = TagType.entries.first { it.id == buffer.get().toInt() }
+			nextType = TagType.entries.first { it.id == buffer.byte().toInt() }
 
 			if (nextType == TagType.END) break
 
-			val nextName = buffer.tagString
+			val nextName = buffer.tagString()
 			val nextTag = nextType.read(buffer, nextName)
 
 			newValue[nextName] = nextTag

@@ -1,5 +1,6 @@
 package fyi.pauli.ichor.gaia.models.nbt.impl
 
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.int
 import fyi.pauli.ichor.gaia.models.nbt.Tag
 import fyi.pauli.ichor.gaia.models.nbt.TagType
 import java.nio.ByteBuffer
@@ -11,11 +12,11 @@ data class IntArrayTag(override val name: String?, override var value: IntArray?
 	override fun write(buffer: ByteBuffer) {
 		value ?: error("Value of IntArrayTag is null")
 		buffer.putInt(value!!.size)
-		value!!.forEach { buffer.putInt(it) }
+		value!!.forEach { buffer.int(it) }
 	}
 
 	override fun read(buffer: ByteBuffer) {
-		value = IntArray(buffer.int) { buffer.int }
+		value = IntArray(buffer.int()) { buffer.int() }
 	}
 
 	override fun clone(name: String?): Tag<IntArray> {
