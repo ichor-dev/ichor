@@ -1,8 +1,8 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.login
 
 import fyi.pauli.ichor.gaia.entity.player.UserProfile
-import fyi.pauli.ichor.gaia.extensions.bytes.compressedBuffer
-import fyi.pauli.ichor.gaia.extensions.bytes.userProfile
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.userProfile
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import java.nio.ByteBuffer
@@ -16,7 +16,7 @@ data class LoginSuccess(
 	var userProfile: UserProfile
 ) : OutgoingPacket() {
 	override fun serialize(): ByteBuffer {
-		return compressedBuffer {
+		return buffer {
 			userProfile(userProfile)
 		}
 	}

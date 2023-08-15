@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.status
 
-import fyi.pauli.ichor.gaia.extensions.bytes.string
-import fyi.pauli.ichor.gaia.extensions.bytes.uncompressedBuffer
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.string
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import io.github.oshai.kotlinlogging.KLogger
@@ -23,7 +23,7 @@ data class StatusResponse(
 
 		logger.debug { status }
 
-		return uncompressedBuffer {
+		return buffer {
 			string(status)
 		}
 	}

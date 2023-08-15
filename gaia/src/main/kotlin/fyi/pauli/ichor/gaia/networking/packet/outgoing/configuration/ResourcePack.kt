@@ -1,8 +1,8 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration
 
-import fyi.pauli.ichor.gaia.extensions.bytes.boolean
-import fyi.pauli.ichor.gaia.extensions.bytes.compressedBuffer
-import fyi.pauli.ichor.gaia.extensions.bytes.string
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.boolean
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.string
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import java.nio.ByteBuffer
@@ -26,7 +26,7 @@ data class ResourcePack(
 		get() = State.CONFIGURATION
 
 	override fun serialize(): ByteBuffer {
-		return compressedBuffer {
+		return buffer {
 			string(url)
 			string(hash)
 			boolean(forced)

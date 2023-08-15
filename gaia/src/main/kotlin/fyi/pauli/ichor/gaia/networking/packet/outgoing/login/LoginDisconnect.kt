@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.login
 
-import fyi.pauli.ichor.gaia.extensions.bytes.string
-import fyi.pauli.ichor.gaia.extensions.bytes.uncompressedBuffer
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.string
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import java.nio.ByteBuffer
@@ -18,7 +18,7 @@ data class Disconnect(var reason: String) : OutgoingPacket() {
 		get() = State.LOGIN
 
 	override fun serialize(): ByteBuffer {
-		return uncompressedBuffer {
+		return buffer {
 			string(reason)
 		}
 	}

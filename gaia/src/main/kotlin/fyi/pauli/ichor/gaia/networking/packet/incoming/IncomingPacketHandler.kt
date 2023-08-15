@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.gaia.networking.packet.incoming
 
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.varInt
 import fyi.pauli.ichor.gaia.extensions.bytes.decompress
-import fyi.pauli.ichor.gaia.extensions.bytes.varInt
 import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.incoming.configuration.*
@@ -48,7 +48,10 @@ object IncomingPacketHandler {
 		val deserializedPacket = clientPacket.processor.deserialize(buffer)
 
 		clientPacket.processor.invokeReceivers(
-			deserializedPacket, clientPacket.receivers.values.toList(), packetHandle, server
+			deserializedPacket,
+			clientPacket.receivers.values.toList(),
+			packetHandle,
+			server
 		)
 	}
 
@@ -56,7 +59,9 @@ object IncomingPacketHandler {
 		fun createPacket(
 			state: State, id: Int, name: String, deserializer: IncomingPacket.PacketProcessor<*>
 		): RegisteredIncomingPacket = RegisteredIncomingPacket(
-			PacketIdentifier(id, state, name), deserializer, mutableMapOf()
+			PacketIdentifier(id, state, name),
+			deserializer,
+			mutableMapOf()
 		)
 
 		fun createLoginPacket(
