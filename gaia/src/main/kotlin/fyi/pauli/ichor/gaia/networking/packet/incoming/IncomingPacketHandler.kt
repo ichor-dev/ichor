@@ -32,26 +32,13 @@ object IncomingPacketHandler {
 				?: error("Cannot find packet with id $id in state ${packetHandle.state}")
 
 		server.logger.debug {
-			"""
-					--- Incoming packet ---
-					Socket: ${packetHandle.connection.socket.remoteAddress}
-					${if (compression) "DataLength: $dataLength, " else ""}Compression: $compression")}
-
-					PacketId: $id
-					PacketName: ${clientPacket.identifier.debuggingName}
-
-					State ${packetHandle.state.debugName}
-					-----------------------
-				""".trimIndent()
+			"Received packet ${clientPacket.identifier.debuggingName} with id $id in state ${packetHandle.state.debugName}."
 		}
 
 		val deserializedPacket = clientPacket.processor.deserialize(buffer)
 
 		clientPacket.processor.invokeReceivers(
-			deserializedPacket,
-			clientPacket.receivers.values.toList(),
-			packetHandle,
-			server
+			deserializedPacket, clientPacket.receivers.values.toList(), packetHandle, server
 		)
 	}
 
@@ -59,9 +46,7 @@ object IncomingPacketHandler {
 		fun createPacket(
 			state: State, id: Int, name: String, deserializer: IncomingPacket.PacketProcessor<*>
 		): RegisteredIncomingPacket = RegisteredIncomingPacket(
-			PacketIdentifier(id, state, name),
-			deserializer,
-			mutableMapOf()
+			PacketIdentifier(id, state, name), deserializer, mutableMapOf()
 		)
 
 		fun createLoginPacket(

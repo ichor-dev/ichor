@@ -24,12 +24,7 @@ class PacketHandle(
 				}
 
 				server.logger.debug {
-					"""
-						--- Sent packet ---
-						Packet: ${packet.id}
-						Name: ${packet.javaClass.simpleName}
-						-----------------------
-					""".trimIndent()
+					"Sent packet ${packet.debugName} with id ${packet.id}."
 				}
 			}
 		}

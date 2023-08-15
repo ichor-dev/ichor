@@ -8,13 +8,7 @@ import fyi.pauli.ichor.gaia.server.Server
 object HandshakeReceiver : PacketReceiver<Handshake> {
 	override suspend fun onReceive(packet: Handshake, packetHandle: PacketHandle, server: Server) {
 		server.logger.debug {
-			"""
-				--- Handshake Receiver ---
-				Socket: ${packetHandle.connection.socket.remoteAddress}
-				Old state: ${packetHandle.state}
-				New state: ${packet.nextState}
-				-----------------------
-			""".trimIndent()
+			"Switched state from ${packetHandle.state} to ${packet.nextState}."
 		}
 
 		packetHandle.state = packet.nextState
