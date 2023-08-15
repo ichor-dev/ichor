@@ -21,18 +21,18 @@ enum class TagType(val id: Int) {
 	fun read(buffer: ByteBuffer, name: String? = null): Tag<*> {
 		return when (this) {
 			END -> EndTag()
-			BYTE -> ByteTag(name, null).also { read(buffer) }
-			SHORT -> ShortTag(name, null).also { read(buffer) }
-			INT -> IntTag(name, null).also { read(buffer) }
-			LONG -> LongTag(name, null).also { read(buffer) }
-			FLOAT -> FloatTag(name, null).also { read(buffer) }
-			DOUBLE -> DoubleTag(name, null).also { read(buffer) }
-			BYTE_ARRAY -> ByteArrayTag(name, null).also { read(buffer) }
-			STRING -> StringTag(name, null).also { read(buffer) }
-			LIST -> ListTag(name, null).also { read(buffer) }
-			COMPOUND -> CompoundTag(name, null).also { read(buffer) }
-			INT_ARRAY -> IntArrayTag(name, null).also { read(buffer) }
-			LONG_ARRAY -> LongArrayTag(name, null).also { read(buffer) }
+			BYTE -> ByteTag(name, null).also { it.read(buffer) }
+			SHORT -> ShortTag(name, null).also { it.read(buffer) }
+			INT -> IntTag(name, null).also { it.read(buffer) }
+			LONG -> LongTag(name, null).also { it.read(buffer) }
+			FLOAT -> FloatTag(name, null).also { it.read(buffer) }
+			DOUBLE -> DoubleTag(name, null).also { it.read(buffer) }
+			BYTE_ARRAY -> ByteArrayTag(name, null).also { it.read(buffer) }
+			STRING -> StringTag(name, null).also { it.read(buffer) }
+			LIST -> ListTag(name, null).also { it.read(buffer) }
+			COMPOUND -> CompoundTag(name, null).also { it.read(buffer) }
+			INT_ARRAY -> IntArrayTag(name, null).also { it.read(buffer) }
+			LONG_ARRAY -> LongArrayTag(name, null).also { it.read(buffer) }
 		}
 	}
 }

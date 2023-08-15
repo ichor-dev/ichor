@@ -1,8 +1,8 @@
 package fyi.pauli.ichor.gaia.networking.packet.incoming.handshaking
 
-import fyi.pauli.ichor.gaia.extensions.bytes.short
-import fyi.pauli.ichor.gaia.extensions.bytes.string
-import fyi.pauli.ichor.gaia.extensions.bytes.varInt
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.string
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.unsignedShort
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.varInt
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.incoming.IncomingPacket
 import java.nio.ByteBuffer
@@ -13,7 +13,7 @@ data class Handshake(
 	companion object : PacketProcessor<Handshake>() {
 		override suspend fun deserialize(buffer: ByteBuffer): Handshake {
 			return Handshake(
-				buffer.varInt(), buffer.string(), buffer.short(), when (buffer.varInt()) {
+				buffer.varInt(), buffer.string(), buffer.unsignedShort(), when (buffer.varInt()) {
 					1 -> State.STATUS
 					2 -> State.LOGIN
 

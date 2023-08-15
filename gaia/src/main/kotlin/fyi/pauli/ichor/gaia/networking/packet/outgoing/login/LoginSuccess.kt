@@ -2,7 +2,7 @@ package fyi.pauli.ichor.gaia.networking.packet.outgoing.login
 
 import fyi.pauli.ichor.gaia.entity.player.UserProfile
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer
-import fyi.pauli.ichor.gaia.extensions.bytes.userProfile
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.userProfile
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import java.nio.ByteBuffer

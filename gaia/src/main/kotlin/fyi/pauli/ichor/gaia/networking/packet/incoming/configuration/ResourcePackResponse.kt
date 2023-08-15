@@ -1,6 +1,6 @@
 package fyi.pauli.ichor.gaia.networking.packet.incoming.configuration
 
-import fyi.pauli.ichor.gaia.extensions.bytes.varInt
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.varInt
 import fyi.pauli.ichor.gaia.networking.packet.incoming.IncomingPacket
 import java.nio.ByteBuffer
 
