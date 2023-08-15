@@ -1,6 +1,7 @@
 package fyi.pauli.ichor.gaia.models.nbt
 
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.byteArray
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.rawBytes
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.short
 import java.nio.ByteBuffer
 
@@ -19,15 +20,13 @@ abstract class Tag<T : Any> {
 }
 
 fun ByteBuffer.putTagString(value: String) {
-	apply {
-		short(value.length.toShort())
-		byteArray(value.toByteArray(Charsets.UTF_8))
-	}
+	short(value.length.toShort())
+	rawBytes(value.toByteArray(Charsets.UTF_8))
 }
 
 fun ByteBuffer.tagString(): String {
 	val length = short().toInt()
-	val byteArray = byteArray(length)
+	val byteArray = rawBytes(length)
 
 	return String(byteArray, Charsets.UTF_8)
 }

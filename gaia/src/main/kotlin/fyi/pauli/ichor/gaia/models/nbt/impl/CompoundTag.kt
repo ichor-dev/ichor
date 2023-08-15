@@ -31,7 +31,8 @@ data class CompoundTag(override val name: String?, override var value: CompoundM
 
 		var nextType: TagType
 		do {
-			nextType = TagType.entries.first { it.id == buffer.byte().toInt() }
+			val id = buffer.byte().toInt()
+			nextType = TagType.entries.first { it.id == id }
 
 			if (nextType == TagType.END) break
 
