@@ -1,6 +1,6 @@
 package fyi.pauli.ichor.gaia.networking.packet.incoming.configuration
 
-import fyi.pauli.ichor.gaia.extensions.bytes.varInt
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.int
 import fyi.pauli.ichor.gaia.networking.packet.incoming.IncomingPacket
 import java.nio.ByteBuffer
 
@@ -12,7 +12,7 @@ import java.nio.ByteBuffer
 data class Pong(var id: Int) : IncomingPacket() {
 	companion object : PacketProcessor<Pong>() {
 		override suspend fun deserialize(buffer: ByteBuffer): Pong {
-			return Pong(buffer.varInt())
+			return Pong(buffer.int())
 		}
 	}
 }
