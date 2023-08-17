@@ -1,13 +1,11 @@
 package fyi.pauli.ichor.gaia.networking.packet
 
 import fyi.pauli.ichor.gaia.extensions.bytes.build
-import fyi.pauli.ichor.gaia.extensions.bytes.compress
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import fyi.pauli.ichor.gaia.server.Server
 import io.ktor.network.sockets.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.nio.ByteBuffer
 
 class PacketHandle(
 	var state: State,
@@ -21,7 +19,8 @@ class PacketHandle(
 		withContext(server.coroutineContext) {
 			launch {
 				connection.output.write {
-					it.put(packet.serialize().build(compression))
+					val rawPacket = packet.serialize()
+					it.put(rawPacket.build(rawPacket.dataSize > threshold))
 				}
 
 				server.logger.debug {
