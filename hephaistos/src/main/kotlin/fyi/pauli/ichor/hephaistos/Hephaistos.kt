@@ -20,6 +20,8 @@ suspend fun main() = ichor(Hephaistos()) {
 			single<KLogger> { this@ichor.logger }
 		}
 	}
+
+	NetworkingExtensions.initiateVanillaNetworking()
 }
 
 class Hephaistos : Server("Hephaistos") {
@@ -27,10 +29,6 @@ class Hephaistos : Server("Hephaistos") {
 		install(ContentNegotiation) {
 			json(Constants.json)
 		}
-	}
-
-	override suspend fun load() {
-		NetworkingExtensions.initiateVanillaNetworking()
 	}
 
 	override suspend fun startup() {

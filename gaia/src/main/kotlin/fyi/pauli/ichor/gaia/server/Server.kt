@@ -17,7 +17,7 @@ import java.security.KeyPair
 import java.security.KeyPairGenerator
 import kotlin.coroutines.CoroutineContext
 
-suspend fun <S : Server> ichor(server: S, run: S.() -> Unit) = server.apply(run).internalStart()
+suspend fun <S : Server> ichor(server: S, init: S.() -> Unit = {}) = server.apply(init).internalStart()
 
 abstract class Server(private val serverName: String) : CoroutineScope {
 
@@ -55,8 +55,6 @@ abstract class Server(private val serverName: String) : CoroutineScope {
 
 	override val coroutineContext: CoroutineContext
 		get() = Dispatchers.Default + job + coroutineExceptionHandler
-
-	abstract suspend fun load()
 
 	abstract suspend fun startup()
 
