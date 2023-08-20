@@ -21,7 +21,6 @@ suspend fun main() = ichor(Hephaistos()) {
 		}
 	}
 
-	NetworkingExtensions.initiateVanillaNetworking()
 }
 
 class Hephaistos : Server("Hephaistos") {
@@ -36,7 +35,7 @@ class Hephaistos : Server("Hephaistos") {
 			"Starting server..."
 		}
 
-
+		NetworkingExtensions.initiateVanillaNetworking()
 	}
 
 	override suspend fun shutdown() {
