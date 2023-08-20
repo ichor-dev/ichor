@@ -2,7 +2,6 @@ package fyi.pauli.ichor.hephaistos
 
 import fyi.pauli.ichor.gaia.server.Server
 import fyi.pauli.ichor.hephaistos.networking.extensions.NetworkingExtensions
-import fyi.pauli.ichor.hephaistos.networking.extensions.handleIncoming
 import io.github.oshai.kotlinlogging.KLogger
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
