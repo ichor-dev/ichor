@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.gaia.networking.packet.incoming.login
 
-import fyi.pauli.ichor.gaia.extensions.bytes.string
-import fyi.pauli.ichor.gaia.extensions.bytes.uuid
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.string
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.uuid
 import fyi.pauli.ichor.gaia.networking.packet.incoming.IncomingPacket
 import java.nio.ByteBuffer
 import java.util.*

@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.gaia.networking.packet.incoming.configuration
 
-import fyi.pauli.ichor.gaia.extensions.bytes.byteArray
-import fyi.pauli.ichor.gaia.extensions.bytes.identifier
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.identifier
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.rawBytes
 import fyi.pauli.ichor.gaia.models.Identifier
 import fyi.pauli.ichor.gaia.networking.packet.incoming.IncomingPacket
 import java.nio.ByteBuffer
@@ -16,7 +16,7 @@ import java.nio.ByteBuffer
 data class PluginMessage(var channel: Identifier, var data: ByteArray) : IncomingPacket() {
 	companion object : PacketProcessor<PluginMessage>() {
 		override suspend fun deserialize(buffer: ByteBuffer): PluginMessage {
-			return PluginMessage(buffer.identifier(), buffer.byteArray(buffer.remaining()))
+			return PluginMessage(buffer.identifier(), buffer.rawBytes() ?: error("Empty payload received!"))
 		}
 	}
 }

@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.gaia.networking.packet.incoming
 
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.varInt
 import fyi.pauli.ichor.gaia.extensions.bytes.decompress
-import fyi.pauli.ichor.gaia.extensions.bytes.varInt
 import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.incoming.configuration.*
@@ -32,17 +32,7 @@ object IncomingPacketHandler {
 				?: error("Cannot find packet with id $id in state ${packetHandle.state}")
 
 		server.logger.debug {
-			"""
-					--- Incoming packet ---
-					Socket: ${packetHandle.connection.socket.remoteAddress}
-					${if (compression) "DataLength: $dataLength, " else ""}Compression: $compression")}
-
-					PacketId: $id
-					PacketName: ${clientPacket.identifier.debuggingName}
-
-					State ${packetHandle.state.debugName}
-					-----------------------
-				""".trimIndent()
+			"Received packet ${clientPacket.identifier.debuggingName} with id $id in state ${packetHandle.state.debugName}."
 		}
 
 		val deserializedPacket = clientPacket.processor.deserialize(buffer)

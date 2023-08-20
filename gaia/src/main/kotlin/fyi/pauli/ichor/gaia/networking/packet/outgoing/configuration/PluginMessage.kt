@@ -1,11 +1,11 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration
 
-import fyi.pauli.ichor.gaia.extensions.bytes.compressedBuffer
-import fyi.pauli.ichor.gaia.extensions.bytes.identifier
+import fyi.pauli.ichor.gaia.extensions.bytes.RawPacket
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.identifier
 import fyi.pauli.ichor.gaia.models.payload.Payload
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
-import java.nio.ByteBuffer
 
 /**
  * Mods and plugins can use this to send their data.
@@ -22,9 +22,10 @@ data class PluginMessage(
 		get() = 0x00
 	override val state: State
 		get() = State.CONFIGURATION
-
-	override fun serialize(): ByteBuffer {
-		return compressedBuffer {
+	override val debugName: String
+		get() = "Plugin Message"
+	override fun serialize(): RawPacket {
+		return buffer {
 			identifier(payload.identifier)
 			payload.write(this)
 		}

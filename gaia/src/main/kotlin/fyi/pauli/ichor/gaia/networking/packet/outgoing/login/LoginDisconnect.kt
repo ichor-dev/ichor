@@ -1,10 +1,10 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.login
 
-import fyi.pauli.ichor.gaia.extensions.bytes.string
-import fyi.pauli.ichor.gaia.extensions.bytes.uncompressedBuffer
+import fyi.pauli.ichor.gaia.extensions.bytes.RawPacket
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.string
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
-import java.nio.ByteBuffer
 
 /**
  * Packet, which disconnects the player during the login state.
@@ -16,9 +16,10 @@ data class Disconnect(var reason: String) : OutgoingPacket() {
 		get() = 0x00
 	override val state: State
 		get() = State.LOGIN
-
-	override fun serialize(): ByteBuffer {
-		return uncompressedBuffer {
+	override val debugName: String
+		get() = "Disconnect"
+	override fun serialize(): RawPacket {
+		return buffer {
 			string(reason)
 		}
 	}

@@ -1,12 +1,12 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration
 
-import fyi.pauli.ichor.gaia.extensions.bytes.compressedBuffer
-import fyi.pauli.ichor.gaia.extensions.bytes.identifier
-import fyi.pauli.ichor.gaia.extensions.bytes.varInt
+import fyi.pauli.ichor.gaia.extensions.bytes.RawPacket
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.identifier
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.varInt
 import fyi.pauli.ichor.gaia.models.Identifier
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
-import java.nio.ByteBuffer
 
 /**
  * Packet to update tags
@@ -18,9 +18,10 @@ data class UpdateTags(var tags: MutableMap<Identifier, MutableMap<Identifier, In
 		get() = 0x08
 	override val state: State
 		get() = State.CONFIGURATION
-
-	override fun serialize(): ByteBuffer {
-		return compressedBuffer {
+	override val debugName: String
+		get() = "Update Tags"
+	override fun serialize(): RawPacket {
+		return buffer {
 			varInt(tags.size)
 			tags.forEach { (key, tag) ->
 				identifier(key)

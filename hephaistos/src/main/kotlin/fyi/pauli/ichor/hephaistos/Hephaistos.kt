@@ -1,9 +1,15 @@
 package fyi.pauli.ichor.hephaistos
 
 import fyi.pauli.ichor.gaia.server.Server
+import fyi.pauli.ichor.hephaistos.networking.extensions.NetworkingExtensions
+import fyi.pauli.ichor.hephaistos.networking.extensions.handleIncoming
 import io.github.oshai.kotlinlogging.KLogger
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.network.selector.*
 import io.ktor.network.sockets.*
+import io.ktor.serialization.kotlinx.json.*
 import io.ktor.utils.io.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
@@ -28,6 +34,11 @@ suspend fun main() {
 }
 
 class Hephaistos : Server("Hephaistos") {
+	override val httpClient: HttpClient = HttpClient(CIO) {
+		install(ContentNegotiation) {
+			json(Constants.json)
+		}
+	}
 
 	override suspend fun startup() {
 		logger.info {
@@ -44,6 +55,8 @@ class Hephaistos : Server("Hephaistos") {
 		logger.info {
 			"Server started successfully!"
 		}
+
+		NetworkingExtensions.initiateVanillaNetworking()
 
 		while (!serverSocket.isClosed) {
 			val socket = serverSocket.accept()

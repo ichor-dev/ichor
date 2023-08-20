@@ -2,7 +2,7 @@ package fyi.pauli.ichor.gaia.networking.packet.incoming
 
 import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
 import fyi.pauli.ichor.gaia.networking.packet.State
-import fyi.pauli.ichor.gaia.networking.packet.receive.PacketReceiver
+import fyi.pauli.ichor.gaia.networking.packet.PacketReceiver
 import fyi.pauli.ichor.gaia.server.Server
 import java.nio.ByteBuffer
 
@@ -14,7 +14,7 @@ abstract class IncomingPacket {
 
 		@Suppress("UNCHECKED_CAST")
 		internal suspend fun invokeReceivers(
-			packet: IncomingPacket, receiver: List<PacketReceiver<*>>, handle: PacketHandle, server: Server
+            packet: IncomingPacket, receiver: List<PacketReceiver<*>>, handle: PacketHandle, server: Server
 		) {
 			packet as? P ?: error("incoming packet doesn't match the assigned packet!")
 

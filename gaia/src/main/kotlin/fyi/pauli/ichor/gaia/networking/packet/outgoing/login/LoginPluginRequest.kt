@@ -1,12 +1,13 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.login
 
-import fyi.pauli.ichor.gaia.extensions.bytes.compressedBuffer
-import fyi.pauli.ichor.gaia.extensions.bytes.identifier
-import fyi.pauli.ichor.gaia.extensions.bytes.varInt
+import fyi.pauli.ichor.gaia.extensions.bytes.RawPacket
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.identifier
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.rawBytes
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.varInt
 import fyi.pauli.ichor.gaia.models.Identifier
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
-import java.nio.ByteBuffer
 
 /**
  * Used to implement a custom handshaking flow together with Login Plugin Response.
@@ -23,12 +24,14 @@ data class LoginPluginRequest(var messageId: Int, var channel: Identifier, var d
 		get() = 0x04
 	override val state: State
 		get() = State.LOGIN
+	override val debugName: String
+		get() = "Login Plugin Request"
 
-	override fun serialize(): ByteBuffer {
-		return compressedBuffer {
+	override fun serialize(): RawPacket {
+		return buffer {
 			varInt(messageId)
 			identifier(channel)
-			put(data)
+			rawBytes(data)
 		}
 	}
 }

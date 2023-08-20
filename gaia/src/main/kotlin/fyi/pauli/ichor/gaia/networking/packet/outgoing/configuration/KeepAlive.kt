@@ -1,10 +1,10 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration
 
-import fyi.pauli.ichor.gaia.extensions.bytes.compressedBuffer
-import fyi.pauli.ichor.gaia.extensions.bytes.varLong
+import fyi.pauli.ichor.gaia.extensions.bytes.RawPacket
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.long
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
-import java.nio.ByteBuffer
 
 /**
  * The server will frequently send out a keep-alive, each containing a random ID.
@@ -19,10 +19,11 @@ data class KeepAlive(var keepAliveId: Long) : OutgoingPacket() {
 		get() = 0x03
 	override val state: State
 		get() = State.CONFIGURATION
-
-	override fun serialize(): ByteBuffer {
-		return compressedBuffer {
-			varLong(keepAliveId)
+	override val debugName: String
+		get() = "Keep Alive"
+	override fun serialize(): RawPacket {
+		return buffer {
+			long(keepAliveId)
 		}
 	}
 }

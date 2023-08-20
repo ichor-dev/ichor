@@ -15,7 +15,7 @@ data class StringTag(override val name: String?, override var value: String?) : 
 	}
 
 	override fun read(buffer: ByteBuffer) {
-		value = buffer.tagString
+		value = buffer.tagString()
 	}
 
 	override fun clone(name: String?): Tag<String> {

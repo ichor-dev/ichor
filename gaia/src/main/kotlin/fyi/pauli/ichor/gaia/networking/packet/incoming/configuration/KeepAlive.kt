@@ -1,6 +1,6 @@
 package fyi.pauli.ichor.gaia.networking.packet.incoming.configuration
 
-import fyi.pauli.ichor.gaia.extensions.bytes.varLong
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.long
 import fyi.pauli.ichor.gaia.networking.packet.incoming.IncomingPacket
 import java.nio.ByteBuffer
 
@@ -13,7 +13,7 @@ import java.nio.ByteBuffer
 data class KeepAlive(var id: Long) : IncomingPacket() {
 	companion object : PacketProcessor<KeepAlive>() {
 		override suspend fun deserialize(buffer: ByteBuffer): KeepAlive {
-			return KeepAlive(buffer.varLong())
+			return KeepAlive(buffer.long())
 		}
 	}
 }

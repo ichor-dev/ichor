@@ -2,14 +2,21 @@ package fyi.pauli.ichor.gaia.config
 
 import fyi.pauli.ichor.gaia.extensions.env
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlin.io.path.*
+
+@Transient
+internal val gaiaJson = Json {
+	encodeDefaults = true
+}
 
 @Serializable
 data class BaseConfig(
 	val environment: Map<String, String> = emptyMap(), val server: Server = Server()
 ) {
+
 
 	companion object {
 		fun loadConfig(): BaseConfig {
@@ -17,11 +24,11 @@ data class BaseConfig(
 			if (file.notExists() || file.readText().isBlank()) {
 				val baseConfig = BaseConfig()
 				if (file.notExists()) file.createFile()
-				file.writeText(Json.encodeToString(baseConfig))
+				file.writeText(gaiaJson.encodeToString(baseConfig))
 				return baseConfig
 			}
 
-			return Json.decodeFromString<BaseConfig>(file.readText())
+			return gaiaJson.decodeFromString<BaseConfig>(file.readText())
 		}
 	}
 

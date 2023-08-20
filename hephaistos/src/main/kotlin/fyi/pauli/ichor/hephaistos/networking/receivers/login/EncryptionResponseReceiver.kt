@@ -2,18 +2,14 @@ package fyi.pauli.ichor.hephaistos.networking.receivers.login
 
 import fyi.pauli.ichor.gaia.entity.player.Player
 import fyi.pauli.ichor.gaia.entity.player.UserProfile
-import fyi.pauli.ichor.gaia.models.payload.BrandPayload
 import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
-import fyi.pauli.ichor.gaia.networking.packet.State
+import fyi.pauli.ichor.gaia.networking.packet.PacketReceiver
 import fyi.pauli.ichor.gaia.networking.packet.incoming.login.EncryptionResponse
 import fyi.pauli.ichor.gaia.networking.packet.incoming.login.LoginStart
-import fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration.PluginMessage
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.login.Disconnect
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.login.LoginSuccess
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.login.SetCompression
-import fyi.pauli.ichor.gaia.networking.packet.receive.PacketReceiver
 import fyi.pauli.ichor.gaia.server.Server
-import fyi.pauli.ichor.hephaistos.Constants
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -50,7 +46,6 @@ object EncryptionResponseReceiver : PacketReceiver<EncryptionResponse> {
 
 		enableCompression(packetHandle)
 		sendLoginSuccess(packetHandle, userProfile)
-		packetHandle.state = State.CONFIGURATION
 	}
 
 	private suspend fun requestUserProfile(
