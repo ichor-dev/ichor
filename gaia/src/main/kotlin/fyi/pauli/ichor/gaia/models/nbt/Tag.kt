@@ -1,6 +1,5 @@
 package fyi.pauli.ichor.gaia.models.nbt
 
-import fyi.pauli.ichor.gaia.extensions.bytes.buffer.byteArray
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.rawBytes
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.short
 import java.nio.ByteBuffer

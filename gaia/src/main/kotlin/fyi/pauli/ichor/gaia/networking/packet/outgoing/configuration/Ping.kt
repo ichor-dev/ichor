@@ -18,6 +18,7 @@ data class Ping(var pingId: Int) : OutgoingPacket() {
 		get() = State.CONFIGURATION
 	override val debugName: String
 		get() = "Ping"
+
 	override fun serialize(): RawPacket {
 		return buffer {
 			int(pingId)

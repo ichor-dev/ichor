@@ -7,11 +7,17 @@ import fyi.pauli.ichor.gaia.networking.packet.State
 import io.github.oshai.kotlinlogging.KLogger
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.*
+import io.ktor.network.selector.*
 import io.ktor.network.sockets.*
+import io.ktor.utils.io.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.ClosedReceiveChannelException
+import java.net.SocketException
 import java.security.KeyPair
 import java.security.KeyPairGenerator
 import kotlin.coroutines.CoroutineContext
+
+suspend fun <S : Server> ichor(server: S, init: S.() -> Unit = {}) = server.apply(init).internalStart()
 
 abstract class Server(private val serverName: String) : CoroutineScope {
 
@@ -29,7 +35,7 @@ abstract class Server(private val serverName: String) : CoroutineScope {
 	private val handles: MutableSet<PacketHandle> = mutableSetOf()
 	val players: MutableSet<Player> = mutableSetOf()
 
-	fun Connection.handle() = PacketHandle(
+	private fun Connection.handle() = PacketHandle(
 		state = State.HANDSHAKING, connection = this, server = this@Server
 	).also {
 		handles.add(it)
@@ -51,6 +57,42 @@ abstract class Server(private val serverName: String) : CoroutineScope {
 		get() = Dispatchers.Default + job + coroutineExceptionHandler
 
 	abstract suspend fun startup()
+
+	internal suspend fun internalStart() = coroutineScope {
+		startup()
+		val serverConfig = config.server
+
+		val manager = SelectorManager(Dispatchers.IO)
+		val serverSocket = aSocket(manager).tcp().bind(
+			InetSocketAddress(serverConfig.host, serverConfig.port.toInt())
+		)
+
+		logger.info {
+			"Server started successfully!"
+		}
+
+		while (!serverSocket.isClosed) {
+			val socket = serverSocket.accept()
+
+			val connection = Connection(socket, socket.openReadChannel(), socket.openWriteChannel(true))
+
+			val handle = connection.handle()
+
+			launch {
+				try {
+					handle.handleIncoming(this@Server)
+				} catch (e: Throwable) {
+					if (e !is ClosedReceiveChannelException && e !is SocketException) logger.error(e) {
+						"Error in channel"
+					}
+				} finally {
+					connection.input.cancel()
+					connection.output.close()
+				}
+			}
+
+		}
+	}
 
 	abstract suspend fun shutdown()
 

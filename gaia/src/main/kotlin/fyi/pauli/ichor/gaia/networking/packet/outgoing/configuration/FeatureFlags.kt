@@ -20,6 +20,7 @@ data class FeatureFlags(var featureFlags: MutableList<Identifier>) : OutgoingPac
 		get() = State.CONFIGURATION
 	override val debugName: String
 		get() = "Feature Flags"
+
 	override fun serialize(): RawPacket {
 		return buffer {
 			list(featureFlags) { identifier(it) }

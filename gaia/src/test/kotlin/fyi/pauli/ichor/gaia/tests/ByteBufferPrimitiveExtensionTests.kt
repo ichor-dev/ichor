@@ -58,7 +58,7 @@ class ByteBufferPrimitiveExtensionTests {
 
 	@Test
 	fun `read and write int array`() {
-		val expected = (2 .. 5).toList().toIntArray()
+		val expected = (2..5).toList().toIntArray()
 		val buffer = ByteBuffer.allocate((expected.size + 1) * INT + VAR_INT)
 		buffer.intArray(expected)
 

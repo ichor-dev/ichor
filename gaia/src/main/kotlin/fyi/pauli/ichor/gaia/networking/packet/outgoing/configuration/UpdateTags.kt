@@ -20,6 +20,7 @@ data class UpdateTags(var tags: MutableMap<Identifier, MutableMap<Identifier, In
 		get() = State.CONFIGURATION
 	override val debugName: String
 		get() = "Update Tags"
+
 	override fun serialize(): RawPacket {
 		return buffer {
 			varInt(tags.size)
