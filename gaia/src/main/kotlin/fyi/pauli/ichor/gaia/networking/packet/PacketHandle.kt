@@ -21,7 +21,7 @@ class PacketHandle(
 		withContext(server.coroutineContext) {
 			launch {
 				connection.output.write {
-					it.put(packet.serialize().run { if (compression) ByteBuffer.wrap(array().compress()) else this.flip() })
+					it.put(packet.serialize().run { if (compression) ByteBuffer.wrap(it.array().compress()) else it.flip() })
 				}
 
 				server.logger.debug {
