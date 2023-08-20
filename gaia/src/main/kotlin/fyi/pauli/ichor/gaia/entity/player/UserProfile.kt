@@ -17,4 +17,4 @@ data class UserProfile(
 data class Property(val name: String, val value: String, val signature: String)
 
 @Serializable
-class	ProfileAction
+class ProfileAction

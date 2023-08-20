@@ -35,7 +35,7 @@ abstract class Server(private val serverName: String) : CoroutineScope {
 	private val handles: MutableSet<PacketHandle> = mutableSetOf()
 	val players: MutableSet<Player> = mutableSetOf()
 
-	fun Connection.handle() = PacketHandle(
+	private fun Connection.handle() = PacketHandle(
 		state = State.HANDSHAKING, connection = this, server = this@Server
 	).also {
 		handles.add(it)
