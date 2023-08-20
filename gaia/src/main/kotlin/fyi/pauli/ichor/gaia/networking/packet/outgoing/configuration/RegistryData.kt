@@ -20,6 +20,7 @@ data class RegistryData(var registryCodec: CompoundTag) : OutgoingPacket() {
 		get() = State.CONFIGURATION
 	override val debugName: String
 		get() = "Registry Data"
+
 	override fun serialize(): RawPacket {
 		return buffer {
 			compoundTag(registryCodec)
