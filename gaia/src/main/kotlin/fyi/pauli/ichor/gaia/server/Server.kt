@@ -17,7 +17,7 @@ import java.security.KeyPair
 import java.security.KeyPairGenerator
 import kotlin.coroutines.CoroutineContext
 
-suspend fun <S : Server> ichor(server: S, init: S.() -> Unit = {}) = server.apply(init).internalStart()
+suspend fun <S : Server> serve(server: S, init: S.() -> Unit = {}) = server.apply(init).internalStart()
 
 abstract class Server(private val serverName: String) : CoroutineScope {
 
@@ -50,7 +50,7 @@ abstract class Server(private val serverName: String) : CoroutineScope {
 		get() = KotlinLogging.logger(serverName)
 
 	private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-		logger.error { throwable.stackTraceToString() }
+		logger.error { throwable }
 	}
 
 	override val coroutineContext: CoroutineContext
