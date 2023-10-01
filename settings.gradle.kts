@@ -7,22 +7,22 @@ include(
 dependencyResolutionManagement {
   versionCatalogs {
     create("jetbrains") {
-      version("kotlin", "1.9.0")
+      version("kotlin", "1.9.10")
 
       plugin("jvm", "org.jetbrains.kotlin.jvm").versionRef("kotlin")
       plugin("serialization", "org.jetbrains.kotlin.plugin.serialization").versionRef("kotlin")
     }
 
     create("kotlinx") {
-      library("datetime", "org.jetbrains.kotlinx", "kotlinx-datetime").version("0.4.0")
-      library("json", "org.jetbrains.kotlinx", "kotlinx-serialization-json").version("1.6.0-RC")
+      library("datetime", "org.jetbrains.kotlinx", "kotlinx-datetime").version("0.4.1")
+      library("json", "org.jetbrains.kotlinx", "kotlinx-serialization-json").version("1.6.0")
       library("coroutines", "org.jetbrains.kotlinx", "kotlinx-coroutines-core").version("1.7.3")
 
       bundle("kotlinx", listOf("coroutines", "coroutines", "datetime"))
     }
 
     create("ktorio") {
-      plugin("ktor", "io.ktor.plugin").version("2.3.3")
+      plugin("ktor", "io.ktor.plugin").version("2.3.4")
 
       library("cio", "io.ktor", "ktor-server-cio").withoutVersion()
       library("network", "io.ktor", "ktor-network").withoutVersion()
@@ -64,7 +64,7 @@ dependencyResolutionManagement {
     }
 
     create("koin") {
-      version("koin", "3.4.3")
+      version("koin", "3.5.1")
 
       library("core", "io.insert-koin", "koin-core").versionRef("koin")
       library("ktor", "io.insert-koin", "koin-ktor").versionRef("koin")
@@ -74,9 +74,8 @@ dependencyResolutionManagement {
     }
 
     create("klogging") {
-
-      library("logback", "ch.qos.logback", "logback-classic").version("1.4.9")
-      library("logging", "io.github.oshai", "kotlin-logging-jvm").version("5.0.1")
+      library("logback", "ch.qos.logback", "logback-classic").version("1.4.11")
+      library("logging", "io.github.oshai", "kotlin-logging-jvm").version("5.1.0")
 
       bundle("logging", listOf("logback", "logging"))
     }
