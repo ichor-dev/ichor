@@ -15,8 +15,8 @@ import fyi.pauli.ichor.hephaistos.networking.receivers.ocnfiguration.PluginMessa
 import fyi.pauli.ichor.hephaistos.networking.receivers.status.PingRequestReceiver
 import fyi.pauli.ichor.hephaistos.networking.receivers.status.StatusRequestReceiver
 
-object HephaistosReceiverHelper {
-	val hephaistosReceiverIdentifier = Identifier(Constants.serverBrand, "vanilla-receiver")
+object Receivers {
+	private val identifier = Identifier(Constants.serverBrand, "vanilla-receiver")
 
 	@Suppress("UNCHECKED_CAST")
 	internal fun registerVanillaJoinReceivers() {
@@ -25,7 +25,7 @@ object HephaistosReceiverHelper {
 				PacketRegistry.incomingPackets.first { it.identifier.state == state && it.identifier.id == id }
 
 			receivers.map { it as PacketReceiver<IncomingPacket> }.toList().forEach {
-				registeredPacket.receivers[hephaistosReceiverIdentifier] = it
+				registeredPacket.receivers[identifier] = it
 			}
 		}
 
