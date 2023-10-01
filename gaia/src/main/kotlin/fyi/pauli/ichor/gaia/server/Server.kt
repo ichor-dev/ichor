@@ -17,13 +17,17 @@ import java.security.KeyPair
 import java.security.KeyPairGenerator
 import kotlin.coroutines.CoroutineContext
 
+// Initialized when the server starts
+var finalConfig: BaseConfig? = null
+	internal set
+
 suspend fun <S : Server> serve(server: S, init: S.() -> Unit = {}) = server.apply(init).internalStart()
 
 abstract class Server(private val serverName: String) : CoroutineScope {
 
 	private val job: Job = Job()
 
-	protected val config: BaseConfig = BaseConfig.loadConfig()
+	val config: BaseConfig = BaseConfig.loadConfig()
 
 	abstract val httpClient: HttpClient
 
@@ -60,6 +64,7 @@ abstract class Server(private val serverName: String) : CoroutineScope {
 
 	internal suspend fun internalStart() = coroutineScope {
 		startup()
+		finalConfig = config
 		val serverConfig = config.server
 
 		val manager = SelectorManager(Dispatchers.IO)
@@ -90,7 +95,6 @@ abstract class Server(private val serverName: String) : CoroutineScope {
 					connection.output.close()
 				}
 			}
-
 		}
 	}
 
