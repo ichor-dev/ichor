@@ -10,8 +10,8 @@ import fyi.pauli.ichor.hephaistos.networking.receivers.handshaking.HandshakeRece
 import fyi.pauli.ichor.hephaistos.networking.receivers.login.EncryptionResponseReceiver
 import fyi.pauli.ichor.hephaistos.networking.receivers.login.LoginAcknowledgedReceiver
 import fyi.pauli.ichor.hephaistos.networking.receivers.login.LoginStartReceiver
-import fyi.pauli.ichor.hephaistos.networking.receivers.ocnfiguration.FinishConfigurationReceiver
-import fyi.pauli.ichor.hephaistos.networking.receivers.ocnfiguration.PluginMessageReceiver
+import fyi.pauli.ichor.hephaistos.networking.receivers.configuration.FinishConfigurationReceiver
+import fyi.pauli.ichor.hephaistos.networking.receivers.configuration.PluginMessageReceiver
 import fyi.pauli.ichor.hephaistos.networking.receivers.status.PingRequestReceiver
 import fyi.pauli.ichor.hephaistos.networking.receivers.status.StatusRequestReceiver
 

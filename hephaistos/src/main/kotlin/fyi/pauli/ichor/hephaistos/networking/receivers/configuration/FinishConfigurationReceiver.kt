@@ -1,4 +1,4 @@
-package fyi.pauli.ichor.hephaistos.networking.receivers.ocnfiguration
+package fyi.pauli.ichor.hephaistos.networking.receivers.configuration
 
 import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
 import fyi.pauli.ichor.gaia.networking.packet.PacketReceiver
