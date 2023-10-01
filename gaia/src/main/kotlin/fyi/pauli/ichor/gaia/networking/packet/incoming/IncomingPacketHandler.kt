@@ -19,13 +19,15 @@ object IncomingPacketHandler {
 	suspend fun deserializeAndHandle(originalBuffer: ByteBuffer, packetHandle: PacketHandle, server: Server) {
 		val compression = packetHandle.compression
 
-		val dataLength = if (compression) originalBuffer.varInt() else 0
+		// The second varInt varies between a compressed and uncompressed packet
+		// Compressed value: data length
+		// uncompressed value: packet id
+		val secondInt = originalBuffer.varInt()
 
-		var id: Int? = if (compression) null else originalBuffer.varInt()
-
-		val buffer = if (compression) ByteBuffer.wrap(originalBuffer.array().decompress(dataLength)).also {
+		var id: Int
+		val buffer = if (compression) ByteBuffer.wrap(originalBuffer.array().decompress(secondInt)).also {
 			id = it.varInt()
-		} else originalBuffer
+		} else originalBuffer.also { id = secondInt }
 
 		val clientPacket =
 			PacketRegistry.incomingPackets.firstOrNull { it.identifier.id == id && it.identifier.state == packetHandle.state }
