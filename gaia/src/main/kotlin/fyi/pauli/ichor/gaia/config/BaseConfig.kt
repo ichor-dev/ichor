@@ -16,8 +16,6 @@ internal val gaiaJson = Json {
 data class BaseConfig(
 	val environment: Map<String, String> = emptyMap(), val server: Server = Server()
 ) {
-
-
 	companion object {
 		fun loadConfig(): BaseConfig {
 			val file = Path(env["BASE_CONFIG_PATH"] ?: "./config.json")
@@ -38,6 +36,6 @@ data class BaseConfig(
 
 	@Serializable
 	data class Server(
-		val host: String = env["SERVER_HOST"] ?: "127.0.0.1", val port: String = env["SERVER_PORT"] ?: "25565"
+		val host: String = env["SERVER_HOST"] ?: "127.0.0.1", val port: String = env["SERVER_PORT"] ?: "25565", val maxPacketSize: Int = 2_097_151
 	)
 }

@@ -4,6 +4,7 @@ import fyi.pauli.ichor.gaia.extensions.bytes.buffer.rawBytes
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.varInt
 import fyi.pauli.ichor.gaia.networking.VAR_INT
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
+import fyi.pauli.ichor.gaia.server.finalConfig
 import java.nio.ByteBuffer
 
 
@@ -11,10 +12,12 @@ internal const val SEGMENT_BITS = 0x7F
 internal const val CONTINUE_BIT = 0x80
 
 inline fun OutgoingPacket.buffer(size: Int? = null, applier: ByteBuffer.() -> Unit = {}): RawPacket {
-	val data = ByteBuffer.allocate(size ?: 4096).apply { varInt(id) }.apply(applier)
-	val dataSize = data.position()
+	val data =
+		ByteBuffer.allocate(size ?: finalConfig?.server?.maxPacketSize ?: 2_097_151).apply { varInt(id) }.apply(applier)
+	val dataArray = ByteArray(data.position())
+	data.get(dataArray, 0, data.position())
 
-	return RawPacket(dataSize, data.array())
+	return RawPacket(dataArray.size, dataArray)
 }
 
 fun RawPacket.build(compression: Boolean): ByteBuffer {
