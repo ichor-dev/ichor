@@ -5,31 +5,30 @@ import java.util.zip.Deflater
 import java.util.zip.Inflater
 
 fun ByteArray.compress(): ByteArray {
-	val output = ByteArray(this.size * 4)
-	val compressor = Deflater().apply {
-		setInput(this@compress)
-		finish()
+	val deflater = Deflater()
+	deflater.setInput(this)
+	deflater.finish()
+	val buffer = ByteArray(4096)
+	val stream = ByteArrayOutputStream(this.size)
+	while (!deflater.finished()) {
+		stream.write(buffer, 0, deflater.deflate(buffer))
 	}
-	val compressedDataLength: Int = compressor.deflate(output)
-	return output.copyOfRange(0, compressedDataLength)
+	stream.close()
+	return stream.toByteArray()
 }
 
-fun ByteArray.decompress(length: Int): ByteArray {
+fun ByteArray.decompress(length: Int? = null): ByteArray {
 	val inflater = Inflater()
-	val outputStream = ByteArrayOutputStream()
-
-	return outputStream.use {
-		val buffer = ByteArray(length)
-
-		inflater.setInput(this)
-
-		var count = -1
-		while (count != 0) {
-			count = inflater.inflate(buffer)
-			outputStream.write(buffer, 0, count)
+	inflater.setInput(this, 0, this.size)
+	val buffer = ByteArray(4096)
+	val stream = ByteArrayOutputStream(length ?: this.size)
+	val maxSize = length ?: Int.MAX_VALUE
+	while (!inflater.finished()) {
+		if (stream.size() > maxSize) {
+			throw OutOfMemoryError("Stream too large!")
 		}
-
-		inflater.end()
-		outputStream.toByteArray()
+		stream.write(buffer, 0, inflater.inflate(buffer))
 	}
+	stream.close()
+	return stream.toByteArray()
 }

@@ -1,6 +1,5 @@
-package fyi.pauli.ichor.gaia.networking.packet.receive
+package fyi.pauli.ichor.gaia.networking.packet
 
-import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
 import fyi.pauli.ichor.gaia.networking.packet.incoming.IncomingPacket
 import fyi.pauli.ichor.gaia.server.Server
 

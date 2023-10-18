@@ -60,10 +60,11 @@ fun ByteBuffer.userProfile(value: UserProfile) {
 		boolean(true)
 		string(it.signature)
 	}
+	list(value.profileActions) {}
 }
 
 fun ByteBuffer.userProfile(): UserProfile {
-	return UserProfile(uuid(), string(), list { Property(string(), string().also { boolean() }, string()) })
+	return UserProfile(uuid(), string(), list { Property(string(), string().also { boolean() }, string()) }, listOf())
 }
 
 inline fun <reified T> ByteBuffer.list(value: List<T>, crossinline processor: ByteBuffer.(T) -> Unit) {

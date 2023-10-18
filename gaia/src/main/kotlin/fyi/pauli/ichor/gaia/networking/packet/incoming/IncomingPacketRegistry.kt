@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.gaia.networking.packet.incoming
 
 import fyi.pauli.ichor.gaia.models.Identifier
-import fyi.pauli.ichor.gaia.networking.packet.receive.PacketReceiver
+import fyi.pauli.ichor.gaia.networking.packet.PacketReceiver
 
 object PacketRegistry {
 	val incomingPackets = mutableListOf<RegisteredIncomingPacket>()

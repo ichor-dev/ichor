@@ -1,11 +1,11 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration
 
+import fyi.pauli.ichor.gaia.extensions.bytes.RawPacket
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.compoundTag
 import fyi.pauli.ichor.gaia.models.nbt.impl.CompoundTag
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
-import java.nio.ByteBuffer
 
 /**
  * Represents certain registries that are sent from the server and are applied on the client.
@@ -18,8 +18,10 @@ data class RegistryData(var registryCodec: CompoundTag) : OutgoingPacket() {
 		get() = 0x05
 	override val state: State
 		get() = State.CONFIGURATION
+	override val debugName: String
+		get() = "Registry Data"
 
-	override fun serialize(): ByteBuffer {
+	override fun serialize(): RawPacket {
 		return buffer {
 			compoundTag(registryCodec)
 		}

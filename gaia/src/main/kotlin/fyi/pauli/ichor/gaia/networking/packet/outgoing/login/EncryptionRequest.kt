@@ -1,11 +1,11 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.login
 
+import fyi.pauli.ichor.gaia.extensions.bytes.RawPacket
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.byteArray
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.string
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
-import java.nio.ByteBuffer
 
 /**
  * Packet, used to authenticate the server.
@@ -20,7 +20,7 @@ data class EncryptionRequest(
 	var verifyToken: ByteArray
 ) : OutgoingPacket() {
 
-	override fun serialize(): ByteBuffer {
+	override fun serialize(): RawPacket {
 		return buffer {
 			string(serverId)
 			byteArray(publicKey)
@@ -33,4 +33,6 @@ data class EncryptionRequest(
 
 	override val state: State
 		get() = State.LOGIN
+	override val debugName: String
+		get() = "Encryption Request"
 }

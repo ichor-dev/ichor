@@ -1,10 +1,10 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.login
 
+import fyi.pauli.ichor.gaia.extensions.bytes.RawPacket
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.varInt
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
-import java.nio.ByteBuffer
 
 /**
  * Enables compression.
@@ -16,7 +16,7 @@ import java.nio.ByteBuffer
  * @param threshold Maximum size of a packet before it is compressed.
  */
 data class SetCompression(var threshold: Int) : OutgoingPacket() {
-	override fun serialize(): ByteBuffer {
+	override fun serialize(): RawPacket {
 		return buffer {
 			varInt(threshold)
 		}
@@ -26,4 +26,6 @@ data class SetCompression(var threshold: Int) : OutgoingPacket() {
 		get() = 0x03
 	override val state: State
 		get() = State.LOGIN
+	override val debugName: String
+		get() = "Set Compression"
 }
