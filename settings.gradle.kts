@@ -33,7 +33,6 @@ dependencyResolutionManagement {
       library("serialization", "io.ktor", "ktor-serialization-kotlinx-json").withoutVersion()
       library("client-negotiation", "io.ktor", "ktor-client-content-negotiation").withoutVersion()
 
-
       bundle(
         "ktor",
         listOf("cio", "core", "network", "client", "client-cio", "sockets", "serialization", "client-negotiation")

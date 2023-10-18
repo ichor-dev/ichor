@@ -40,7 +40,7 @@ object IncomingPacketHandler {
 			"""
 					--- Incoming packet ---
 					Socket: ${packetHandle.connection.socket.remoteAddress}
-					${if (compression) "DataLength: $dataLength, " else ""}Compression: $compression")}
+					${if (compression) "DataLength: $dataLength, " else ""}Compression: $compression
 
 					PacketId: $id
 					PacketName: ${clientPacket.identifier.debuggingName}
@@ -118,7 +118,5 @@ object IncomingPacketHandler {
 				handshakePackets, statusPackets, loginPackets, configurationPackets
 			).flatten()
 		)
-
-		TODO("ADD receivers!!!")
 	}
 }

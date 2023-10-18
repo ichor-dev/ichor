@@ -1,5 +1,7 @@
 package fyi.pauli.ichor.hephaistos
 
+import fyi.pauli.ichor.gaia.networking.packet.incoming.IncomingPacketHandler
+import fyi.pauli.ichor.gaia.networking.packet.incoming.PacketRegistry
 import fyi.pauli.ichor.gaia.server.Server
 import fyi.pauli.ichor.hephaistos.extensions.handleIncoming
 import io.github.oshai.kotlinlogging.KLogger
@@ -24,6 +26,8 @@ suspend fun main() {
 			single<KLogger> { instance.logger }
 		}
 	}
+
+	IncomingPacketHandler.registerJoinPackets()
 
 	instance.startup()
 }

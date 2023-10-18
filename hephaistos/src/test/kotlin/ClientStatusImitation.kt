@@ -2,6 +2,7 @@ import fyi.pauli.ichor.gaia.extensions.bytes.string
 import fyi.pauli.ichor.gaia.extensions.bytes.varInt
 import fyi.pauli.ichor.gaia.networking.packet.State
 import io.github.oshai.kotlinlogging.KLogger
+import io.ktor.network.sockets.*
 import io.ktor.utils.io.*
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.coroutineScope

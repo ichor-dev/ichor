@@ -30,19 +30,17 @@ fun ByteBuffer.varInt(value: Int) {
 
 fun ByteBuffer.varInt(): Int {
 	var value = 0
-	var position = 0
-	var currentByte: Byte
+	var size = 0
+	var byte: Byte
 
-	while (true) {
-		currentByte = get()
-		value = value or (currentByte and SEGMENT_BITS.toByte()).toInt() shl position
-		if ((currentByte and CONTINUE_BIT.toByte()).toInt() == 0) break
-		position += 7
-		if (position >= 32) throw java.lang.RuntimeException("VarInt is too big")
-	}
+	do {
+		byte = get()
+		value = value or ((byte.toInt() and 0x7F) shl (size++ * 7))
+	} while (byte.toInt() and 0x80 != 0)
 
 	return value
 }
+
 
 fun ByteBuffer.varIntArray(value: IntArray) {
 	varInt(value.size)

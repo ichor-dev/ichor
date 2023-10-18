@@ -7,3 +7,4 @@ class Player(
 	val profile: UserProfile,
 	val handle: PacketHandle
 ) : Entity.Creature
+
