@@ -1,6 +1,5 @@
 package fyi.pauli.ichor.gaia.networking.packet
 
-import fyi.pauli.ichor.gaia.extensions.bytes.buffer.rawBytes
 import fyi.pauli.ichor.gaia.extensions.bytes.build
 import fyi.pauli.ichor.gaia.extensions.bytes.buildCompressed
 import fyi.pauli.ichor.gaia.networking.packet.incoming.IncomingPacketHandler
@@ -23,9 +22,9 @@ class PacketHandle(
 	suspend fun sendPacket(packet: OutgoingPacket) {
 		withContext(server.coroutineContext) {
 			launch {
-				connection.output.write {
-					it.put(if (compression) packet.serialize().buildCompressed() else packet.serialize().build().also { println(it.array().joinToString { it.toString() }) })
-				}
+				connection.output.writeFully(
+					if (compression) packet.serialize().buildCompressed() else packet.serialize().build()
+				)
 
 				server.logger.debug {
 					"""

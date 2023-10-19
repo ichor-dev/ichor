@@ -32,8 +32,8 @@ object StatusRequestReceiver : PacketReceiver<StatusRequest> {
 	) {
 		@Serializable
 		class Version(
-			val name: String = "23w32a",
-			val protocol: Int = 1073741969
+			val name: String = "1.20.2",
+			val protocol: Int = 764
 		)
 
 		@Serializable
@@ -46,7 +46,7 @@ object StatusRequestReceiver : PacketReceiver<StatusRequest> {
 			@Serializable
 			class PreviewPlayer(
 				val name: String = "Notch",
-				@Contextual val uuid: UUID = UUID.randomUUID()
+				@Contextual val id: UUID = UUID.randomUUID()
 			) {
 
 				companion object {
@@ -57,7 +57,7 @@ object StatusRequestReceiver : PacketReceiver<StatusRequest> {
 
 		@Serializable
 		class Description(
-			val text: String = "Hello ihr da"
+			val text: String = ""
 		)
 	}
 }

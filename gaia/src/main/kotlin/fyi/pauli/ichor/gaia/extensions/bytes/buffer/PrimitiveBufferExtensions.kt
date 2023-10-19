@@ -106,7 +106,7 @@ fun ByteBuffer.double(): Double {
 }
 
 fun ByteBuffer.string(value: String) {
-	val bytes = value.toByteArray()
+	val bytes = value.toByteArray(StandardCharsets.UTF_8)
 	varInt(bytes.size)
 	rawBytes(bytes)
 }

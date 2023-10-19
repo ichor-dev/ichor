@@ -31,7 +31,7 @@ fun RawPacket.buildCompressed(): ByteBuffer {
 	finalBuffer.varInt(compressedIdBuffer.position())
 	finalBuffer.put(compressedIdBuffer.array())
 
-	return finalBuffer
+	return finalBuffer.flip()
 }
 
 fun RawPacket.build(): ByteBuffer {

@@ -27,7 +27,7 @@ abstract class Server(private val serverName: String) : CoroutineScope {
 
 	private val job: Job = Job()
 
-	val config: BaseConfig = BaseConfig.loadConfig()
+	private val config: BaseConfig = BaseConfig.loadConfig()
 
 	abstract val httpClient: HttpClient
 
