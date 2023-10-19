@@ -1,6 +1,8 @@
 package fyi.pauli.ichor.gaia.networking.packet
 
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.rawBytes
 import fyi.pauli.ichor.gaia.extensions.bytes.build
+import fyi.pauli.ichor.gaia.extensions.bytes.buildCompressed
 import fyi.pauli.ichor.gaia.networking.packet.incoming.IncomingPacketHandler
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import fyi.pauli.ichor.gaia.server.Server
@@ -8,6 +10,7 @@ import io.ktor.network.sockets.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.nio.ByteBuffer
+import kotlin.experimental.and
 
 class PacketHandle(
 	var state: State,
@@ -21,7 +24,7 @@ class PacketHandle(
 		withContext(server.coroutineContext) {
 			launch {
 				connection.output.write {
-					it.put(packet.serialize().build(compression))
+					it.put(if (compression) packet.serialize().buildCompressed() else packet.serialize().build().also { println(it.array().joinToString { it.toString() }) })
 				}
 
 				server.logger.debug {
@@ -40,15 +43,19 @@ class PacketHandle(
 	suspend fun handleIncoming(server: Server) {
 		while (!connection.input.isClosedForRead) {
 			val size = run<Int> {
-				var result = 0
-				var shift = 0
-				while (true) {
-					val b: Byte = connection.input.readByte()
-					result = result or (b.toInt() and 0x7f shl shift)
-					if (b >= 0) return@run result
-					shift += 7
-				}
-				result
+				var i = 0
+				var j = 0
+
+				var b: Byte
+				do {
+					b = connection.input.readByte()
+					i = i or (b.toInt() and 127 shl j++ * 7)
+					if (j > 5) {
+						throw RuntimeException("VarInt too big")
+					}
+				} while ((b and 128.toByte()).toInt() == 128)
+
+				return@run i
 			}
 
 			val buffer = ByteBuffer.allocate(size)

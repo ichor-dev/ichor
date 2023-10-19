@@ -17,24 +17,22 @@ import java.nio.ByteBuffer
 
 object IncomingPacketHandler {
 	suspend fun deserializeAndHandle(originalBuffer: ByteBuffer, packetHandle: PacketHandle, server: Server) {
-		val compression = packetHandle.compression
-
-		// The second varInt varies between a compressed and uncompressed packet
+		// The second varInt varies between a compressed and an uncompressed packet
 		// Compressed value: data length
-		// uncompressed value: packet id
+		// Uncompressed value: packet id
 		val secondInt = originalBuffer.varInt()
 
 		var id: Int
-		val buffer = if (compression) ByteBuffer.wrap(originalBuffer.array().decompress(secondInt)).also {
+		val buffer = if (packetHandle.compression) ByteBuffer.wrap(originalBuffer.array().decompress(secondInt)).also {
 			id = it.varInt()
 		} else originalBuffer.also { id = secondInt }
 
 		val clientPacket =
 			PacketRegistry.incomingPackets.firstOrNull { it.identifier.id == id && it.identifier.state == packetHandle.state }
-				?: error("Cannot find packet with id $id in state ${packetHandle.state}")
+				?: error("Cannot find packet with id $id in state ${packetHandle.state} (Socket: ${packetHandle.connection.socket.remoteAddress})")
 
 		server.logger.debug {
-			"Received packet ${clientPacket.identifier.debuggingName} with id $id in state ${packetHandle.state.debugName}."
+			"Received packet ${clientPacket.identifier.debuggingName} with id $id in state ${packetHandle.state.debugName} (Socket: ${packetHandle.connection.socket.remoteAddress})"
 		}
 
 		val deserializedPacket = clientPacket.processor.deserialize(buffer)

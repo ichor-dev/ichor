@@ -83,6 +83,10 @@ abstract class Server(private val serverName: String) : CoroutineScope {
 
 			val handle = connection.handle()
 
+			logger.debug {
+				"New connection with socket: ${connection.socket.remoteAddress}"
+			}
+
 			launch {
 				try {
 					handle.handleIncoming(this@Server)

@@ -5,6 +5,7 @@ import fyi.pauli.ichor.gaia.extensions.bytes.buffer.varInt
 import fyi.pauli.ichor.gaia.networking.VAR_INT
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import fyi.pauli.ichor.gaia.server.finalConfig
+import java.nio.BufferUnderflowException
 import java.nio.ByteBuffer
 
 
@@ -12,32 +13,37 @@ internal const val SEGMENT_BITS = 0x7F
 internal const val CONTINUE_BIT = 0x80
 
 inline fun OutgoingPacket.buffer(size: Int? = null, applier: ByteBuffer.() -> Unit = {}): RawPacket {
-	val data =
-		ByteBuffer.allocate(size ?: finalConfig?.server?.maxPacketSize ?: 2_097_151).apply { varInt(id) }.apply(applier)
-	val dataArray = ByteArray(data.position())
-	data.get(dataArray, 0, data.position())
+	val data = ByteBuffer.allocate(size ?: finalConfig?.server?.maxPacketSize ?: 2_097_151).apply(applier)
 
-	return RawPacket(dataArray.size, dataArray)
+	return RawPacket(id, ByteBuffer.allocate(data.position()).apply(applier))
 }
 
-fun RawPacket.build(compression: Boolean): ByteBuffer {
-	if (!compression) {
-		val buffer = ByteBuffer.allocate(VAR_INT + dataSize)
-		buffer.varInt(dataSize)
-		buffer.rawBytes(data)
-		return buffer.flip()
-	}
+fun RawPacket.buildCompressed(): ByteBuffer {
+	val idBuffer = ByteBuffer.allocate(VAR_INT + data.position())
+	idBuffer.varInt(id)
+	idBuffer.put(data.array())
+	val idArray = idBuffer.rawBytes()?.compress() ?: throw BufferUnderflowException()
+	val compressedIdBuffer = ByteBuffer.allocate(VAR_INT + idArray.size)
+	compressedIdBuffer.varInt(idBuffer.position())
+	compressedIdBuffer.put(idArray)
 
-	val compressed = data.compress()
-	val unprefixedBuffer = ByteBuffer.allocate(VAR_INT + compressed.size)
-	unprefixedBuffer.varInt(compressed.size)
-	unprefixedBuffer.rawBytes(compressed)
-
-	val finalBuffer = ByteBuffer.allocate(VAR_INT + unprefixedBuffer.position())
-	finalBuffer.varInt(unprefixedBuffer.position())
-	finalBuffer.put(unprefixedBuffer)
+	val finalBuffer = ByteBuffer.allocate(VAR_INT + compressedIdBuffer.position())
+	finalBuffer.varInt(compressedIdBuffer.position())
+	finalBuffer.put(compressedIdBuffer.array())
 
 	return finalBuffer
 }
 
-data class RawPacket(val dataSize: Int, val data: ByteArray)
+fun RawPacket.build(): ByteBuffer {
+	val idBuffer = ByteBuffer.allocate(VAR_INT + data.position())
+	idBuffer.varInt(id)
+	idBuffer.put(data.array())
+
+	val finalBuffer = ByteBuffer.allocate(VAR_INT + idBuffer.position())
+	finalBuffer.varInt(idBuffer.position())
+	finalBuffer.put(idBuffer.array().take(data.position()).toByteArray())
+
+	return finalBuffer.flip()
+}
+
+data class RawPacket(val id: Int, val data: ByteBuffer)

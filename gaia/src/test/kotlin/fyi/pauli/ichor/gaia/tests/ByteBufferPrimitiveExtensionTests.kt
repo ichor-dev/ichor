@@ -3,7 +3,6 @@ package fyi.pauli.ichor.gaia.tests
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.*
 import fyi.pauli.ichor.gaia.networking.INT
 import fyi.pauli.ichor.gaia.networking.VAR_INT
-import org.koin.core.component.getScopeName
 import java.nio.ByteBuffer
 import kotlin.test.Test
 import kotlin.test.assertContentEquals

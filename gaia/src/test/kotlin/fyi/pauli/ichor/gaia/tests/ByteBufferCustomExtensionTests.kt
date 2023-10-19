@@ -1,11 +1,9 @@
 package fyi.pauli.ichor.gaia.tests
 
+import fyi.pauli.ichor.gaia.entity.player.ProfileAction
 import fyi.pauli.ichor.gaia.entity.player.Property
 import fyi.pauli.ichor.gaia.entity.player.UserProfile
-import fyi.pauli.ichor.gaia.extensions.bytes.buffer.compoundTag
-import fyi.pauli.ichor.gaia.extensions.bytes.buffer.identifier
-import fyi.pauli.ichor.gaia.extensions.bytes.buffer.userProfile
-import fyi.pauli.ichor.gaia.extensions.bytes.buffer.uuid
+import fyi.pauli.ichor.gaia.extensions.bytes.buffer.*
 import fyi.pauli.ichor.gaia.models.Identifier
 import fyi.pauli.ichor.gaia.models.nbt.builder.compoundTag
 import fyi.pauli.ichor.gaia.networking.VAR_INT
@@ -42,7 +40,7 @@ class ByteBufferCustomExtensionTests {
 
 	@Test
 	fun `read and write user profile`() {
-		val expected = UserProfile(UUID.randomUUID(), "onionionion", listOf(Property("name", "value", "signature")))
+		val expected = UserProfile(UUID.randomUUID(), "onionionion", listOf(Property("name", "value", "signature")), listOf(ProfileAction()))
 		val buffer = ByteBuffer.allocate(1024)
 		buffer.userProfile(expected)
 

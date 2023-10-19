@@ -19,9 +19,8 @@ object StatusRequestReceiver : PacketReceiver<StatusRequest> {
 		packetHandle: PacketHandle,
 		server: Server
 	) {
-		packetHandle.sendPacket(StatusResponse(json.encodeToString(ServerPreview()).trimIndent()))
+		packetHandle.sendPacket(StatusResponse(json.encodeToString(ServerPreview())))
 	}
-
 	@Serializable
 	class ServerPreview(
 		val version: Version = Version(),
