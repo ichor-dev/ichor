@@ -15,16 +15,31 @@ fun ByteBuffer.unsignedShort(): Short {
 }
 
 fun ByteBuffer.varInt(value: Int) {
-	var processingValue = value
+	val v: Int = value
 
-	while (true) {
-		if (processingValue and SEGMENT_BITS.inv() == 0) {
-			put(processingValue.toByte())
-			return
+	when {
+		v and (-0x1 shl 7) == 0 -> {
+			put(v.toByte())
 		}
-		put(((processingValue and SEGMENT_BITS) or CONTINUE_BIT).toByte())
 
-		processingValue = processingValue ushr 7
+		v and (-0x1 shl 14) == 0 -> {
+			putShort((v and 0x7F or 0x80 shl 8 or (v ushr 7)).toShort())
+		}
+
+		v and (-0x1 shl 21) == 0 -> {
+			put((v and 0x7F or 0x80).toByte())
+			put((v ushr 7 and 0x7F or 0x80).toByte())
+			put((v ushr 14).toByte())
+		}
+
+		v and (-0x1 shl 28) == 0 -> {
+			putInt(v and 0x7F or 0x80 shl 24 or (v ushr 7 and 0x7F or 0x80 shl 16) or (v ushr 14 and 0x7F or 0x80 shl 8) or (v ushr 21))
+		}
+
+		else -> {
+			putInt(v and 0x7F or 0x80 shl 24 or (v ushr 7 and 0x7F or 0x80 shl 16) or (v ushr 14 and 0x7F or 0x80 shl 8) or (v ushr 21 and 0x7F or 0x80))
+			put((v ushr 28).toByte())
+		}
 	}
 }
 
