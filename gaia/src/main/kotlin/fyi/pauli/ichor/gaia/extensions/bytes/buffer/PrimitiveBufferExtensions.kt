@@ -104,14 +104,3 @@ fun ByteBuffer.double(value: Double) {
 fun ByteBuffer.double(): Double {
 	return getDouble()
 }
-
-fun ByteBuffer.string(value: String) {
-	val bytes = value.toByteArray(StandardCharsets.UTF_8)
-	varInt(bytes.size)
-	rawBytes(bytes)
-}
-
-fun ByteBuffer.string(): String {
-	val length = varInt()
-	return String(rawBytes(length), StandardCharsets.UTF_8)
-}
