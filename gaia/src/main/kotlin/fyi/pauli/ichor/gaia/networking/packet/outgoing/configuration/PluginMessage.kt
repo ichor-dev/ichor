@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration
 
 import fyi.pauli.ichor.gaia.extensions.bytes.RawPacket
-import fyi.pauli.ichor.gaia.extensions.bytes.buffer
+import fyi.pauli.ichor.gaia.extensions.bytes.packet
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.identifier
 import fyi.pauli.ichor.gaia.models.payload.Payload
 import fyi.pauli.ichor.gaia.networking.packet.State
@@ -26,7 +26,7 @@ data class PluginMessage(
 		get() = "Plugin Message"
 
 	override fun serialize(): RawPacket {
-		return buffer {
+		return packet {
 			identifier(payload.identifier)
 			payload.write(this)
 		}

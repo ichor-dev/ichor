@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.login
 
 import fyi.pauli.ichor.gaia.extensions.bytes.RawPacket
-import fyi.pauli.ichor.gaia.extensions.bytes.buffer
+import fyi.pauli.ichor.gaia.extensions.bytes.packet
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.identifier
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.rawBytes
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.varInt
@@ -28,7 +28,7 @@ data class LoginPluginRequest(var messageId: Int, var channel: Identifier, var d
 		get() = "Login Plugin Request"
 
 	override fun serialize(): RawPacket {
-		return buffer {
+		return packet {
 			varInt(messageId)
 			identifier(channel)
 			rawBytes(data)

@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration
 
 import fyi.pauli.ichor.gaia.extensions.bytes.RawPacket
-import fyi.pauli.ichor.gaia.extensions.bytes.buffer
+import fyi.pauli.ichor.gaia.extensions.bytes.packet
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.int
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
@@ -20,7 +20,7 @@ data class Ping(var pingId: Int) : OutgoingPacket() {
 		get() = "Ping"
 
 	override fun serialize(): RawPacket {
-		return buffer {
+		return packet {
 			int(pingId)
 		}
 	}

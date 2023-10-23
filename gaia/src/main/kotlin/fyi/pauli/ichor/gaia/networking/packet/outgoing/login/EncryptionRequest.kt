@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.login
 
 import fyi.pauli.ichor.gaia.extensions.bytes.RawPacket
-import fyi.pauli.ichor.gaia.extensions.bytes.buffer
+import fyi.pauli.ichor.gaia.extensions.bytes.packet
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.byteArray
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.string
 import fyi.pauli.ichor.gaia.networking.packet.State
@@ -21,7 +21,7 @@ data class EncryptionRequest(
 ) : OutgoingPacket() {
 
 	override fun serialize(): RawPacket {
-		return buffer {
+		return packet {
 			string(serverId)
 			byteArray(publicKey)
 			byteArray(verifyToken)

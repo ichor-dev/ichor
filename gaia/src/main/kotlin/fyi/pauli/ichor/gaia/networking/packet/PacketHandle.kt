@@ -26,7 +26,7 @@ class PacketHandle(
 					if (compression) packet.serialize().buildCompressed() else packet.serialize().build()
 				)
 
-				server.logger.debug { "SENT packet ${packet.debugName} with id ${packet.id} in state ${packet.state} (Socket: ${connection.socket.remoteAddress})" }
+				server.logger.debug { "SENT packet ${packet.debugName} with id ${packet.id} in state ${packet.state}. [Compression: $compression, Socket: ${connection.socket.remoteAddress}]" }
 			}
 		}
 	}

@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.login
 
 import fyi.pauli.ichor.gaia.extensions.bytes.RawPacket
-import fyi.pauli.ichor.gaia.extensions.bytes.buffer
+import fyi.pauli.ichor.gaia.extensions.bytes.packet
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.varInt
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
@@ -17,7 +17,7 @@ import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
  */
 data class SetCompression(var threshold: Int) : OutgoingPacket() {
 	override fun serialize(): RawPacket {
-		return buffer {
+		return packet {
 			varInt(threshold)
 		}
 	}

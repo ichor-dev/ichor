@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration
 
 import fyi.pauli.ichor.gaia.extensions.bytes.RawPacket
-import fyi.pauli.ichor.gaia.extensions.bytes.buffer
+import fyi.pauli.ichor.gaia.extensions.bytes.packet
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.identifier
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.varInt
 import fyi.pauli.ichor.gaia.models.Identifier
@@ -22,7 +22,7 @@ data class UpdateTags(var tags: MutableMap<Identifier, MutableMap<Identifier, In
 		get() = "Update Tags"
 
 	override fun serialize(): RawPacket {
-		return buffer {
+		return packet {
 			varInt(tags.size)
 			tags.forEach { (key, tag) ->
 				identifier(key)

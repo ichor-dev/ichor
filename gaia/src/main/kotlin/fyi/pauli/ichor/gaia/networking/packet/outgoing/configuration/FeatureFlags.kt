@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration
 
 import fyi.pauli.ichor.gaia.extensions.bytes.RawPacket
-import fyi.pauli.ichor.gaia.extensions.bytes.buffer
+import fyi.pauli.ichor.gaia.extensions.bytes.packet
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.identifier
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.list
 import fyi.pauli.ichor.gaia.models.Identifier
@@ -22,7 +22,7 @@ data class FeatureFlags(var featureFlags: MutableList<Identifier>) : OutgoingPac
 		get() = "Feature Flags"
 
 	override fun serialize(): RawPacket {
-		return buffer {
+		return packet {
 			list(featureFlags) { identifier(it) }
 		}
 	}
