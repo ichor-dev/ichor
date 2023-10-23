@@ -51,7 +51,7 @@ dependencyResolutionManagement {
 
       bundle("exposed", listOf("dao", "core", "json", "jdbc", "crypt", "datetime"))
 
-      library("h2", "com.h2database", "h2").version("2.2.220")
+      library("h2", "com.h2database", "h2").version("2.2.224")
       library("mariadb", "org.mariadb.jdbc", "mariadb-java-client").version("2.2.0")
       library("mysql", "mysql", "mysql-connector-java").version("5.1.6")
       library("oracle", "com.oracle.database.jdbc", "ojdbc8").version("23.2.0.0")
