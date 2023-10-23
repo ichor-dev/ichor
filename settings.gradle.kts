@@ -22,7 +22,7 @@ dependencyResolutionManagement {
     }
 
     create("ktorio") {
-      plugin("ktor", "io.ktor.plugin").version("2.3.4")
+      plugin("ktor", "io.ktor.plugin").version("2.3.5")
 
       library("cio", "io.ktor", "ktor-server-cio").withoutVersion()
       library("network", "io.ktor", "ktor-network").withoutVersion()
