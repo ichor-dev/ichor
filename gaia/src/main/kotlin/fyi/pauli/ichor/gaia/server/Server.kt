@@ -18,7 +18,7 @@ import java.security.KeyPairGenerator
 import kotlin.coroutines.CoroutineContext
 
 // Initialized when the server starts
-var finalConfig: BaseConfig? = null
+lateinit var finalConfig: BaseConfig
 	internal set
 
 suspend fun <S : Server> serve(server: S, init: S.() -> Unit = {}) = server.apply(init).internalStart()
@@ -27,7 +27,7 @@ abstract class Server(private val serverName: String) : CoroutineScope {
 
 	private val job: Job = Job()
 
-	private val config: BaseConfig = BaseConfig.loadConfig()
+	val config: BaseConfig = BaseConfig.loadConfig()
 
 	abstract val httpClient: HttpClient
 

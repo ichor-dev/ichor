@@ -78,5 +78,14 @@ dependencyResolutionManagement {
 
       bundle("logging", listOf("logback", "logging"))
     }
+
+    create("fileConfiguration") {
+      version("ktoml", "0.5.0")
+
+      library("ktoml-core", "com.akuleshov7", "ktoml-core").versionRef("ktoml")
+      library("ktoml-file", "com.akuleshov7", "ktoml-file").versionRef("ktoml")
+
+      bundle("toml", listOf("ktoml-core", "ktoml-file"))
+    }
   }
 }

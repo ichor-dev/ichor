@@ -19,7 +19,7 @@ object StatusRequestReceiver : PacketReceiver<StatusRequest> {
 		packetHandle: PacketHandle,
 		server: Server
 	) {
-		packetHandle.sendPacket(StatusResponse(json.encodeToString(ServerPreview())))
+		packetHandle.sendPacket(StatusResponse(json.encodeToString(ServerPreview(server))))
 	}
 
 	@Serializable
@@ -31,6 +31,9 @@ object StatusRequestReceiver : PacketReceiver<StatusRequest> {
 		val enforceSecureChat: Boolean = true,
 		val previewsChat: Boolean = true
 	) {
+
+		constructor(server: Server) : this(favicon = "data:image/png;base64,${server.config.server.base64FavIcon()}")
+
 		@Serializable
 		class Version(
 			val name: String = "1.20.2",
