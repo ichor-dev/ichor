@@ -2,8 +2,8 @@ package fyi.pauli.ichor.gaia.networking.packet.outgoing.login
 
 import fyi.pauli.ichor.gaia.entity.player.UserProfile
 import fyi.pauli.ichor.gaia.extensions.bytes.RawPacket
-import fyi.pauli.ichor.gaia.extensions.bytes.packet
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.userProfile
+import fyi.pauli.ichor.gaia.extensions.bytes.packet
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 

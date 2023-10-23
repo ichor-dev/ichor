@@ -12,7 +12,7 @@ internal const val SEGMENT_BITS = 0x7F
 internal const val CONTINUE_BIT = 0x80
 
 inline fun OutgoingPacket.packet(size: Int? = null, applier: ByteBuffer.() -> Unit = {}): RawPacket {
-	val data = ByteBuffer.allocate(size ?: finalConfig?.server?.maxPacketSize ?: 2_097_151).apply(applier)
+	val data = ByteBuffer.allocate(size ?: finalConfig.server.maxPacketSize).apply(applier)
 
 	return RawPacket(id, ByteBuffer.allocate(data.position()).apply(applier))
 }

@@ -1,7 +1,6 @@
 package fyi.pauli.ichor.gaia.extensions.bytes.buffer
 
 import java.nio.ByteBuffer
-import java.nio.charset.StandardCharsets
 
 fun ByteBuffer.boolean(value: Boolean) {
 	put(if (value) 1 else 0)
