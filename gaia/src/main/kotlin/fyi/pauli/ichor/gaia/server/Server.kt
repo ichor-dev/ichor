@@ -84,7 +84,7 @@ abstract class Server(private val serverName: String) : CoroutineScope {
 			val handle = connection.handle()
 
 			logger.debug {
-				"New connection with socket: ${connection.socket.remoteAddress}"
+				"New connection (Socket: ${connection.socket.remoteAddress})"
 			}
 
 			launch {
@@ -95,6 +95,7 @@ abstract class Server(private val serverName: String) : CoroutineScope {
 						"Error in channel"
 					}
 				} finally {
+					handles.remove(handle)
 					connection.input.cancel()
 					connection.output.close()
 				}

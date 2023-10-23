@@ -32,7 +32,7 @@ object IncomingPacketHandler {
 				?: error("Cannot find packet with id $id in state ${packetHandle.state} (Socket: ${packetHandle.connection.socket.remoteAddress})")
 
 		server.logger.debug {
-			"Received packet ${clientPacket.identifier.debuggingName} with id $id in state ${packetHandle.state.debugName} (Socket: ${packetHandle.connection.socket.remoteAddress})"
+			"RECEIVED packet ${clientPacket.identifier.debuggingName} with id $id in state ${packetHandle.state.debugName} (Socket: ${packetHandle.connection.socket.remoteAddress})"
 		}
 
 		val deserializedPacket = clientPacket.processor.deserialize(buffer)
