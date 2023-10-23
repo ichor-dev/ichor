@@ -8,7 +8,6 @@ import fyi.pauli.ichor.gaia.server.finalConfig
 import java.nio.BufferUnderflowException
 import java.nio.ByteBuffer
 
-
 internal const val SEGMENT_BITS = 0x7F
 internal const val CONTINUE_BIT = 0x80
 

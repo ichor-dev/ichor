@@ -36,6 +36,8 @@ data class BaseConfig(
 
 	@Serializable
 	data class Server(
-		val host: String = env["SERVER_HOST"] ?: "127.0.0.1", val port: String = env["SERVER_PORT"] ?: "25565", val maxPacketSize: Int = 2_097_151
+		val host: String = env["SERVER_HOST"] ?: "127.0.0.1",
+		val port: String = env["SERVER_PORT"] ?: "25565",
+		val maxPacketSize: Int = 2_097_151
 	)
 }
