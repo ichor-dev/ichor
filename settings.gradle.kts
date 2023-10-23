@@ -40,7 +40,7 @@ dependencyResolutionManagement {
     }
 
     create("database") {
-      version("exposed", "0.42.0")
+      version("exposed", "0.44.0")
 
       library("dao", "org.jetbrains.exposed", "exposed-dao").versionRef("exposed")
       library("core", "org.jetbrains.exposed", "exposed-core").versionRef("exposed")
