@@ -53,11 +53,11 @@ dependencyResolutionManagement {
 
       library("h2", "com.h2database", "h2").version("2.2.224")
       library("mariadb", "org.mariadb.jdbc", "mariadb-java-client").version("3.2.0")
-      library("mysql", "mysql", "mysql-connector-java").version("5.1.49")
+      library("mysql", "mysql", "mysql-connector-java").version("8.0.33")
       library("oracle", "com.oracle.database.jdbc", "ojdbc8").version("23.3.0.23.09")
-      library("postgres", "org.postgresql", "postgresql").version("42.1.4")
-      library("sql-server", "com.microsoft.sqlserver", "mssql-jdbc").version("6.4.0.jre9")
-      library("sqlite", "org.xerial", "sqlite-jdbc").version("3.7.2")
+      library("postgres", "org.postgresql", "postgresql").version("42.6.0")
+      library("sql-server", "com.microsoft.sqlserver", "mssql-jdbc").version("12.4.1.jre11")
+      library("sqlite", "org.xerial", "sqlite-jdbc").version("3.43.2.1")
 
       bundle("drivers", listOf("h2", "mariadb", "mysql", "oracle", "postgres", "sql-server", "sqlite"))
     }
