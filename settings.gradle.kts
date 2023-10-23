@@ -22,7 +22,7 @@ dependencyResolutionManagement {
     }
 
     create("ktorio") {
-      plugin("ktor", "io.ktor.plugin").version("2.3.4")
+      plugin("ktor", "io.ktor.plugin").version("2.3.5")
 
       library("cio", "io.ktor", "ktor-server-cio").withoutVersion()
       library("network", "io.ktor", "ktor-network").withoutVersion()
@@ -40,7 +40,7 @@ dependencyResolutionManagement {
     }
 
     create("database") {
-      version("exposed", "0.42.0")
+      version("exposed", "0.44.0")
 
       library("dao", "org.jetbrains.exposed", "exposed-dao").versionRef("exposed")
       library("core", "org.jetbrains.exposed", "exposed-core").versionRef("exposed")
@@ -52,11 +52,11 @@ dependencyResolutionManagement {
       bundle("exposed", listOf("dao", "core", "json", "jdbc", "crypt", "datetime"))
 
       library("h2", "com.h2database", "h2").version("2.2.224")
-      library("mariadb", "org.mariadb.jdbc", "mariadb-java-client").version("2.2.0")
+      library("mariadb", "org.mariadb.jdbc", "mariadb-java-client").version("3.2.0")
       library("mysql", "mysql", "mysql-connector-java").version("5.1.49")
-      library("oracle", "com.oracle.database.jdbc", "ojdbc8").version("23.2.0.0")
+      library("oracle", "com.oracle.database.jdbc", "ojdbc8").version("23.3.0.23.09")
       library("postgres", "org.postgresql", "postgresql").version("42.1.4")
-      library("sql-server", "com.microsoft.sqlserver", "mssql-jdbc").version("6.1.0.jre7")
+      library("sql-server", "com.microsoft.sqlserver", "mssql-jdbc").version("6.4.0.jre9")
       library("sqlite", "org.xerial", "sqlite-jdbc").version("3.7.2")
 
       bundle("drivers", listOf("h2", "mariadb", "mysql", "oracle", "postgres", "sql-server", "sqlite"))
