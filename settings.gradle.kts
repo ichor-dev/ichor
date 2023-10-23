@@ -53,7 +53,7 @@ dependencyResolutionManagement {
 
       library("h2", "com.h2database", "h2").version("2.2.224")
       library("mariadb", "org.mariadb.jdbc", "mariadb-java-client").version("2.2.0")
-      library("mysql", "mysql", "mysql-connector-java").version("5.1.49")
+      library("mysql", "mysql", "mysql-connector-java").version("8.0.33")
       library("oracle", "com.oracle.database.jdbc", "ojdbc8").version("23.2.0.0")
       library("postgres", "org.postgresql", "postgresql").version("42.1.4")
       library("sql-server", "com.microsoft.sqlserver", "mssql-jdbc").version("6.1.0.jre7")
