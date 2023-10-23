@@ -4,6 +4,6 @@
     "group:all"
   ],
   "dependencyDashboard": true,
-  "timezone": "Europa/Berlin",
+  "timezone": "Europe/Berlin",
   "schedule": ["after 1am"]
 }
