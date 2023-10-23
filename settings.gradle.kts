@@ -57,7 +57,7 @@ dependencyResolutionManagement {
       library("oracle", "com.oracle.database.jdbc", "ojdbc8").version("23.2.0.0")
       library("postgres", "org.postgresql", "postgresql").version("42.1.4")
       library("sql-server", "com.microsoft.sqlserver", "mssql-jdbc").version("6.1.0.jre7")
-      library("sqlite", "org.xerial", "sqlite-jdbc").version("3.7.2")
+      library("sqlite", "org.xerial", "sqlite-jdbc").version("3.43.2.1")
 
       bundle("drivers", listOf("h2", "mariadb", "mysql", "oracle", "postgres", "sql-server", "sqlite"))
     }
