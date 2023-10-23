@@ -6,12 +6,12 @@ import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.incoming.IncomingPacket
 import fyi.pauli.ichor.gaia.networking.packet.incoming.PacketRegistry
 import fyi.pauli.ichor.hephaistos.Constants
+import fyi.pauli.ichor.hephaistos.networking.receivers.configuration.FinishConfigurationReceiver
+import fyi.pauli.ichor.hephaistos.networking.receivers.configuration.PluginMessageReceiver
 import fyi.pauli.ichor.hephaistos.networking.receivers.handshaking.HandshakeReceiver
 import fyi.pauli.ichor.hephaistos.networking.receivers.login.EncryptionResponseReceiver
 import fyi.pauli.ichor.hephaistos.networking.receivers.login.LoginAcknowledgedReceiver
 import fyi.pauli.ichor.hephaistos.networking.receivers.login.LoginStartReceiver
-import fyi.pauli.ichor.hephaistos.networking.receivers.configuration.FinishConfigurationReceiver
-import fyi.pauli.ichor.hephaistos.networking.receivers.configuration.PluginMessageReceiver
 import fyi.pauli.ichor.hephaistos.networking.receivers.status.PingRequestReceiver
 import fyi.pauli.ichor.hephaistos.networking.receivers.status.StatusRequestReceiver
 

@@ -21,6 +21,7 @@ object StatusRequestReceiver : PacketReceiver<StatusRequest> {
 	) {
 		packetHandle.sendPacket(StatusResponse(json.encodeToString(ServerPreview())))
 	}
+
 	@Serializable
 	class ServerPreview(
 		val version: Version = Version(),
