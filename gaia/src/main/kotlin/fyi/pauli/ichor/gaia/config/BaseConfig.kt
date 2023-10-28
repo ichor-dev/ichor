@@ -22,8 +22,7 @@ internal val configToml = Toml(
 		allowNullValues = true,
 		allowEmptyToml = false,
 		allowEscapedQuotesInLiteralStrings = true
-	),
-	TomlOutputConfig(
+	), TomlOutputConfig(
 		indentation = TomlIndentation.TWO_SPACES,
 		allowEscapedQuotesInLiteralStrings = true,
 		ignoreNullValues = false,
@@ -36,8 +35,9 @@ internal val configToml = Toml(
 data class BaseConfig(
 	val environment: Map<String, String> = emptyMap(), val server: Server = Server()
 ) {
+
 	companion object {
-		fun loadConfig(): BaseConfig {
+		internal fun loadConfig(): BaseConfig {
 			val file = Path(env["BASE_CONFIG_PATH"] ?: "./config.toml")
 			if (file.notExists() || file.readText().isBlank()) {
 				val baseConfig = BaseConfig()

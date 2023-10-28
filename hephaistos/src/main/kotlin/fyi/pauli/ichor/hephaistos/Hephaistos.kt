@@ -11,6 +11,7 @@ import io.ktor.serialization.kotlinx.json.*
 suspend fun main() = serve(Hephaistos)
 
 object Hephaistos : Server("Hephaistos") {
+
 	override val httpClient: HttpClient = HttpClient(CIO) {
 		install(ContentNegotiation) {
 			json(Constants.json)
