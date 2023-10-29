@@ -40,7 +40,7 @@ dependencyResolutionManagement {
     }
 
     create("database") {
-      version("exposed", "0.44.0")
+      version("exposed", "0.44.1")
 
       library("dao", "org.jetbrains.exposed", "exposed-dao").versionRef("exposed")
       library("core", "org.jetbrains.exposed", "exposed-core").versionRef("exposed")
@@ -56,7 +56,7 @@ dependencyResolutionManagement {
       library("mysql", "mysql", "mysql-connector-java").version("8.0.33")
       library("oracle", "com.oracle.database.jdbc", "ojdbc8").version("23.3.0.23.09")
       library("postgres", "org.postgresql", "postgresql").version("42.6.0")
-      library("sql-server", "com.microsoft.sqlserver", "mssql-jdbc").version("12.4.1.jre11")
+      library("sql-server", "com.microsoft.sqlserver", "mssql-jdbc").version("12.4.2.jre11")
       library("sqlite", "org.xerial", "sqlite-jdbc").version("3.43.2.1")
 
       bundle("drivers", listOf("h2", "mariadb", "mysql", "oracle", "postgres", "sql-server", "sqlite"))
