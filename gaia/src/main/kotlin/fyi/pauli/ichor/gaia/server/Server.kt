@@ -21,7 +21,7 @@ import kotlin.coroutines.CoroutineContext
 lateinit var finalConfig: BaseConfig
 	internal set
 
-suspend fun <S : Server> serve(server: S, init: S.() -> Unit = {}) = server.apply(init).internalStart(server.config)
+suspend fun <S : Server> serve(server: S, init: S.() -> Unit = {}) = server.apply(init).internalStart()
 
 abstract class Server(private val serverName: String) : CoroutineScope {
 
@@ -62,7 +62,7 @@ abstract class Server(private val serverName: String) : CoroutineScope {
 
 	abstract suspend fun startup()
 
-	internal suspend fun internalStart(overrideConfig: BaseConfig) = coroutineScope {
+	internal suspend fun internalStart() = coroutineScope {
 		startup()
 		finalConfig = config
 		val serverConfig = config.server
