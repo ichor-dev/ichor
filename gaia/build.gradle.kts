@@ -13,6 +13,7 @@ dependencies {
   api(ktorio.bundles.ktor)
   api(klogging.bundles.logging)
   api(fileConfiguration.bundles.toml)
+  api(koin.bundles.koin)
 
   testImplementation(kotlin("test"))
 }

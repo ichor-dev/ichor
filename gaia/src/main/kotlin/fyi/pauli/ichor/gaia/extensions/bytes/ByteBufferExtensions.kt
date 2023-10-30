@@ -1,10 +1,11 @@
 package fyi.pauli.ichor.gaia.extensions.bytes
 
+import fyi.pauli.ichor.gaia.config.ServerConfig
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.rawBytes
 import fyi.pauli.ichor.gaia.extensions.bytes.buffer.varInt
 import fyi.pauli.ichor.gaia.networking.VAR_INT
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
-import fyi.pauli.ichor.gaia.server.finalConfig
+import org.koin.java.KoinJavaComponent.inject
 import java.nio.BufferUnderflowException
 import java.nio.ByteBuffer
 
@@ -12,7 +13,8 @@ internal const val SEGMENT_BITS = 0x7F
 internal const val CONTINUE_BIT = 0x80
 
 inline fun OutgoingPacket.packet(size: Int? = null, applier: ByteBuffer.() -> Unit = {}): RawPacket {
-	val data = ByteBuffer.allocate(size ?: finalConfig.server.maxPacketSize).apply(applier)
+	val config: ServerConfig by inject(ServerConfig::class.java)
+	val data = ByteBuffer.allocate(size ?: config.server.maxPacketSize).apply(applier)
 
 	return RawPacket(id, ByteBuffer.allocate(data.position()).apply(applier))
 }

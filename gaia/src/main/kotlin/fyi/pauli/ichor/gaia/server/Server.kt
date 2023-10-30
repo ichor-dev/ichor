@@ -1,7 +1,9 @@
 package fyi.pauli.ichor.gaia.server
 
-import fyi.pauli.ichor.gaia.config.BaseConfig
+import fyi.pauli.ichor.gaia.config.ServerConfig
+import fyi.pauli.ichor.gaia.config.loadConfig
 import fyi.pauli.ichor.gaia.entity.player.Player
+import fyi.pauli.ichor.gaia.extensions.koin.KoinLogger
 import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
 import fyi.pauli.ichor.gaia.networking.packet.State
 import io.github.oshai.kotlinlogging.KLogger
@@ -12,22 +14,27 @@ import io.ktor.network.sockets.*
 import io.ktor.utils.io.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
+import org.koin.core.context.startKoin
+import org.koin.core.module.Module
 import java.net.SocketException
+import java.nio.file.Path
 import java.security.KeyPair
 import java.security.KeyPairGenerator
 import kotlin.coroutines.CoroutineContext
-
-// Initialized when the server starts
-lateinit var finalConfig: BaseConfig
-	internal set
+import kotlin.io.path.Path
 
 suspend fun <S : Server> serve(server: S, init: S.() -> Unit = {}) = server.apply(init).internalStart()
 
+
 abstract class Server(private val serverName: String) : CoroutineScope {
 
-	private val job: Job = Job()
+	val configurationsModule = Module()
 
-	var config: BaseConfig = BaseConfig.loadConfig()
+	inline fun <reified C> config(path: Path, fileConfiguration: C) {
+		configurationsModule.factory<C> { loadConfig<C>(path, fileConfiguration) }
+	}
+
+	private val job: Job = Job()
 
 	abstract val httpClient: HttpClient
 
@@ -63,13 +70,22 @@ abstract class Server(private val serverName: String) : CoroutineScope {
 	abstract suspend fun startup()
 
 	internal suspend fun internalStart() = coroutineScope {
+		val serverConfig: ServerConfig =
+			loadConfig(Path(System.getenv()["SERVER_BASE_CONFIG"] ?: "./config.toml"), ServerConfig())
+		configurationsModule.single { serverConfig }
+
+		startKoin {
+			logger(KoinLogger(logger = logger))
+			modules(
+				configurationsModule
+			)
+		}
+
 		startup()
-		finalConfig = config
-		val serverConfig = config.server
 
 		val manager = SelectorManager(Dispatchers.IO)
 		val serverSocket = aSocket(manager).tcp().bind(
-			InetSocketAddress(serverConfig.host, serverConfig.port.toInt())
+			InetSocketAddress(serverConfig.server.host, serverConfig.server.port.toInt())
 		)
 
 		logger.info {
