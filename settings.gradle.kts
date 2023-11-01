@@ -7,7 +7,7 @@ include(
 dependencyResolutionManagement {
   versionCatalogs {
     create("jetbrains") {
-      version("kotlin", "1.9.10")
+      version("kotlin", "1.9.20")
 
       plugin("jvm", "org.jetbrains.kotlin.jvm").versionRef("kotlin")
       plugin("serialization", "org.jetbrains.kotlin.plugin.serialization").versionRef("kotlin")
@@ -57,7 +57,7 @@ dependencyResolutionManagement {
       library("oracle", "com.oracle.database.jdbc", "ojdbc8").version("23.3.0.23.09")
       library("postgres", "org.postgresql", "postgresql").version("42.6.0")
       library("sql-server", "com.microsoft.sqlserver", "mssql-jdbc").version("12.4.2.jre11")
-      library("sqlite", "org.xerial", "sqlite-jdbc").version("3.43.2.1")
+      library("sqlite", "org.xerial", "sqlite-jdbc").version("3.43.2.2")
 
       bundle("drivers", listOf("h2", "mariadb", "mysql", "oracle", "postgres", "sql-server", "sqlite"))
     }
