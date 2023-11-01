@@ -4,16 +4,17 @@ import com.akuleshov7.ktoml.Toml
 import com.akuleshov7.ktoml.TomlIndentation
 import com.akuleshov7.ktoml.TomlInputConfig
 import com.akuleshov7.ktoml.TomlOutputConfig
-import kotlinx.serialization.Transient
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import java.nio.file.Path
-import kotlin.io.path.appendText
-import kotlin.io.path.createFile
-import kotlin.io.path.notExists
-import kotlin.io.path.readText
+import kotlin.io.path.*
 
-@Transient
+/**
+ * Serializer used for server configuration.
+ * @author Paul Kindler
+ * @since 01/11/2023
+ * @see Toml
+ */
 val configToml = Toml(
 	TomlInputConfig(
 		ignoreUnknownNames = true,
@@ -35,14 +36,25 @@ val configToml = Toml(
  * You don't need to call this function because you can just use config(YourConfigClassInstance)
  * @param C the type of configuration it will return.
  * @property configuration the data class of your configuration.
+ * @throws IllegalArgumentException when config path is already used by another configuration.
  * @return file configuration either loaded from file or just the one you specified with [configuration].
  * @author Paul Kindler
  * @since 30/10/2023
  */
 inline fun <reified C> loadConfig(path: Path, configuration: C): C {
-	if (path.notExists() || path.readText().isBlank()) {
+	val text = path.readText()
+
+	if (path.exists() && (text.isNotBlank() || text.isNotEmpty())) return configToml.decodeFromString<C>(text)
+
+	val toml = configToml.encodeToString(configuration)
+	if (path.notExists() || text.isBlank()) {
 		if (path.notExists()) path.createFile()
-		path.appendText(configToml.encodeToString(configuration))
+		path.appendText(toml)
+	}
+
+	if (path.exists() && !text.contains(toml)) {
+		throw IllegalArgumentException("This config file is already in use by another configuration." +
+			"Consider changing the file or delete the old configuration.")
 	}
 
 	return configToml.decodeFromString<C>(path.readText())

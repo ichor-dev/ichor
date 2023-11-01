@@ -61,7 +61,7 @@ abstract class Server(private val serverName: String) : CoroutineScope {
 		get() = KotlinLogging.logger(serverName)
 
 	private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-		logger.error { throwable }
+		logger.error(throwable) { throwable.stackTraceToString() }
 	}
 
 	override val coroutineContext: CoroutineContext
@@ -130,7 +130,7 @@ abstract class Server(private val serverName: String) : CoroutineScope {
 		})
 
 		Thread.setDefaultUncaughtExceptionHandler { _, throwable ->
-			logger.error { throwable }
+			logger.error(throwable) { throwable.stackTraceToString() }
 		}
 	}
 }
