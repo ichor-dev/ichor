@@ -22,7 +22,7 @@ dependencyResolutionManagement {
     }
 
     create("ktorio") {
-      plugin("ktor", "io.ktor.plugin").version("2.3.5")
+      plugin("ktor", "io.ktor.plugin").version("2.3.6")
 
       library("cio", "io.ktor", "ktor-server-cio").withoutVersion()
       library("network", "io.ktor", "ktor-network").withoutVersion()
@@ -52,12 +52,12 @@ dependencyResolutionManagement {
       bundle("exposed", listOf("dao", "core", "json", "jdbc", "crypt", "datetime"))
 
       library("h2", "com.h2database", "h2").version("2.2.224")
-      library("mariadb", "org.mariadb.jdbc", "mariadb-java-client").version("3.2.0")
+      library("mariadb", "org.mariadb.jdbc", "mariadb-java-client").version("3.3.0")
       library("mysql", "mysql", "mysql-connector-java").version("8.0.33")
       library("oracle", "com.oracle.database.jdbc", "ojdbc8").version("23.3.0.23.09")
       library("postgres", "org.postgresql", "postgresql").version("42.6.0")
       library("sql-server", "com.microsoft.sqlserver", "mssql-jdbc").version("12.4.2.jre11")
-      library("sqlite", "org.xerial", "sqlite-jdbc").version("3.43.2.2")
+      library("sqlite", "org.xerial", "sqlite-jdbc").version("3.44.0.0")
 
       bundle("drivers", listOf("h2", "mariadb", "mysql", "oracle", "postgres", "sql-server", "sqlite"))
     }
