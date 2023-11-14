@@ -2,16 +2,21 @@ package fyi.pauli.ichor.gaia.networking.protocol.serialization
 
 import fyi.pauli.ichor.gaia.networking.protocol.MinecraftInput
 import fyi.pauli.ichor.gaia.networking.protocol.desc.ProtocolDesc
+import fyi.pauli.ichor.gaia.networking.protocol.desc.extractDescriptor
+import fyi.pauli.ichor.gaia.networking.protocol.desc.extractEnumParameters
+import fyi.pauli.ichor.gaia.networking.protocol.desc.findEnumIndexByTag
 import fyi.pauli.ichor.gaia.networking.protocol.exceptions.MinecraftProtocolDecodingException
-import fyi.pauli.ichor.gaia.networking.protocol.protocolScope
-import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.MinecraftNumberType
-import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.VarIntEncoder.readVarInt
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.MinecraftEnumType
+import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.MinecraftNumberType
+import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.MinecraftStringEncoder
+import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.VarIntSerializer.readVarInt
+import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.VarLongSerializer.readVarLong
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.StructureKind
+import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeDecoder.Companion.DECODE_DONE
 import kotlinx.serialization.internal.TaggedDecoder
 
@@ -53,13 +58,51 @@ class MinecraftProtocolDecoder(private val input: MinecraftInput) : TaggedDecode
 	}
 
 	override fun decodeTaggedLong(tag: ProtocolDesc): Long = runBlocking {
-		when (tag.type) { // TODO: impl VarLong?
+		when (tag.type) {
 			MinecraftNumberType.UNSIGNED, MinecraftNumberType.DEFAULT -> input.readLong()
-			MinecraftNumberType.VAR ->
+			MinecraftNumberType.VAR -> readVarLong { input.readByte() }
 		}
 	}
 
+	override fun decodeTaggedFloat(tag: ProtocolDesc): Float = runBlocking {
+		input.readFloat()
+	}
+
+	override fun decodeTaggedDouble(tag: ProtocolDesc): Double = runBlocking {
+		input.readDouble()
+	}
+
+	@OptIn(ExperimentalStdlibApi::class)
+	override fun decodeTaggedString(tag: ProtocolDesc): String = runBlocking {
+		MinecraftStringEncoder.readString(readByte = { input.readByte() }) { length ->
+			ByteArray(length) { input.readByte() }
+		}
+	}
+
+	@OptIn(ExperimentalStdlibApi::class)
+	override fun decodeTaggedEnum(tag: ProtocolDesc, enumDescriptor: SerialDescriptor): Int = runBlocking {
+		val enumTag = extractEnumParameters(enumDescriptor)
+		val ordinal = when (enumTag.type) {
+			MinecraftEnumType.VAR_INT -> readVarInt { input.readByte() }
+			MinecraftEnumType.BYTE, MinecraftEnumType.UNSIGNED_BYTE -> input.readByte().toInt()
+			MinecraftEnumType.INT -> input.readInt()
+			MinecraftEnumType.STRING -> enumDescriptor.getElementIndex(MinecraftStringEncoder.readString(readByte = { input.readByte() }) { length ->
+				ByteArray(length) { input.readByte() }
+			})
+		}
+
+		findEnumIndexByTag(enumDescriptor, ordinal)
+	}
+
 	override fun SerialDescriptor.getTag(index: Int): ProtocolDesc {
-		TODO("Not yet implemented")
+		return extractDescriptor(this, index)
+	}
+
+	override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
+		return when (descriptor.kind) {
+			is StructureKind.CLASS -> MinecraftProtocolDecoder(input)
+			StructureKind.LIST -> super.beginStructure(descriptor)
+			else -> super.beginStructure(descriptor)
+		}
 	}
 }

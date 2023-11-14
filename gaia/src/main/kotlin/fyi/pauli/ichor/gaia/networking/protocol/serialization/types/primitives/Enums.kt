@@ -1,4 +1,4 @@
-package fyi.pauli.ichor.gaia.networking.protocol.serialization.types
+package fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives
 
 /**
  * @author btwonion

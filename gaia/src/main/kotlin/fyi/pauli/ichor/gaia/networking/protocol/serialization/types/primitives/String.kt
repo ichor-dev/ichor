@@ -1,9 +1,9 @@
-package fyi.pauli.ichor.gaia.networking.protocol.serialization.types
+package fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives
 
 import fyi.pauli.ichor.gaia.networking.protocol.exceptions.MinecraftProtocolDecodingException
 import fyi.pauli.ichor.gaia.networking.protocol.exceptions.MinecraftProtocolEncodingException
-import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.VarIntEncoder.readVarInt
-import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.VarIntEncoder.writeVarInt
+import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.VarIntSerializer.readVarInt
+import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.VarIntSerializer.writeVarInt
 
 /**
  * @author btwonion
@@ -15,7 +15,7 @@ object MinecraftStringEncoder {
 
 	@ExperimentalStdlibApi
 	internal inline fun readString(
-		maxLength: Int,
+		maxLength: Int = MAX_STRING_LENGTH,
 		readByte: () -> Byte,
 		readBytes: (length: Int) -> ByteArray,
 	): String {

@@ -2,6 +2,8 @@
 
 package fyi.pauli.ichor.gaia.networking.protocol.serialization.types
 
+import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.MinecraftEnumType
+import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.MinecraftNumberType
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialInfo
 

@@ -1,7 +1,7 @@
 package fyi.pauli.ichor.gaia.networking.protocol.desc
 
-import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.MinecraftEnumType
-import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.MinecraftNumberType
+import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.MinecraftEnumType
+import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.MinecraftNumberType
 
 /**
  * @author btwonion

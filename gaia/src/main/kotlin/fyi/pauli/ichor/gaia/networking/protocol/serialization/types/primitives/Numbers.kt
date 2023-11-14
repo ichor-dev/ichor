@@ -1,4 +1,4 @@
-package fyi.pauli.ichor.gaia.networking.protocol.serialization.types
+package fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives
 
 import kotlin.experimental.and
 import kotlin.experimental.or
@@ -12,7 +12,10 @@ enum class MinecraftNumberType {
 	DEFAULT, UNSIGNED, VAR
 }
 
-internal object VarIntEncoder {
+private const val SEGMENT_BITS = 0x7F.toByte() // 127
+private const val CONTINUE_BIT = 0x80.toByte() // 128
+
+internal object VarIntSerializer {
 	internal inline fun readVarInt(
 		readByte: () -> Byte
 	): Int {
@@ -21,13 +24,13 @@ internal object VarIntEncoder {
 		var read: Byte
 		do {
 			read = readByte()
-			val value = (read and 127).toInt()
+			val value = (read and SEGMENT_BITS).toInt()
 			result = result or (value shl 7 * numRead)
 			numRead++
 			if (numRead > 5) {
 				throw RuntimeException("VarInt is too big")
 			}
-		} while (read and 128.toByte() != 0.toByte())
+		} while (read and CONTINUE_BIT != 0.toByte())
 		return result
 	}
 
@@ -37,11 +40,11 @@ internal object VarIntEncoder {
 	) {
 		var v = value
 		do {
-			var temp = (v and 127).toByte()
+			var temp = (v and SEGMENT_BITS.toInt()).toByte()
 			// Note: >>> means that the sign bit is shifted with the rest of the number rather than being left alone
 			v = v ushr 7
 			if (v != 0) {
-				temp = temp or 128.toByte()
+				temp = temp or CONTINUE_BIT
 			}
 			writeByte(temp)
 		} while (v != 0)
@@ -56,46 +59,46 @@ internal object VarIntEncoder {
 	}
 }
 
-internal object VarLongDecoder {
-	internal inline fun readVarInt(
+internal object VarLongSerializer {
+	internal inline fun readVarLong(
 		readByte: () -> Byte
-	): Int {
+	): Long {
 		var numRead = 0
-		var result = 0
+		var result = 0L
 		var read: Byte
 		do {
 			read = readByte()
-			val value = (read and 127).toInt()
+			val value = (read and SEGMENT_BITS).toLong()
 			result = result or (value shl 7 * numRead)
 			numRead++
 			if (numRead > 5) {
-				throw RuntimeException("VarInt is too big")
+				throw RuntimeException("VarLong is too big")
 			}
-		} while (read and 128.toByte() != 0.toByte())
+		} while (read and CONTINUE_BIT != 0.toByte())
 		return result
 	}
 
-	internal inline fun writeVarInt(
-		value: Int,
+	internal inline fun writeVarLong(
+		value: Long,
 		writeByte: (Byte) -> Unit,
 	) {
 		var v = value
 		do {
-			var temp = (v and 127).toByte()
+			var temp = (v and SEGMENT_BITS.toLong()).toByte()
 			// Note: >>> means that the sign bit is shifted with the rest of the number rather than being left alone
 			v = v ushr 7
-			if (v != 0) {
-				temp = temp or 128.toByte()
+			if (v != 0L) {
+				temp = temp or CONTINUE_BIT
 			}
 			writeByte(temp)
-		} while (v != 0)
+		} while (v != 0L)
 	}
 
-	fun varIntBytesCount(
-		value: Int,
+	fun varLongBytesCount(
+		value: Long,
 	): Int {
 		var counter = 0
-		writeVarInt(value) { counter++ }
+		writeVarLong(value) { counter++ }
 		return counter
 	}
 }
