@@ -2,8 +2,8 @@ package fyi.pauli.ichor.gaia.networking.protocol.serialization
 
 import fyi.pauli.ichor.gaia.networking.protocol.MinecraftInput
 import fyi.pauli.ichor.gaia.networking.protocol.desc.ProtocolDesc
-import fyi.pauli.ichor.gaia.networking.protocol.desc.extractDescriptor
-import fyi.pauli.ichor.gaia.networking.protocol.desc.extractEnumParameters
+import fyi.pauli.ichor.gaia.networking.protocol.desc.extractEnumDescriptor
+import fyi.pauli.ichor.gaia.networking.protocol.desc.extractProtocolDescriptor
 import fyi.pauli.ichor.gaia.networking.protocol.desc.findEnumIndexByTag
 import fyi.pauli.ichor.gaia.networking.protocol.exceptions.MinecraftProtocolDecodingException
 import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.MinecraftEnumType
@@ -81,7 +81,7 @@ class MinecraftProtocolDecoder(private val input: MinecraftInput) : TaggedDecode
 
 	@OptIn(ExperimentalStdlibApi::class)
 	override fun decodeTaggedEnum(tag: ProtocolDesc, enumDescriptor: SerialDescriptor): Int = runBlocking {
-		val enumTag = extractEnumParameters(enumDescriptor)
+		val enumTag = extractEnumDescriptor(enumDescriptor)
 		val ordinal = when (enumTag.type) {
 			MinecraftEnumType.VAR_INT -> readVarInt { input.readByte() }
 			MinecraftEnumType.BYTE, MinecraftEnumType.UNSIGNED_BYTE -> input.readByte().toInt()
@@ -95,13 +95,13 @@ class MinecraftProtocolDecoder(private val input: MinecraftInput) : TaggedDecode
 	}
 
 	override fun SerialDescriptor.getTag(index: Int): ProtocolDesc {
-		return extractDescriptor(this, index)
+		return extractProtocolDescriptor(this, index)
 	}
 
 	override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
 		return when (descriptor.kind) {
 			is StructureKind.CLASS -> MinecraftProtocolDecoder(input)
-			StructureKind.LIST -> super.beginStructure(descriptor)
+			StructureKind.LIST -> super.beginStructure(descriptor) // TODO: create List encoder, maybe also Map
 			else -> super.beginStructure(descriptor)
 		}
 	}

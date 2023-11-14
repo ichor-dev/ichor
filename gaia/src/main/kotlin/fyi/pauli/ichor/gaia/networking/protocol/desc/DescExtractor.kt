@@ -2,7 +2,10 @@
 
 package fyi.pauli.ichor.gaia.networking.protocol.desc
 
-import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.*
+import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.EnumSerial
+import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.EnumType
+import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.NumberType
+import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.StringLength
 import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.MinecraftEnumType
 import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.MinecraftNumberType
 import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.MinecraftStringEncoder
@@ -14,29 +17,29 @@ import kotlinx.serialization.descriptors.SerialDescriptor
  * @since 11/11/2023
  */
 
-internal fun extractDescriptor(
+internal fun extractProtocolDescriptor(
 	descriptor: SerialDescriptor, index: Int
 ): ProtocolDesc {
-	val format = descriptor.findElementAnnotation<MinecraftNumber>(index)?.type ?: MinecraftNumberType.DEFAULT
+	val format = descriptor.findElementAnnotation<NumberType>(index)?.type ?: MinecraftNumberType.DEFAULT
 	val maxStringLength =
-		descriptor.findElementAnnotation<MinecraftString>(index)?.maxLength ?: MinecraftStringEncoder.MAX_STRING_LENGTH
+		descriptor.findElementAnnotation<StringLength>(index)?.maxLength ?: MinecraftStringEncoder.MAX_STRING_LENGTH
 	return ProtocolDesc(format, maxStringLength)
 }
 
 
-internal fun extractEnumParameters(
+internal fun extractEnumDescriptor(
 	descriptor: SerialDescriptor
 ): ProtocolEnumDesc {
-	val format = descriptor.findEntityAnnotation<MinecraftEnum>()?.type ?: MinecraftEnumType.VAR_INT
+	val format = descriptor.findEntityAnnotation<EnumType>()?.type ?: MinecraftEnumType.VAR_INT
 	val stringMaxLength =
-		descriptor.findEntityAnnotation<MinecraftString>()?.maxLength ?: MinecraftStringEncoder.MAX_STRING_LENGTH
+		descriptor.findEntityAnnotation<StringLength>()?.maxLength ?: MinecraftStringEncoder.MAX_STRING_LENGTH
 	return ProtocolEnumDesc(format, stringMaxLength)
 }
 
 internal fun extractEnumElementDescriptor(
 	descriptor: SerialDescriptor, index: Int
 ): ProtocolEnumElementDesc {
-	val ordinal = descriptor.findElementAnnotation<SerialOrdinal>(index)?.ordinal ?: index
+	val ordinal = descriptor.findElementAnnotation<EnumSerial>(index)?.ordinal ?: index
 
 	return ProtocolEnumElementDesc(ordinal)
 }

@@ -1,10 +1,10 @@
 package fyi.pauli.ichor.gaia.networking.protocol.serialization
 
 import fyi.pauli.ichor.gaia.networking.protocol.MinecraftOutput
-import fyi.pauli.ichor.gaia.networking.protocol.desc.*
-import fyi.pauli.ichor.gaia.networking.protocol.desc.extractDescriptor
+import fyi.pauli.ichor.gaia.networking.protocol.desc.ProtocolDesc
+import fyi.pauli.ichor.gaia.networking.protocol.desc.extractEnumDescriptor
 import fyi.pauli.ichor.gaia.networking.protocol.desc.extractEnumElementDescriptor
-import fyi.pauli.ichor.gaia.networking.protocol.desc.extractEnumParameters
+import fyi.pauli.ichor.gaia.networking.protocol.desc.extractProtocolDescriptor
 import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.MinecraftEnumType
 import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.MinecraftNumberType
 import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.MinecraftStringEncoder.writeString
@@ -35,7 +35,7 @@ class MinecraftProtocolEncoder(
 	}
 
 	override fun SerialDescriptor.getTag(index: Int): ProtocolDesc {
-		return extractDescriptor(this@getTag, index)
+		return extractProtocolDescriptor(this@getTag, index)
 	}
 
 	override fun encodeTaggedInt(tag: ProtocolDesc, value: Int) = runBlocking {
@@ -80,7 +80,7 @@ class MinecraftProtocolEncoder(
 	override fun encodeTaggedEnum(tag: ProtocolDesc, enumDescriptor: SerialDescriptor, ordinal: Int) = runBlocking {
 		val enumDesc = extractEnumElementDescriptor(enumDescriptor, ordinal)
 
-		when (extractEnumParameters(enumDescriptor).type) {
+		when (extractEnumDescriptor(enumDescriptor).type) {
 			MinecraftEnumType.VAR_INT -> writeVarInt(enumDesc.ordinal) { output.writeByte(it) }
 			MinecraftEnumType.BYTE, MinecraftEnumType.UNSIGNED_BYTE -> output.writeByte(enumDesc.ordinal.toByte())
 			MinecraftEnumType.INT -> output.writeInt(enumDesc.ordinal)
@@ -97,6 +97,7 @@ class MinecraftProtocolEncoder(
 			}
 
 			is StructureKind.LIST -> {
+				// TODO: create List encoder, maybe also Map
 				super.beginStructure(descriptor)
 			}
 
