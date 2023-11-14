@@ -9,8 +9,6 @@ repositories {
   mavenCentral()
 }
 
-val ktorVersion: String by project
-
 dependencies {
   implementation(project(":gaia"))
 
