@@ -1,9 +1,9 @@
 package fyi.pauli.ichor.gaia.tests
 
 import fyi.pauli.ichor.gaia.networking.protocol.MinecraftProtocol
-import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.MinecraftNumber
-import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.MinecraftString
-import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.SerialOrdinal
+import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.NumberType
+import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.StringLength
+import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.EnumSerial
 import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.objects.UuidByteSerializer
 import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.MinecraftNumberType
 import kotlinx.serialization.Serializable
@@ -22,11 +22,11 @@ class EncodingDecodingTest {
 	data class NumberTest(
 		val int: Int = 6,
 		val biggerInt: Int = 786465849,
-		@MinecraftNumber(MinecraftNumberType.VAR)
+		@NumberType(MinecraftNumberType.VAR)
 		val varInt: Int = 458,
 		val long: Long = 5L,
 		val biggerLong: Long = 78784535125L,
-		@MinecraftNumber(MinecraftNumberType.VAR)
+		@NumberType(MinecraftNumberType.VAR)
 		val varLong: Long = 48974L,
 		val short: Short = 5,
 		val double: Double = 4.58
@@ -42,15 +42,15 @@ class EncodingDecodingTest {
 	@Serializable
 	data class StringEnumTest(
 		val string: String = "adwdasdasd awdad wdawd a",
-		@MinecraftString(5)
+		@StringLength(5)
 		val sizedString: String = "sadad",
-		@MinecraftString(5)
+		@StringLength(5)
 		val oversizedString: String = "asdawdwdad",
 		val enum: TestEnum = TestEnum.Bar
 	) {
 		@Serializable
 		enum class TestEnum {
-			@SerialOrdinal(1) Foo, @SerialOrdinal(2) Bar
+			@EnumSerial(1) Foo, @EnumSerial(2) Bar
 		}
 	}
 
