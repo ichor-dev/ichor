@@ -36,7 +36,7 @@ class EncodingDecodingTest {
 	@Test
 	fun `number tests`() {
 		val mc = MinecraftProtocol()
-		val test = NumberTest()
+		val test = NumberTest(double = 5.324)
 		assertEquals(test, mc.toByteArrayAndBack(test))
 	}
 
@@ -58,7 +58,7 @@ class EncodingDecodingTest {
 	@Test
 	fun `string and enum test`() {
 		val mc = MinecraftProtocol()
-		val test = StringEnumTest()
+		val test = StringEnumTest(enum = StringEnumTest.TestEnum.Foo)
 		assertEquals(test, mc.toByteArrayAndBack(test))
 	}
 
@@ -70,14 +70,15 @@ class EncodingDecodingTest {
 	@Serializable
 	data class ObjectTest(
 		@Serializable(with = UuidByteSerializer::class)
-		val uuid: UUID = UUID.randomUUID(),
-		val identifier: Identifier = Identifier("ichor", "test")
+		val uuid: UUID,
+		val identifier: Identifier = Identifier("ichor", "test"),
+		val listTest: List<Identifier> = listOf(Identifier("ichor", "test"), Identifier("ichor", "test1"))
 	)
 
 	@Test
 	fun `object test`() {
 		val mc = MinecraftProtocol()
-		val test = ObjectTest()
+		val test = ObjectTest(uuid = UUID.fromString("404b7a45-be73-4665-b77e-07dfc6173eca"), identifier = Identifier("ichor", "asdawd-adw"))
 		assertEquals(test, mc.toByteArrayAndBack(test))
 	}
 }

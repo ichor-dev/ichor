@@ -24,7 +24,6 @@ annotation class StringLength(
 	val maxLength: Int
 )
 
-
 @SerialInfo
 @Target(AnnotationTarget.CLASS, AnnotationTarget.PROPERTY, AnnotationTarget.VALUE_PARAMETER)
 annotation class EnumType(
