@@ -40,17 +40,24 @@ class MinecraftProtocolEncoder(
 
 	override fun encodeTaggedInt(tag: ProtocolDesc, value: Int) = runBlocking {
 		when (tag.type) {
-			MinecraftNumberType.DEFAULT, MinecraftNumberType.UNSIGNED -> output.writeInt(value)
+			MinecraftNumberType.DEFAULT -> output.writeInt(value)
 			MinecraftNumberType.VAR -> writeVarInt(value) { output.writeByte(it) }
+			MinecraftNumberType.UNSIGNED -> output.writeInt(value.toUInt().toInt())
 		}
 	}
 
 	override fun encodeTaggedByte(tag: ProtocolDesc, value: Byte) = runBlocking {
-		output.writeByte(value)
+		when (tag.type) {
+			MinecraftNumberType.UNSIGNED -> output.writeByte(value.toUByte().toByte())
+			else -> output.writeByte(value)
+		}
 	}
 
 	override fun encodeTaggedShort(tag: ProtocolDesc, value: Short) = runBlocking {
-		output.writeShort(value)
+		when (tag.type) {
+			MinecraftNumberType.UNSIGNED -> output.writeShort(value.toUShort().toShort())
+			else -> output.writeShort(value)
+		}
 	}
 
 	override fun encodeTaggedLong(tag: ProtocolDesc, value: Long) = runBlocking {
@@ -84,7 +91,8 @@ class MinecraftProtocolEncoder(
 			MinecraftEnumType.VAR_INT -> writeVarInt(enumDesc.ordinal) { output.writeByte(it) }
 			MinecraftEnumType.BYTE, MinecraftEnumType.UNSIGNED_BYTE -> output.writeByte(enumDesc.ordinal.toByte())
 			MinecraftEnumType.INT -> output.writeInt(enumDesc.ordinal)
-			MinecraftEnumType.STRING -> writeString(enumDescriptor.getElementName(ordinal),
+			MinecraftEnumType.STRING -> writeString(
+				enumDescriptor.getElementName(ordinal),
 				{ output.writeByte(it) }) { output.writeFully(it) }
 		}
 	}

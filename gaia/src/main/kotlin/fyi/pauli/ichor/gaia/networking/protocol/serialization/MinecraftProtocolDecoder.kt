@@ -43,24 +43,32 @@ class MinecraftProtocolDecoder(private val input: MinecraftInput) : TaggedDecode
 	}
 
 	override fun decodeTaggedByte(tag: ProtocolDesc): Byte = runBlocking {
-		input.readByte()
+		when (tag.type) {
+			MinecraftNumberType.UNSIGNED -> input.readByte().toUByte().toByte()
+			else -> input.readByte()
+		}
 	}
 
 	override fun decodeTaggedShort(tag: ProtocolDesc): Short = runBlocking {
-		input.readShort()
+		when (tag.type) {
+			MinecraftNumberType.UNSIGNED -> input.readShort().toUShort().toShort()
+			else -> input.readShort()
+		}
 	}
 
 	override fun decodeTaggedInt(tag: ProtocolDesc): Int = runBlocking {
 		when (tag.type) {
-			MinecraftNumberType.DEFAULT, MinecraftNumberType.UNSIGNED -> input.readInt()
+			MinecraftNumberType.DEFAULT -> input.readInt()
 			MinecraftNumberType.VAR -> readVarInt { input.readByte() }
+			MinecraftNumberType.UNSIGNED -> input.readInt().toUInt().toInt()
 		}
 	}
 
 	override fun decodeTaggedLong(tag: ProtocolDesc): Long = runBlocking {
 		when (tag.type) {
-			MinecraftNumberType.UNSIGNED, MinecraftNumberType.DEFAULT -> input.readLong()
+			MinecraftNumberType.DEFAULT -> input.readLong()
 			MinecraftNumberType.VAR -> readVarLong { input.readByte() }
+			MinecraftNumberType.UNSIGNED -> input.readLong().toULong().toLong()
 		}
 	}
 
