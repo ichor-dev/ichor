@@ -200,7 +200,7 @@ abstract class Server(private val serverName: String) : CoroutineScope {
 
 			launch {
 				try {
-					handle.handleIncoming(this@Server)
+					handle.handleIncoming()
 				} catch (e: Throwable) {
 					if (e !is ClosedReceiveChannelException && e !is SocketException) logger.error(e) {
 						"Error in channel"
