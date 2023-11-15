@@ -1,5 +1,6 @@
 package fyi.pauli.ichor.gaia.tests
 
+import fyi.pauli.ichor.gaia.models.Identifier
 import fyi.pauli.ichor.gaia.networking.protocol.MinecraftProtocol
 import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.NumberType
 import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.StringLength
@@ -69,7 +70,8 @@ class EncodingDecodingTest {
 	@Serializable
 	data class ObjectTest(
 		@Serializable(with = UuidByteSerializer::class)
-		val uuid: UUID = UUID.randomUUID()
+		val uuid: UUID = UUID.randomUUID(),
+		val identifier: Identifier = Identifier("ichor", "test")
 	)
 
 	@Test
