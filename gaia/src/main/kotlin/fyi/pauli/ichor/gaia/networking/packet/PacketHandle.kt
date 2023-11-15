@@ -11,6 +11,16 @@ import kotlinx.coroutines.withContext
 import java.nio.ByteBuffer
 import kotlin.experimental.and
 
+/**
+ * Handler class for any established connection,
+ * @property state state of the connection.
+ * @property connection represented connected socket.
+ * @property threshold threshold used for compression.
+ * @property compression whether it is compressed depends on the threshold.
+ * @property server server which creates and handles the packets.
+ * @author Paul Kindler
+ * @since 01/11/2023
+ */
 class PacketHandle(
 	var state: State,
 	val connection: Connection,
@@ -19,6 +29,13 @@ class PacketHandle(
 	val server: Server
 ) {
 
+	/**
+	 * Function to send a specific packet to the connected socket.
+	 * @param packet packet to send.
+	 * @author Paul Kindler
+	 * @since 01/11/2023
+	 * @see OutgoingPacket
+	 */
 	suspend fun sendPacket(packet: OutgoingPacket) {
 		withContext(server.coroutineContext) {
 			launch {
@@ -31,7 +48,12 @@ class PacketHandle(
 		}
 	}
 
-	suspend fun handleIncoming(server: Server) {
+	/**
+	 * Function to loop incoming data and handle it.
+	 * @author Paul Kindler
+	 * @since 01/11/2023
+	 */
+	suspend fun handleIncoming() {
 		while (!connection.input.isClosedForRead) {
 			val size = run<Int> {
 				var i = 0
