@@ -108,8 +108,7 @@ class MinecraftProtocolDecoder(private val input: MinecraftInput) : TaggedDecode
 
 	override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
 		return when (descriptor.kind) {
-			is StructureKind.CLASS -> MinecraftProtocolDecoder(input)
-			StructureKind.LIST -> super.beginStructure(descriptor) // TODO: create List encoder, maybe also Map
+			StructureKind.CLASS -> MinecraftProtocolDecoder(input)
 			else -> super.beginStructure(descriptor)
 		}
 	}

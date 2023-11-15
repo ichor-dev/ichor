@@ -91,8 +91,7 @@ class MinecraftProtocolEncoder(
 			MinecraftEnumType.VAR_INT -> writeVarInt(enumDesc.ordinal) { output.writeByte(it) }
 			MinecraftEnumType.BYTE, MinecraftEnumType.UNSIGNED_BYTE -> output.writeByte(enumDesc.ordinal.toByte())
 			MinecraftEnumType.INT -> output.writeInt(enumDesc.ordinal)
-			MinecraftEnumType.STRING -> writeString(
-				enumDescriptor.getElementName(ordinal),
+			MinecraftEnumType.STRING -> writeString(enumDescriptor.getElementName(ordinal),
 				{ output.writeByte(it) }) { output.writeFully(it) }
 		}
 	}
@@ -100,15 +99,7 @@ class MinecraftProtocolEncoder(
 	@OptIn(ExperimentalSerializationApi::class)
 	override fun beginStructure(descriptor: SerialDescriptor): CompositeEncoder {
 		return when (descriptor.kind) {
-			is StructureKind.CLASS -> {
-				return MinecraftProtocolEncoder(output)
-			}
-
-			is StructureKind.LIST -> {
-				// TODO: create List encoder, maybe also Map
-				super.beginStructure(descriptor)
-			}
-
+			StructureKind.CLASS -> MinecraftProtocolEncoder(output)
 			else -> super.beginStructure(descriptor)
 		}
 	}
