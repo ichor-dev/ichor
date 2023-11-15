@@ -3,9 +3,6 @@ package fyi.pauli.ichor.gaia.networking.protocol
 import fyi.pauli.ichor.gaia.networking.protocol.serialization.MinecraftProtocolDecoder
 import fyi.pauli.ichor.gaia.networking.protocol.serialization.MinecraftProtocolEncoder
 import io.ktor.utils.io.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.BinaryFormat
 import kotlinx.serialization.DeserializationStrategy
@@ -18,8 +15,6 @@ import kotlinx.serialization.modules.SerializersModule
  * @author btwonion
  * @since 11/11/2023
  */
-internal val protocolScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-
 class MinecraftProtocol(
 	override val serializersModule: SerializersModule = EmptySerializersModule()
 ) : BinaryFormat {
