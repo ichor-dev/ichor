@@ -29,13 +29,13 @@ class MinecraftProtocolEncoder(
 	private val output: MinecraftOutput
 ) : TaggedEncoder<ProtocolDesc>() {
 
-	@ExperimentalSerializationApi
-	override fun shouldEncodeElementDefault(descriptor: SerialDescriptor, index: Int): Boolean {
-		return true
-	}
-
 	override fun SerialDescriptor.getTag(index: Int): ProtocolDesc {
 		return extractProtocolDescriptor(this@getTag, index)
+	}
+
+	override fun beginCollection(descriptor: SerialDescriptor, collectionSize: Int): CompositeEncoder = runBlocking {
+		writeVarInt(collectionSize) { output.writeByte(it) }
+		super.beginCollection(descriptor, collectionSize)
 	}
 
 	override fun encodeTaggedInt(tag: ProtocolDesc, value: Int) = runBlocking {
@@ -99,7 +99,7 @@ class MinecraftProtocolEncoder(
 	@OptIn(ExperimentalSerializationApi::class)
 	override fun beginStructure(descriptor: SerialDescriptor): CompositeEncoder {
 		return when (descriptor.kind) {
-			StructureKind.CLASS -> MinecraftProtocolEncoder(output)
+			StructureKind.CLASS, StructureKind.LIST -> MinecraftProtocolEncoder(output)
 			else -> super.beginStructure(descriptor)
 		}
 	}

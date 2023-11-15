@@ -20,6 +20,7 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.CompositeDecoder.Companion.DECODE_DONE
 import kotlinx.serialization.internal.TaggedDecoder
 
+
 /**
  * @author btwonion
  * @since 11/11/2023
@@ -30,6 +31,14 @@ class MinecraftProtocolDecoder(private val input: MinecraftInput) : TaggedDecode
 	override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
 		return if (descriptor.elementsCount == currentIndex) DECODE_DONE
 		else currentIndex++
+	}
+
+	override fun decodeCollectionSize(descriptor: SerialDescriptor): Int = runBlocking {
+		readVarInt { input.readByte() }
+	}
+
+	override fun decodeSequentially(): Boolean {
+		return true
 	}
 
 	override fun decodeTaggedBoolean(
@@ -108,7 +117,7 @@ class MinecraftProtocolDecoder(private val input: MinecraftInput) : TaggedDecode
 
 	override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
 		return when (descriptor.kind) {
-			StructureKind.CLASS -> MinecraftProtocolDecoder(input)
+			StructureKind.CLASS, StructureKind.LIST -> MinecraftProtocolDecoder(input)
 			else -> super.beginStructure(descriptor)
 		}
 	}
