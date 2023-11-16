@@ -6,8 +6,9 @@ import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.M
 /**
  * @author btwonion
  * @since 11/11/2023
+ * 
+ * Description objects used while en-/decoding.
  */
-
 data class ProtocolDesc(
 	val type: MinecraftNumberType,
 	val maxStringLength: Int

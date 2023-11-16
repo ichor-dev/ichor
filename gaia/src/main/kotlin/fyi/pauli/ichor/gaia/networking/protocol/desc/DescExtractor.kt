@@ -15,8 +15,9 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 /**
  * @author btwonion
  * @since 11/11/2023
+ *
+ * This file is used to extract property descriptors used by the de-/encoder.
  */
-
 internal fun extractProtocolDescriptor(
 	descriptor: SerialDescriptor, index: Int
 ): ProtocolDesc {

@@ -11,6 +11,8 @@ import kotlinx.serialization.encoding.Encoder
 /**
  * @author btwonion
  * @since 15/11/2023
+ * 
+ * Byte serializer for the ichor internal Identifier object.
  */
 object IdentifierByteSerializer : KSerializer<Identifier> {
 	override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("identifier", PrimitiveKind.STRING)

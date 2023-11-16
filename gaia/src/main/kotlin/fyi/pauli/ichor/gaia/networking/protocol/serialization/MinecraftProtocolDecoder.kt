@@ -24,6 +24,8 @@ import kotlinx.serialization.internal.TaggedDecoder
 /**
  * @author btwonion
  * @since 11/11/2023
+ * 
+ * Decoder for the Minecraft protocol format.
  */
 @OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
 class MinecraftProtocolDecoder(private val input: MinecraftInput) : TaggedDecoder<ProtocolDesc>() {

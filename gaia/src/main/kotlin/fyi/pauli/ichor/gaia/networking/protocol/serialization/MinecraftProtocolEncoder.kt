@@ -22,8 +22,9 @@ import kotlinx.serialization.internal.TaggedEncoder
 /**
  * @author btwonion
  * @since 11/11/2023
+ * 
+ * Encoder for the Minecraft protocol format.
  */
-
 @OptIn(InternalSerializationApi::class)
 class MinecraftProtocolEncoder(
 	private val output: MinecraftOutput

@@ -6,8 +6,9 @@ import kotlin.experimental.or
 /**
  * @author btwonion
  * @since 11/11/2023
+ *
+ * Enum to define the binary format of the number.
  */
-
 enum class MinecraftNumberType {
 	DEFAULT, UNSIGNED, VAR
 }
@@ -15,6 +16,9 @@ enum class MinecraftNumberType {
 private const val SEGMENT_BITS = 0x7F.toByte() // 127
 private const val CONTINUE_BIT = 0x80.toByte() // 128
 
+/**
+ * Internal class to de-/serialize VarInts.
+ */
 internal object VarIntSerializer {
 	internal inline fun readVarInt(
 		readByte: () -> Byte
@@ -59,6 +63,9 @@ internal object VarIntSerializer {
 	}
 }
 
+/**
+ * Internal class to de-/serialize VarLongs.
+ */
 internal object VarLongSerializer {
 	internal inline fun readVarLong(
 		readByte: () -> Byte

@@ -8,9 +8,13 @@ import fyi.pauli.ichor.gaia.networking.protocol.serialization.types.primitives.V
 /**
  * @author btwonion
  * @since 11/11/2023
+ * 
+ * Internal class for de-/serializing Minecraft formatted strings.
  */
-
-object MinecraftStringEncoder {
+internal object MinecraftStringEncoder {
+	/**
+	 * The default max string length Minecraft uses.
+	 */
 	const val MAX_STRING_LENGTH = 32767
 
 	@ExperimentalStdlibApi

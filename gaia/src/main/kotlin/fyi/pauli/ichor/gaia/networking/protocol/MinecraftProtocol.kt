@@ -14,6 +14,10 @@ import kotlinx.serialization.modules.SerializersModule
 /**
  * @author btwonion
  * @since 11/11/2023
+ * 
+ * This is a kotlinx.serialization format supporting the Minecraft protocol.
+ * For using specific number encoding annotate the specific field with @NumberType.
+ * When using enums you can use the @EnumSerial annotation to specify the number, which should be encoded.
  */
 class MinecraftProtocol(
 	override val serializersModule: SerializersModule = EmptySerializersModule()

@@ -9,6 +9,8 @@ import java.util.*
 /**
  * @author btwonion
  * @since 14/11/2023
+ * 
+ * Byte serializer for the java.util.UUID object.
  */
 object UuidByteSerializer : KSerializer<UUID> {
 	override val descriptor: SerialDescriptor = buildClassSerialDescriptor("uuid") {
@@ -51,6 +53,9 @@ object UuidByteSerializer : KSerializer<UUID> {
 	}
 }
 
+/**
+ * String serializer for the java.util.UUID object.
+ */
 object UuidStringSerializer : KSerializer<UUID> {
 	override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("uuid", PrimitiveKind.STRING)
 
@@ -63,6 +68,9 @@ object UuidStringSerializer : KSerializer<UUID> {
 	}
 }
 
+/**
+ * String serializer for the old Minecraft java.util.UUID object.
+ */
 object OldUuidStringSerializer : KSerializer<UUID> {
 	override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("old_uuid", PrimitiveKind.STRING)
 
