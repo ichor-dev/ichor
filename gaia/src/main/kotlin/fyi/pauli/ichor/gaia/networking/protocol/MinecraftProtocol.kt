@@ -24,10 +24,11 @@ class MinecraftProtocol(
 ) : BinaryFormat {
 
 	/**
-		* This function is used to decode a serializable object from a Minecraft protocol formatted ByteArray.
-		* @param deserializer specifies the serialization stragegy to decode the object, by default MyObject.serializer()
-		* @param bytes the input ByteArray the object should be read from
-		*/
+	 * This function is used to decode a serializable object from a Minecraft protocol formatted ByteArray.
+	 * @param deserializer specifies the serialization stragegy to decode the object, by default MyObject.serializer()
+	 * @param bytes the input ByteArray the object should be read from
+	 * @returns the decoded object
+	 */
 	@InternalSerializationApi
 	override fun <T> decodeFromByteArray(deserializer: DeserializationStrategy<T>, bytes: ByteArray): T {
 		val decoder = MinecraftProtocolDecoder(ByteReadChannel(bytes))
@@ -36,10 +37,11 @@ class MinecraftProtocol(
 	}
 
 	/**
-		* This function is used to encode a serializable object to a Minecraft protocol formatted ByteArray.
-		* @param serializer specifies the serialization stragegy to encode the object, by default MyObject.serializer()
-		* @param value the object, which should be transformed to a ByteArray
-		*/
+	 * This function is used to encode a serializable object to a Minecraft protocol formatted ByteArray.
+	 * @param serializer specifies the serialization stragegy to encode the object, by default MyObject.serializer()
+	 * @param value the object, which should be transformed to a ByteArray
+	 * @returns the encoded ByteArray
+	 */
 	override fun <T> encodeToByteArray(serializer: SerializationStrategy<T>, value: T): ByteArray {
 		val channel = ByteChannel(autoFlush = false)
 		val encoder = MinecraftProtocolEncoder(channel)
