@@ -15,7 +15,7 @@ dependencyResolutionManagement {
 
     create("kotlinx") {
       library("datetime", "org.jetbrains.kotlinx", "kotlinx-datetime").version("0.4.1")
-      library("json", "org.jetbrains.kotlinx", "kotlinx-serialization-json").version("1.6.0")
+      library("json", "org.jetbrains.kotlinx", "kotlinx-serialization-json").version("1.6.1")
       library("coroutines", "org.jetbrains.kotlinx", "kotlinx-coroutines-core").version("1.7.3")
 
       bundle("kotlinx", listOf("coroutines", "coroutines", "datetime"))
