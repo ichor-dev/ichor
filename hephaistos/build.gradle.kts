@@ -1,19 +1,49 @@
 plugins {
   application
-  alias(jetbrains.plugins.jvm)
+  alias(jetbrains.plugins.mp)
   alias(jetbrains.plugins.serialization)
   alias(ktorio.plugins.ktor)
 }
 
 repositories {
   mavenCentral()
+  maven("https://repo.nyon.dev/releases")
 }
 
-dependencies {
-  implementation(project(":gaia"))
+kotlin {
+  jvmToolchain {
+    languageVersion.set(JavaLanguageVersion.of(8))
+  }
 
-  testImplementation(kotlin("test"))
-  testImplementation(project(":gaia"))
+  jvm {
+    compilations.all {
+      kotlinOptions.jvmTarget = "1.8"
+    }
+  }
+  linuxX64()
+
+  sourceSets {
+    val commonMain by getting {
+      dependencies {
+        api(project(":gaia"))
+      }
+    }
+
+    val commonTest by getting {
+      dependencies {
+        implementation(kotlin("test-common"))
+        implementation(kotlin("test-annotations-common"))
+        implementation(project(":gaia"))
+      }
+    }
+
+    val jvmTest by getting {
+      dependencies {
+        implementation(kotlin("test-junit5"))
+        implementation("org.junit.jupiter:junit-jupiter-engine:5.10.1")
+      }
+    }
+  }
 }
 
 application {

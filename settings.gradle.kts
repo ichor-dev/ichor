@@ -9,57 +9,42 @@ dependencyResolutionManagement {
     create("jetbrains") {
       version("kotlin", "1.9.20")
 
-      plugin("jvm", "org.jetbrains.kotlin.jvm").versionRef("kotlin")
+      plugin("mp", "org.jetbrains.kotlin.multiplatform").versionRef("kotlin")
       plugin("serialization", "org.jetbrains.kotlin.plugin.serialization").versionRef("kotlin")
+    }
+
+    create("pauli") {
+      library("prorialize", "fyi.pauli", "prorialize").version("1.1.0")
+
+      bundle("ichor", listOf("prorialize"))
     }
 
     create("kotlinx") {
       library("datetime", "org.jetbrains.kotlinx", "kotlinx-datetime").version("0.4.1")
       library("json", "org.jetbrains.kotlinx", "kotlinx-serialization-json").version("1.6.1")
       library("coroutines", "org.jetbrains.kotlinx", "kotlinx-coroutines-core").version("1.7.3")
+      library("io", "org.jetbrains.kotlinx", "kotlinx-io-core").version("0.3.0")
 
       bundle("kotlinx", listOf("coroutines", "coroutines", "datetime"))
     }
 
     create("ktorio") {
-      plugin("ktor", "io.ktor.plugin").version("2.3.6")
+      version("ktor", "2.3.6")
+      plugin("ktor", "io.ktor.plugin").versionRef("ktor")
 
-      library("cio", "io.ktor", "ktor-server-cio").withoutVersion()
-      library("network", "io.ktor", "ktor-network").withoutVersion()
-      library("core", "io.ktor", "ktor-server-core").withoutVersion()
-      library("client", "io.ktor", "ktor-client-core").withoutVersion()
-      library("client-cio", "io.ktor", "ktor-client-cio").withoutVersion()
-      library("sockets", "io.ktor", "ktor-server-websockets").withoutVersion()
-      library("serialization", "io.ktor", "ktor-serialization-kotlinx-json").withoutVersion()
-      library("client-negotiation", "io.ktor", "ktor-client-content-negotiation").withoutVersion()
+      library("cio", "io.ktor", "ktor-server-cio").versionRef("ktor")
+      library("network", "io.ktor", "ktor-network").versionRef("ktor")
+      library("core", "io.ktor", "ktor-server-core").versionRef("ktor")
+      library("client", "io.ktor", "ktor-client-core").versionRef("ktor")
+      library("client-cio", "io.ktor", "ktor-client-cio").versionRef("ktor")
+      library("sockets", "io.ktor", "ktor-server-websockets").versionRef("ktor")
+      library("serialization", "io.ktor", "ktor-serialization-kotlinx-json").versionRef("ktor")
+      library("client-negotiation", "io.ktor", "ktor-client-content-negotiation").versionRef("ktor")
 
       bundle(
         "ktor",
         listOf("cio", "core", "network", "client", "client-cio", "sockets", "serialization", "client-negotiation")
       )
-    }
-
-    create("database") {
-      version("exposed", "0.44.1")
-
-      library("dao", "org.jetbrains.exposed", "exposed-dao").versionRef("exposed")
-      library("core", "org.jetbrains.exposed", "exposed-core").versionRef("exposed")
-      library("json", "org.jetbrains.exposed", "exposed-json").versionRef("exposed")
-      library("jdbc", "org.jetbrains.exposed", "exposed-jdbc").versionRef("exposed")
-      library("crypt", "org.jetbrains.exposed", "exposed-crypt").versionRef("exposed")
-      library("datetime", "org.jetbrains.exposed", "exposed-kotlin-datetime").versionRef("exposed")
-
-      bundle("exposed", listOf("dao", "core", "json", "jdbc", "crypt", "datetime"))
-
-      library("h2", "com.h2database", "h2").version("2.2.224")
-      library("mariadb", "org.mariadb.jdbc", "mariadb-java-client").version("3.3.0")
-      library("mysql", "mysql", "mysql-connector-java").version("8.0.33")
-      library("oracle", "com.oracle.database.jdbc", "ojdbc8").version("23.3.0.23.09")
-      library("postgres", "org.postgresql", "postgresql").version("42.6.0")
-      library("sql-server", "com.microsoft.sqlserver", "mssql-jdbc").version("12.4.2.jre11")
-      library("sqlite", "org.xerial", "sqlite-jdbc").version("3.44.0.0")
-
-      bundle("drivers", listOf("h2", "mariadb", "mysql", "oracle", "postgres", "sql-server", "sqlite"))
     }
 
     create("koin") {
@@ -72,7 +57,7 @@ dependencyResolutionManagement {
 
     create("klogging") {
       library("logback", "ch.qos.logback", "logback-classic").version("1.4.11")
-      library("logging", "io.github.oshai", "kotlin-logging-jvm").version("5.1.0")
+      library("logging", "io.github.oshai", "kotlin-logging").version("5.1.0")
 
       bundle("logging", listOf("logback", "logging"))
     }
