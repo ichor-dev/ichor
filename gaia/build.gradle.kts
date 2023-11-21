@@ -1,4 +1,5 @@
 @file:OptIn(org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl::class)
+
 plugins {
   alias(jetbrains.plugins.mp)
   alias(ktorio.plugins.ktor)
@@ -12,10 +13,6 @@ repositories {
 
 kotlin {
   explicitApi()
-
-  jvmToolchain {
-    languageVersion.set(JavaLanguageVersion.of(8))
-  }
 
   jvm {
     compilations.all {
@@ -41,7 +38,6 @@ kotlin {
         implementation(koin.bundles.koin)
         implementation("dev.whyoleg.cryptography:cryptography-core:0.2.0")
         implementation("com.benasher44:uuid:0.8.2")
-        implementation("io.github.skolson:kmp-io:0.1.4")
       }
     }
 
@@ -61,6 +57,8 @@ kotlin {
   }
 }
 
-tasks.test {
-  useJUnitPlatform()
+tasks {
+  test {
+    useJUnitPlatform()
+  }
 }
