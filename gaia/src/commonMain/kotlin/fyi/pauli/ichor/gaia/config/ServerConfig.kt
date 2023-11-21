@@ -1,12 +1,11 @@
 package fyi.pauli.ichor.gaia.config
 
 import io.ktor.util.*
+import kotlinx.io.buffered
+import kotlinx.io.files.Path
+import kotlinx.io.files.SystemFileSystem
+import kotlinx.io.readByteArray
 import kotlinx.serialization.Serializable
-import org.koin.java.KoinJavaComponent.inject
-import java.nio.file.Path
-import kotlin.io.path.Path
-import kotlin.io.path.notExists
-import kotlin.io.path.readBytes
 
 /**
  * Whole configuration section of the server.
@@ -16,7 +15,7 @@ import kotlin.io.path.readBytes
  * @since 30/10/2023
  */
 @Serializable
-data class ServerConfig(
+public data class ServerConfig(
 	val server: Server = Server()
 )
 
@@ -31,11 +30,11 @@ data class ServerConfig(
  * @since 01/11/2023
  */
 @Serializable
-data class Server(
-	val host: String = System.getenv()["SERVER_HOST"] ?: "127.0.0.1",
-	val port: Int = System.getenv()["SERVER_PORT"]?.toIntOrNull() ?: 25565,
-	val maxPacketSize: Int = System.getenv()["MAX_PACKET_SIZE"]?.toIntOrNull() ?: 2_097_151,
-	val favIconPath: String = System.getenv()["FAV_ICON_PATH"] ?: "./favicon.png",
+public data class Server(
+	val host: String = "127.0.0.1",
+	val port: Int = 25565,
+	val maxPacketSize: Int = 2_097_151,
+	val favIconPath: String = "./favicon.png",
 ) {
 
 	/**
@@ -44,11 +43,13 @@ data class Server(
 	 * @author Paul Kindler
 	 * @since 01/11/2023
 	 */
-	fun base64FavIcon(): String {
+	public fun base64FavIcon(): String {
 		val path: Path = Path(favIconPath)
+		val fileSystem = SystemFileSystem
+		val source = fileSystem.source(path).buffered()
 
-		if (path.notExists()) return ""
+		if (fileSystem.exists(path)) return ""
 
-		return path.readBytes().encodeBase64()
+		return source.readByteArray().encodeBase64()
 	}
 }

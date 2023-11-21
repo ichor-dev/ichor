@@ -7,11 +7,11 @@ import dev.whyoleg.cryptography.algorithms.asymmetric.RSA
 import fyi.pauli.ichor.gaia.config.ServerConfig
 import fyi.pauli.ichor.gaia.config.loadConfig
 import fyi.pauli.ichor.gaia.entity.player.Player
+import fyi.pauli.ichor.gaia.entity.player.UserProfile
 import fyi.pauli.ichor.gaia.extensions.koin.KoinLogger
-import fyi.pauli.ichor.gaia.models.Identifier
 import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
 import fyi.pauli.ichor.gaia.networking.packet.State
-import fyi.pauli.ichor.gaia.networking.serialization.IdentifierStringSerializer
+import fyi.pauli.ichor.gaia.networking.serialization.UserProfileSerializer
 import fyi.pauli.ichor.gaia.networking.serialization.UuidLongSerializer
 import fyi.pauli.prolialize.MinecraftProtocol
 import io.github.oshai.kotlinlogging.KLogger
@@ -86,14 +86,15 @@ public abstract class Server(private val serverName: String) : CoroutineScope {
 	 * @since 01/11/2023
 	 * @see RSA.OAEP.KeyPair
 	 */
-	internal val encryptionPair: RSA.OAEP.KeyPair = CryptographyProvider.Default.get(RSA.OAEP).keyPairGenerator(1024.bits).generateKeyBlocking()
+	internal val encryptionPair: RSA.OAEP.KeyPair =
+		CryptographyProvider.Default.get(RSA.OAEP).keyPairGenerator(1024.bits).generateKeyBlocking()
 
 	/**
 	 * The kotlinx.serialization format for the Minecraft protocol.
 	 */
 	internal val mcProtocol = MinecraftProtocol(SerializersModule {
 		contextual(Uuid::class, UuidLongSerializer)
-		contextual(Identifier::class, IdentifierStringSerializer)
+		contextual(UserProfile::class, UserProfileSerializer)
 	})
 
 	/**
@@ -125,7 +126,7 @@ public abstract class Server(private val serverName: String) : CoroutineScope {
 	 * @since 01/11/2023
 	 * @see Connection
 	 * @see PacketHandle
- 	 */
+	 */
 	private fun Connection.handle() = PacketHandle(
 		state = State.HANDSHAKING, connection = this, server = this@Server
 	).also {
@@ -177,8 +178,7 @@ public abstract class Server(private val serverName: String) : CoroutineScope {
 	 * Also executes [startup] when koin is started.
 	 */
 	internal suspend fun internalStart() = coroutineScope {
-		val serverConfig: ServerConfig =
-			loadConfig(Path("./config.toml"), ServerConfig())
+		val serverConfig: ServerConfig = loadConfig(Path("./config.toml"), ServerConfig())
 		configurationsModule.single { serverConfig }
 
 		startKoin {

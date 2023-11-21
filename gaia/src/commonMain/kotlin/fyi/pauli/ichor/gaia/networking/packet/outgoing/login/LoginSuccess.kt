@@ -3,7 +3,7 @@ package fyi.pauli.ichor.gaia.networking.packet.outgoing.login
 import fyi.pauli.ichor.gaia.entity.player.UserProfile
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
-import fyi.pauli.ichor.gaia.networking.serialization.UserProfileSerializer
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 /**
@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 public data class LoginSuccess(
-	var userProfile: @Serializable(UserProfileSerializer::class) UserProfile
+	var userProfile: @Contextual UserProfile
 ) : OutgoingPacket() {
 	override val id: Int
 		get() = 0x02
