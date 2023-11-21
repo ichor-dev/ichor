@@ -1,7 +1,6 @@
 package fyi.pauli.ichor.gaia.networking.packet
 
-import fyi.pauli.ichor.gaia.extensions.bytes.compress
-import fyi.pauli.ichor.gaia.extensions.bytes.decompress
+import fyi.pauli.ichor.gaia.extensions.bytes.Compressor
 import fyi.pauli.ichor.gaia.networking.packet.incoming.IncomingPacketHandler
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
 import fyi.pauli.ichor.gaia.networking.serialization.RawPacket
@@ -55,7 +54,7 @@ public class PacketHandle(
 					}.readByteArray())
 				} else {
 					val lengthLength = varIntBytesCount(length)
-					val compressed = encoded.compress()
+					val compressed = Compressor.compress(encoded)
 					val compressedLength = compressed.size
 					connection.output.writeFully(Buffer().also { buffer ->
 						writeVarInt(compressedLength + lengthLength) { buffer.writeByte(it) }
@@ -87,7 +86,7 @@ public class PacketHandle(
 			}
 
 			val compressedArray = ByteArray(length - secondIntLength) { connection.input.readByte() }
-			val decompressedBuffer = Buffer().also { it.write(compressedArray.decompress()) }
+			val decompressedBuffer = Buffer().also { it.write(Compressor.decompress(compressedArray)) }
 
 			val id = VarIntSerializer.readVarInt { decompressedBuffer.readByte() }
 			val idLength = varIntBytesCount(id)

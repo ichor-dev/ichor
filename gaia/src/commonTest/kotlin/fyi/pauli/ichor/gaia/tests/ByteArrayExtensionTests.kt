@@ -1,23 +1,22 @@
 package fyi.pauli.ichor.gaia.tests
 
-import fyi.pauli.ichor.gaia.extensions.bytes.compress
-import fyi.pauli.ichor.gaia.extensions.bytes.decompress
+import fyi.pauli.ichor.gaia.extensions.bytes.Compressor
+import io.ktor.utils.io.core.*
+import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
+import kotlin.test.assertTrue
 
 class ByteArrayExtensionTests {
 
 	@Test
-	fun compressAndDecompress() {
-		val original = "My name is Paul"
+	fun compressAndDecompress() = runBlocking {
+		val array = "My name is Paul".toByteArray()
 
-		val array = original.toByteArray()
-
-		val compressed = array.compress()
-
-		val decompressed = compressed.decompress(original.length)
+		val compressed = Compressor.compress(array)
+		val decompressed = Compressor.decompress(compressed)
 
 		val equals = array.contentEquals(decompressed)
 
-		assert(equals)
+		assertTrue(equals)
 	}
 }
