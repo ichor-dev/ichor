@@ -48,11 +48,10 @@ dependencyResolutionManagement {
     }
 
     create("koin") {
-      library("core", "io.insert-koin", "koin-core").version("3.5.0")
-      library("ktor", "io.insert-koin", "koin-ktor").version("3.5.1")
-      library("coroutines", "io.insert-koin", "koin-core-coroutines").version("3.5.0")
+      library("core", "io.insert-koin", "koin-core").version("3.5.2-RC1")
+      library("coroutines", "io.insert-koin", "koin-core-coroutines").version("3.5.2-RC1")
 
-      bundle("koin", listOf("core", "ktor", "coroutines"))
+      bundle("koin", listOf("core", "coroutines"))
     }
 
     create("klogging") {
