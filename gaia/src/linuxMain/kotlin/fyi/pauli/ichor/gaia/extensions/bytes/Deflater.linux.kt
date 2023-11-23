@@ -76,10 +76,7 @@ internal actual object Compressor {
 					stream.avail_out = outputBufferLength.toUInt()
 
 					/* Decompress the data */
-					val result = inflate(stream.ptr, Z_NO_FLUSH)
-
-					when (result) {
-
+					when (val result = inflate(stream.ptr, Z_NO_FLUSH)) {
 						Z_STREAM_END -> {
 							/* The end of the compressed data was reached */
 							val bytesWritten = outputBufferLength - stream.avail_out.toInt()

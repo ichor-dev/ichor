@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 
 /**
  * Whole configuration section of the server.
- * Access it by [inject].
+ * Access it by [org.koin.core.component.inject].
  * @property server
  * @author Paul Kindler
  * @since 30/10/2023
@@ -44,7 +44,7 @@ public data class Server(
 	 * @since 01/11/2023
 	 */
 	public fun base64FavIcon(): String {
-		val path: Path = Path(favIconPath)
+		val path = Path(favIconPath)
 		val fileSystem = SystemFileSystem
 		val source = fileSystem.source(path).buffered()
 

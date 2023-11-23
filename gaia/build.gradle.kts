@@ -12,6 +12,13 @@ repositories {
 }
 
 kotlin {
+  targets.configureEach {
+    compilations.configureEach {
+      compilerOptions.configure {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+      }
+    }
+  }
   explicitApi()
 
   jvm {
