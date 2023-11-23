@@ -15,8 +15,9 @@ dependencyResolutionManagement {
 
     create("pauli") {
       library("prorialize", "fyi.pauli", "prorialize").version("1.1.0")
+      library("nbterialize", "fyi.pauli", "nbterialize").version("1.0.2")
 
-      bundle("ichor", listOf("prorialize"))
+      bundle("ichor", listOf("prorialize", "nbterialize"))
     }
 
     create("kotlinx") {

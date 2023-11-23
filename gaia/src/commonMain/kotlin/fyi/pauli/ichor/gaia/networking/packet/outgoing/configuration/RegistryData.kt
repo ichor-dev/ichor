@@ -1,8 +1,8 @@
 package fyi.pauli.ichor.gaia.networking.packet.outgoing.configuration
 
-import fyi.pauli.ichor.gaia.models.nbt.impl.CompoundTag
 import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
+import fyi.pauli.nbterialize.serialization.types.CompoundTag
 import kotlinx.serialization.Serializable
 
 /**
