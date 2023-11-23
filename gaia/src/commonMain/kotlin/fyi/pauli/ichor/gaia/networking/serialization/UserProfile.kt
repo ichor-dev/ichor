@@ -20,7 +20,7 @@ import kotlinx.serialization.encoding.*
  */
 public object UserProfileSerializer : KSerializer<UserProfile> {
 	override val descriptor: SerialDescriptor = buildClassSerialDescriptor("userprofile") {
-		element<Uuid>("uuid")
+		element("uuid", UuidLongSerializer.descriptor)
 		element<String>("username")
 		element<List<Property>>("properties")
 		element<List<ProfileAction>>("profileActions")
@@ -41,7 +41,7 @@ public object UserProfileSerializer : KSerializer<UserProfile> {
 				profileActions = decodeSerializableElement(descriptor, 3, ListSerializer(ProfileAction.serializer()))
 			} else {
 				while (true) {
-					when (val index = decodeElementIndex(UuidLongSerializer.descriptor)) {
+					when (val index = decodeElementIndex(descriptor)) {
 						0 -> uuid = decodeSerializableElement(descriptor, 0, UuidLongSerializer)
 						1 -> username = decodeStringElement(descriptor, 1)
 						2 -> properties = decodeSerializableElement(descriptor, 2, ListSerializer(Property.serializer()))
@@ -69,5 +69,4 @@ public object UserProfileSerializer : KSerializer<UserProfile> {
 			encodeSerializableElement(descriptor, 3, ListSerializer(ProfileAction.serializer()), value.profileActions)
 		}
 	}
-
 }
