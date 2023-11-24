@@ -86,7 +86,7 @@ public abstract class Server(private val serverName: String) : CoroutineScope {
 	 * @since 01/11/2023
 	 * @see RSA.OAEP.KeyPair
 	 */
-	internal val encryptionPair: RSA.OAEP.KeyPair =
+	public val encryptionPair: RSA.OAEP.KeyPair =
 		CryptographyProvider.Default.get(RSA.OAEP).keyPairGenerator(1024.bits).generateKeyBlocking()
 
 	/**
@@ -102,7 +102,7 @@ public abstract class Server(private val serverName: String) : CoroutineScope {
 	 * @author Paul Kindler
 	 * @since 01/11/2023
 	 */
-	internal val verifyToken = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789".toByteArray()
+	public val verifyToken: ByteArray = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789".toByteArray()
 
 	/**
 	 * Collection of all current connections used for packet sending/receiving.

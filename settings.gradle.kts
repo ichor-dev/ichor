@@ -14,8 +14,8 @@ dependencyResolutionManagement {
     }
 
     create("pauli") {
-      library("prorialize", "fyi.pauli", "prorialize").version("1.1.0")
-      library("nbterialize", "fyi.pauli", "nbterialize").version("1.0.2")
+      library("prorialize", "fyi.pauli.prorialize", "prorialize").version("1.1.0")
+      library("nbterialize", "fyi.pauli.nbterialize", "nbterialize").version("1.0.2")
 
       bundle("ichor", listOf("prorialize", "nbterialize"))
     }
@@ -26,13 +26,11 @@ dependencyResolutionManagement {
       library("coroutines", "org.jetbrains.kotlinx", "kotlinx-coroutines-core").version("1.7.3")
       library("io", "org.jetbrains.kotlinx", "kotlinx-io-core").version("0.3.0")
 
-      bundle("kotlinx", listOf("coroutines", "coroutines", "datetime"))
+      bundle("kotlinx", listOf("coroutines", "coroutines", "datetime", "io"))
     }
 
     create("ktorio") {
       version("ktor", "2.3.6")
-      plugin("ktor", "io.ktor.plugin").versionRef("ktor")
-
       library("cio", "io.ktor", "ktor-server-cio").versionRef("ktor")
       library("network", "io.ktor", "ktor-network").versionRef("ktor")
       library("core", "io.ktor", "ktor-server-core").versionRef("ktor")
@@ -66,9 +64,8 @@ dependencyResolutionManagement {
       version("ktoml", "0.5.0")
 
       library("ktoml-core", "com.akuleshov7", "ktoml-core").versionRef("ktoml")
-      library("ktoml-file", "com.akuleshov7", "ktoml-file").versionRef("ktoml")
 
-      bundle("toml", listOf("ktoml-core", "ktoml-file"))
+      bundle("toml", listOf("ktoml-core"))
     }
   }
 }

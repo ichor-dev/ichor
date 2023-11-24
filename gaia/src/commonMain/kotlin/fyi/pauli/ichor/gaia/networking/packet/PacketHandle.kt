@@ -29,8 +29,8 @@ import kotlinx.serialization.encodeToByteArray
 public class PacketHandle(
 	public var state: State,
 	public val connection: Connection,
-	private var threshold: Int = -1,
-	private var compression: Boolean = threshold > 0,
+	public var threshold: Int = -1,
+	public var compression: Boolean = threshold > 0,
 	internal val server: Server
 ) {
 

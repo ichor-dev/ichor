@@ -7,13 +7,15 @@ import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
+import kotlinx.coroutines.launch
 
-suspend fun main() = serve(Hephaistos) {
-
+public fun main() {
+	Hephaistos.launch {
+		serve(Hephaistos) {}
+	}
 }
 
-object Hephaistos : Server("Hephaistos") {
-
+public object Hephaistos : Server("Hephaistos") {
 	override val httpClient: HttpClient = HttpClient(CIO) {
 		install(ContentNegotiation) {
 			json(Constants.json)

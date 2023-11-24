@@ -1,8 +1,10 @@
 @file:OptIn(org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl::class)
 
+import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
+
+
 plugins {
   alias(jetbrains.plugins.mp)
-  alias(ktorio.plugins.ktor)
   alias(jetbrains.plugins.serialization)
 }
 
@@ -37,14 +39,14 @@ kotlin {
 
     val commonMain by getting {
       dependencies {
-        implementation(pauli.bundles.ichor)
-        implementation(kotlinx.bundles.kotlinx)
-        implementation(ktorio.bundles.ktor)
-        implementation(klogging.bundles.logging)
-        implementation(fileConfiguration.bundles.toml)
-        implementation(koin.bundles.koin)
-        implementation("dev.whyoleg.cryptography:cryptography-core:0.2.0")
-        implementation("com.benasher44:uuid:0.8.2")
+        api(pauli.bundles.ichor)
+        api(kotlinx.bundles.kotlinx)
+        api(ktorio.bundles.ktor)
+        api(klogging.bundles.logging)
+        api(fileConfiguration.bundles.toml)
+        api(koin.bundles.koin)
+        api("dev.whyoleg.cryptography:cryptography-core:0.2.0")
+        api("com.benasher44:uuid:0.8.2")
       }
     }
 
@@ -64,8 +66,6 @@ kotlin {
   }
 }
 
-tasks {
-  test {
-    useJUnitPlatform()
-  }
+tasks.withType<KotlinJvmTest> {
+  useJUnitPlatform()
 }

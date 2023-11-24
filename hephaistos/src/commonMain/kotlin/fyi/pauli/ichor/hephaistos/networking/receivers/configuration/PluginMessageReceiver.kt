@@ -5,7 +5,7 @@ import fyi.pauli.ichor.gaia.networking.packet.PacketReceiver
 import fyi.pauli.ichor.gaia.networking.packet.incoming.configuration.PluginMessage
 import fyi.pauli.ichor.gaia.server.Server
 
-object PluginMessageReceiver : PacketReceiver<PluginMessage> {
+public object PluginMessageReceiver : PacketReceiver<PluginMessage> {
 	@OptIn(ExperimentalStdlibApi::class)
 	override suspend fun onReceive(packet: PluginMessage, packetHandle: PacketHandle, server: Server) {
 		server.logger.debug {

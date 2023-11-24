@@ -7,7 +7,7 @@ import fyi.pauli.ichor.gaia.networking.packet.outgoing.status.PingResponse
 import fyi.pauli.ichor.gaia.server.Server
 import io.ktor.utils.io.*
 
-object PingRequestReceiver : PacketReceiver<PingRequest> {
+public object PingRequestReceiver : PacketReceiver<PingRequest> {
 	override suspend fun onReceive(packet: PingRequest, packetHandle: PacketHandle, server: Server) {
 		packetHandle.sendPacket(PingResponse(packet.payload))
 		packetHandle.connection.socket.close()

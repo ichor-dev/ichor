@@ -16,9 +16,9 @@ import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.serializer
 import kotlin.reflect.KClass
 
-internal object IncomingPacketHandler {
+public object IncomingPacketHandler {
 	@OptIn(InternalSerializationApi::class)
-	suspend fun deserializeAndHandle(rawPacket: RawPacket, packetHandle: PacketHandle, server: Server) {
+	internal suspend fun deserializeAndHandle(rawPacket: RawPacket, packetHandle: PacketHandle, server: Server) {
 		if (rawPacket is RawPacket.NotFound) {
 			server.logger.warn {
 				"Cannot find packet with length ${rawPacket.length}."
@@ -42,7 +42,7 @@ internal object IncomingPacketHandler {
 		}
 	}
 
-	fun registerJoinPackets() {
+	public fun registerJoinPackets() {
 		fun createPacket(
 			state: State, id: Int, name: String, kClass: KClass<out IncomingPacket>
 		): RegisteredIncomingPacket = RegisteredIncomingPacket(

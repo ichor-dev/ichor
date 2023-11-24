@@ -6,7 +6,7 @@ import fyi.pauli.ichor.gaia.networking.packet.State
 import fyi.pauli.ichor.gaia.networking.packet.incoming.configuration.FinishConfiguration
 import fyi.pauli.ichor.gaia.server.Server
 
-object FinishConfigurationReceiver : PacketReceiver<FinishConfiguration> {
+public object FinishConfigurationReceiver : PacketReceiver<FinishConfiguration> {
 	override suspend fun onReceive(packet: FinishConfiguration, packetHandle: PacketHandle, server: Server) {
 		packetHandle.state = State.PLAY
 	}

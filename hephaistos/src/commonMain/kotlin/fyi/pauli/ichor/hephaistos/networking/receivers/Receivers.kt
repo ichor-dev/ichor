@@ -15,8 +15,8 @@ import fyi.pauli.ichor.hephaistos.networking.receivers.login.LoginStartReceiver
 import fyi.pauli.ichor.hephaistos.networking.receivers.status.PingRequestReceiver
 import fyi.pauli.ichor.hephaistos.networking.receivers.status.StatusRequestReceiver
 
-object Receivers {
-	private val identifier = Identifier(Constants.serverBrand, "vanilla-receiver")
+public object Receivers {
+	private val identifier = Identifier(Constants.SERVER_BRAND, "vanilla-receiver")
 
 	@Suppress("UNCHECKED_CAST")
 	internal fun registerVanillaJoinReceivers() {
