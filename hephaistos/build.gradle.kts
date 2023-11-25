@@ -35,17 +35,6 @@ kotlin {
       executable {
         entryPoint = "fyi.pauli.ichor.hephaistos.main"
       }
-
-      sharedLib {
-        export(project(":gaia"))
-        export(koin.bundles.koin)
-        export(pauli.bundles.ichor)
-        export(klogging.bundles.logging)
-        export("dev.whyoleg.cryptography:cryptography-core:0.3.0-SNAPSHOT")
-        export("com.benasher44:uuid:0.8.2")
-        export("com.ionspin.kotlin:bignum:0.3.8")
-        export("dev.whyoleg.cryptography:cryptography-provider-openssl3-prebuilt:0.3.0-SNAPSHOT")
-      }
     }
   }
 
