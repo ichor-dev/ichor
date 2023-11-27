@@ -5,6 +5,8 @@ plugins {
   alias(jetbrains.plugins.serialization)
 }
 
+version = "1.0.0"
+
 repositories {
   mavenCentral()
   maven("https://repo.nyon.dev/releases")
@@ -21,15 +23,18 @@ kotlin {
   }
   explicitApi()
 
-  jvmToolchain {
-    languageVersion.set(JavaLanguageVersion.of(8))
-  }
+  jvmToolchain(17)
 
   jvm {
     compilations.all {
-      kotlinOptions.jvmTarget = "1.8"
+      kotlinOptions.jvmTarget = "17"
+    }
+
+    mainRun {
+      mainClass = "fyi.pauli.ichor.hephaistos.HephaistosKt"
     }
   }
+
   linuxX64 {
     binaries {
       executable {
@@ -64,6 +69,7 @@ kotlin {
     val jvmMain by getting {
       dependencies {
         implementation("dev.whyoleg.cryptography:cryptography-provider-jdk:0.2.0")
+        implementation(kotlin("stdlib-jdk8"))
       }
     }
 
@@ -85,5 +91,14 @@ kotlin {
 tasks {
   withType<KotlinJvmTest> {
     useJUnitPlatform()
+  }
+
+  withType(Jar::class.java) {
+    manifest {
+      attributes["Created-By"] = "Gradle ${gradle.gradleVersion}"
+      attributes["Implementation-Title"] = project.name
+      attributes["Implementation-Version"] = project.version.toString()
+      attributes["Main-Class"] = "fyi.pauli.ichor.hephaistos.HephaistosKt"
+    }
   }
 }
