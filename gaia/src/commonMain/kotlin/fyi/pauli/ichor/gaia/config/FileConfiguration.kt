@@ -5,6 +5,7 @@ import com.akuleshov7.ktoml.TomlIndentation
 import com.akuleshov7.ktoml.TomlInputConfig
 import com.akuleshov7.ktoml.TomlOutputConfig
 import fyi.pauli.ichor.gaia.extensions.internal.InternalGaiaApi
+import kotlinx.io.Sink
 import kotlinx.io.buffered
 import kotlinx.io.files.Path
 import kotlinx.io.files.SystemFileSystem
@@ -40,31 +41,32 @@ public val configToml: Toml = Toml(
  * Function to load and create file configuration of given config at given path.
  * You don't need to call this function because you can just use config(YourConfigClassInstance)
  * @param C the type of configuration it will return.
- * @property configuration the data class of your configuration.
+ * @property defaultConfig the data class of your configuration.
  * @throws IllegalArgumentException when config path is already used by another configuration.
- * @return file configuration either loaded from file or just the one you specified with [configuration].
+ * @return file configuration either loaded from file or just the one you specified with [defaultConfig].
  * @author Paul Kindler
  * @since 30/10/2023
  */
 @InternalGaiaApi
-public inline fun <reified C> loadConfig(path: Path, configuration: C): C {
+public inline fun <reified C> loadConfig(path: Path, defaultConfig: C): C {
 	val fileSystem = SystemFileSystem
-	val source = fileSystem.source(path).buffered()
 	val sink = fileSystem.sink(path).buffered()
-	val exists = fileSystem.exists(path)
+	val source = fileSystem.source(path).buffered()
 
 	val text = source.readString()
 
-	if (exists && text.isNotEmpty()) return configToml.decodeFromString<C>(text)
-
-	val toml = configToml.encodeToString(configuration)
-	if (!exists || text.isBlank()) sink.writeString(toml)
-
-	if (exists && !text.contains(toml)) {
-		throw IllegalArgumentException(
-			"This config file is already in use by another configuration." + "Consider changing the file or delete the old configuration."
-		)
+	if (text.isNotEmpty()) return try {
+		configToml.decodeFromString<C>(text)
+	} catch (e: Exception) {
+		writeConfig(sink, defaultConfig)
 	}
 
-	return configToml.decodeFromString<C>(source.readString())
+	return writeConfig(sink, defaultConfig)
+}
+
+@InternalGaiaApi
+public inline fun <reified C> writeConfig(sink: Sink, config: C): C {
+	val defaultText = configToml.encodeToString(config)
+	sink.writeString(defaultText)
+	return config
 }
