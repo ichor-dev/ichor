@@ -47,7 +47,7 @@ kotlin {
         api(koin.bundles.koin)
         api(pauli.bundles.ichor)
         api(klogging.bundles.logging)
-        api("dev.whyoleg.cryptography:cryptography-core:0.3.0-SNAPSHOT")
+        implementation("dev.whyoleg.cryptography:cryptography-core:0.3.0-SNAPSHOT")
         api("com.benasher44:uuid:0.8.2")
         api("com.ionspin.kotlin:bignum:0.3.8")
       }
@@ -63,7 +63,7 @@ kotlin {
 
     val jvmMain by getting {
       dependencies {
-        api("dev.whyoleg.cryptography:cryptography-provider-jdk:0.2.0")
+        implementation("dev.whyoleg.cryptography:cryptography-provider-jdk:0.2.0")
       }
     }
 
@@ -76,7 +76,7 @@ kotlin {
 
     val linuxX64Main by getting {
       dependencies {
-        api("dev.whyoleg.cryptography:cryptography-provider-openssl3-prebuilt:0.3.0-SNAPSHOT")
+        implementation("dev.whyoleg.cryptography:cryptography-provider-openssl3-prebuilt:0.3.0-SNAPSHOT")
       }
     }
   }

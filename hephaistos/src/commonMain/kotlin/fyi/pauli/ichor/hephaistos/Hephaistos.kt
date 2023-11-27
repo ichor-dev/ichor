@@ -7,12 +7,10 @@ import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-public fun main() {
-	Hephaistos.launch {
-		serve(Hephaistos) {}
-	}
+public fun main(): Unit = runBlocking {
+	serve(Hephaistos) {}
 }
 
 public object Hephaistos : Server("Hephaistos") {
