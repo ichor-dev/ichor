@@ -68,5 +68,6 @@ public inline fun <reified C> loadConfig(path: Path, defaultConfig: C): C {
 public inline fun <reified C> writeConfig(sink: Sink, config: C): C {
 	val defaultText = configToml.encodeToString(config)
 	sink.writeString(defaultText)
+	sink.flush()
 	return config
 }
