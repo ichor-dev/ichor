@@ -7,7 +7,7 @@ include(
 dependencyResolutionManagement {
   versionCatalogs {
     create("jetbrains") {
-      version("kotlin", "1.9.20")
+      version("kotlin", "1.9.21")
 
       plugin("mp", "org.jetbrains.kotlin.multiplatform").versionRef("kotlin")
       plugin("serialization", "org.jetbrains.kotlin.plugin.serialization").versionRef("kotlin")
@@ -54,8 +54,8 @@ dependencyResolutionManagement {
     }
 
     create("klogging") {
-      library("logback", "ch.qos.logback", "logback-classic").version("1.4.11")
-      library("logging", "io.github.oshai", "kotlin-logging").version("5.1.0")
+      library("logback", "ch.qos.logback", "logback-classic").version("1.4.13")
+      library("logging", "io.github.oshai", "kotlin-logging").version("5.1.1")
 
       bundle("logging", listOf("logback", "logging"))
     }
