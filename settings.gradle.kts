@@ -22,7 +22,7 @@ dependencyResolutionManagement {
 
     create("kotlinx") {
       library("datetime", "org.jetbrains.kotlinx", "kotlinx-datetime").version("0.4.1")
-      library("json", "org.jetbrains.kotlinx", "kotlinx-serialization-json").version("1.6.1")
+      library("json", "org.jetbrains.kotlinx", "kotlinx-serialization-json").version("1.6.2")
       library("coroutines", "org.jetbrains.kotlinx", "kotlinx-coroutines-core").version("1.7.3")
       library("io", "org.jetbrains.kotlinx", "kotlinx-io-core").version("0.3.0")
 
@@ -54,7 +54,7 @@ dependencyResolutionManagement {
     }
 
     create("klogging") {
-      library("logback", "ch.qos.logback", "logback-classic").version("1.4.13")
+      library("logback", "ch.qos.logback", "logback-classic").version("1.4.14")
       library("logging", "io.github.oshai", "kotlin-logging").version("5.1.1")
 
       bundle("logging", listOf("logback", "logging"))
