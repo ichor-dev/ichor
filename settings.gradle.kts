@@ -54,10 +54,9 @@ dependencyResolutionManagement {
     }
 
     create("klogging") {
-      library("logback", "ch.qos.logback", "logback-classic").version("1.4.14")
       library("logging", "io.github.oshai", "kotlin-logging").version("5.1.1")
 
-      bundle("logging", listOf("logback", "logging"))
+      bundle("logging", listOf("logging"))
     }
 
     create("fileConfiguration") {
