@@ -14,7 +14,7 @@ dependencyResolutionManagement {
     }
 
     create("pauli") {
-      library("prorialize", "fyi.pauli.prorialize", "prorialize").version("1.1.0")
+      library("prorialize", "fyi.pauli.prorialize", "prorialize").version("1.1.1")
       library("nbterialize", "fyi.pauli.nbterialize", "nbterialize").version("1.0.2")
 
       bundle("ichor", listOf("prorialize", "nbterialize"))
