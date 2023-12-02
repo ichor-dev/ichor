@@ -10,6 +10,7 @@ import fyi.pauli.prolialize.serialization.types.primitives.VarIntSerializer.varI
 import fyi.pauli.prolialize.serialization.types.primitives.VarIntSerializer.writeVarInt
 import io.ktor.network.sockets.*
 import io.ktor.utils.io.*
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.io.Buffer
@@ -61,6 +62,7 @@ public class PacketHandle(
 						writeVarInt(length) { buffer.writeByte(it) }
 						buffer.write(compressed)
 					}.readByteArray())
+					connection.output.flush()
 				}
 
 				server.logger.debug { "SENT packet ${packet.debugName} with id ${packet.id} in state ${packet.state}. [Compression: $compression, Socket: ${connection.socket.remoteAddress}]" }
@@ -73,8 +75,8 @@ public class PacketHandle(
 	 * @author Paul Kindler
 	 * @since 01/11/2023
 	 */
-	internal suspend fun handleIncoming() {
-		while (!connection.input.isClosedForRead) {
+	internal suspend fun handleIncoming(): Job {
+		while (true) {
 			val length = VarIntSerializer.readVarInt { connection.input.readByte() }
 			val secondInt = VarIntSerializer.readVarInt { connection.input.readByte() }
 			val secondIntLength = varIntBytesCount(secondInt)
@@ -82,7 +84,9 @@ public class PacketHandle(
 			if (!compression) {
 				val data = ByteArray(length - secondIntLength) { connection.input.readByte() }
 
-				IncomingPacketHandler.deserializeAndHandle(RawPacket.Found(secondInt, length, data), this, server)
+				server.launch {
+					IncomingPacketHandler.deserializeAndHandle(RawPacket.Found(secondInt, length, data), this@PacketHandle, server)
+				}
 			}
 
 			val compressedArray = ByteArray(length - secondIntLength) { connection.input.readByte() }
@@ -91,7 +95,9 @@ public class PacketHandle(
 			val id = VarIntSerializer.readVarInt { decompressedBuffer.readByte() }
 			val idLength = varIntBytesCount(id)
 			val data = ByteArray(secondInt - idLength) { decompressedBuffer.readByte() }
-			IncomingPacketHandler.deserializeAndHandle(RawPacket.Found(secondInt, length, data), this, server)
+			server.launch {
+				IncomingPacketHandler.deserializeAndHandle(RawPacket.Found(secondInt, length, data), this@PacketHandle, server)
+			}
 		}
 	}
 }

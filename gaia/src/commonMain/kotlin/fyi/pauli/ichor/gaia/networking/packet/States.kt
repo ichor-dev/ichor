@@ -7,9 +7,9 @@ import kotlinx.serialization.Serializable
 public enum class State(
 	internal val debugName: String
 ) {
-	HANDSHAKING("Handshaking"),
+	@EnumSerial(0) HANDSHAKING("Handshaking"),
 	@EnumSerial(1) STATUS("Status"),
 	@EnumSerial(2) LOGIN("Login"),
-	CONFIGURATION("Configuration"),
-	PLAY("Play")
+	@EnumSerial(3) CONFIGURATION("Configuration"),
+	@EnumSerial(4) PLAY("Play")
 }
