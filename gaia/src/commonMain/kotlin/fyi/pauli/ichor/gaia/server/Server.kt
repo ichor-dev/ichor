@@ -144,8 +144,7 @@ public abstract class Server(private val serverName: String) : CoroutineScope {
 	 * @since 01/11/2023
 	 * @see KLogger
 	 */
-	public val logger: KLogger
-		get() = KotlinLogging.logger(serverName)
+	public val logger: KLogger = KotlinLogging.logger(serverName)
 
 	/**
 	 * Custom exception handler in coroutine contexts.
@@ -178,6 +177,8 @@ public abstract class Server(private val serverName: String) : CoroutineScope {
 	 * Also executes [startup] when koin is started.
 	 */
 	internal suspend fun internalStart() = coroutineScope {
+		Platform.setupPlatform()
+
 		val serverConfig: ServerConfig = loadConfig(Path("./config.toml"), ServerConfig())
 		configurationsModule.single { serverConfig }
 
@@ -193,7 +194,10 @@ public abstract class Server(private val serverName: String) : CoroutineScope {
 		val manager = SelectorManager(Dispatchers.IO)
 		val serverSocket = aSocket(manager).tcp().bind(
 			InetSocketAddress(serverConfig.server.host, serverConfig.server.port)
-		)
+		) {
+			reuseAddress = true
+			reusePort = true
+		}
 
 		logger.info {
 			"Server started successfully!"
@@ -202,7 +206,7 @@ public abstract class Server(private val serverName: String) : CoroutineScope {
 		while (!serverSocket.isClosed) {
 			val socket = serverSocket.accept()
 
-			val connection = Connection(socket, socket.openReadChannel(), socket.openWriteChannel(false))
+			val connection = Connection(socket, socket.openReadChannel(), socket.openWriteChannel())
 
 			val handle = connection.handle()
 
@@ -211,13 +215,15 @@ public abstract class Server(private val serverName: String) : CoroutineScope {
 			}
 
 			launch {
+				val job = handle.handleIncoming()
 				try {
-					handle.handleIncoming()
+					job.start()
 				} catch (e: Throwable) {
 					if (e !is ClosedReceiveChannelException) logger.error(e) {
 						"Error in channel"
 					}
 				} finally {
+					job.cancel()
 					handles.remove(handle)
 					connection.input.cancel()
 					connection.output.close()
