@@ -14,7 +14,7 @@ dependencyResolutionManagement {
     }
 
     create("ichor") {
-      library("prorialize", "fyi.pauli.prorialize", "prorialize").version("1.1.1")
+      library("prorialize", "fyi.pauli.prorialize", "prorialize").version("1.1.2")
       library("nbterialize", "fyi.pauli.nbterialize", "nbterialize").version("1.0.2")
 
       bundle("ichor", listOf("prorialize", "nbterialize"))
@@ -22,7 +22,7 @@ dependencyResolutionManagement {
 
     create("kotlinx") {
       library("io", "org.jetbrains.kotlinx", "kotlinx-io-core").version("0.3.0")
-      library("datetime", "org.jetbrains.kotlinx", "kotlinx-datetime").version("0.4.1")
+      library("datetime", "org.jetbrains.kotlinx", "kotlinx-datetime").version("0.5.0")
       library("json", "org.jetbrains.kotlinx", "kotlinx-serialization-json").version("1.6.2")
       library("coroutines", "org.jetbrains.kotlinx", "kotlinx-coroutines-core").version("1.7.3")
 
@@ -30,7 +30,7 @@ dependencyResolutionManagement {
     }
 
     create("ktorio") {
-      version("ktor", "2.3.6")
+      version("ktor", "2.3.7")
       library("cio", "io.ktor", "ktor-server-cio").versionRef("ktor")
       library("network", "io.ktor", "ktor-network").versionRef("ktor")
       library("core", "io.ktor", "ktor-server-core").versionRef("ktor")
