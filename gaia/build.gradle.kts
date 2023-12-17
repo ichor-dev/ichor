@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 
 
 plugins {
-  alias(jetbrains.plugins.mp)
+  alias(jetbrains.plugins.multiplatform)
   alias(jetbrains.plugins.serialization)
 }
 
@@ -39,14 +39,14 @@ kotlin {
 
     val commonMain by getting {
       dependencies {
-        api(pauli.bundles.ichor)
-        api(kotlinx.bundles.kotlinx)
+        api(kn.uuid)
+        api(koin.bundles.koin)
+        api(cryptography.core)
+        api(ichor.bundles.ichor)
         api(ktorio.bundles.ktor)
+        api(kotlinx.bundles.kotlinx)
         api(klogging.bundles.logging)
         api(fileConfiguration.bundles.toml)
-        api(koin.bundles.koin)
-        api("dev.whyoleg.cryptography:cryptography-core:0.2.0")
-        api("com.benasher44:uuid:0.8.2")
       }
     }
 
@@ -59,8 +59,8 @@ kotlin {
 
     val jvmTest by getting {
       dependencies {
+        implementation(testing.jupiter)
         implementation(kotlin("test-junit5"))
-        implementation("org.junit.jupiter:junit-jupiter-engine:5.10.1")
       }
     }
   }
