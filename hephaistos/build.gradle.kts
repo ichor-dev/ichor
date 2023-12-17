@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 
 plugins {
-  alias(jetbrains.plugins.mp)
+  alias(jetbrains.plugins.multiplatform)
   alias(jetbrains.plugins.serialization)
 }
 
@@ -27,7 +27,9 @@ kotlin {
 
   jvm {
     compilations.all {
-      kotlinOptions.jvmTarget = "17"
+      kotlinOptions {
+        jvmTarget = "17"
+      }
     }
 
     mainRun {
@@ -46,43 +48,35 @@ kotlin {
   sourceSets {
     val commonMain by getting {
       dependencies {
-        api(project(":gaia"))
-        api(kotlinx.bundles.kotlinx)
-        api(ktorio.bundles.ktor)
-        api(koin.bundles.koin)
-        api(pauli.bundles.ichor)
-        api(klogging.bundles.logging)
-        implementation("dev.whyoleg.cryptography:cryptography-core:0.3.0-SNAPSHOT")
-        api("com.benasher44:uuid:0.8.2")
-        api("com.ionspin.kotlin:bignum:0.3.8")
+        implementation(project(":gaia"))
       }
     }
 
     val commonTest by getting {
       dependencies {
+        implementation(project(":gaia"))
         implementation(kotlin("test-common"))
         implementation(kotlin("test-annotations-common"))
-        implementation(project(":gaia"))
       }
     }
 
     val jvmMain by getting {
       dependencies {
-        implementation("dev.whyoleg.cryptography:cryptography-provider-jdk:0.2.0")
+        implementation(cryptography.core)
         implementation(kotlin("stdlib-jdk8"))
       }
     }
 
     val jvmTest by getting {
       dependencies {
+        implementation(testing.jupiter)
         implementation(kotlin("test-junit5"))
-        implementation("org.junit.jupiter:junit-jupiter-engine:5.10.1")
       }
     }
 
     val linuxX64Main by getting {
       dependencies {
-        implementation("dev.whyoleg.cryptography:cryptography-provider-openssl3-prebuilt:0.3.0-SNAPSHOT")
+        implementation(cryptography.core)
       }
     }
   }

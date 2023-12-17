@@ -9,11 +9,11 @@ dependencyResolutionManagement {
     create("jetbrains") {
       version("kotlin", "1.9.21")
 
-      plugin("mp", "org.jetbrains.kotlin.multiplatform").versionRef("kotlin")
+      plugin("multiplatform", "org.jetbrains.kotlin.multiplatform").versionRef("kotlin")
       plugin("serialization", "org.jetbrains.kotlin.plugin.serialization").versionRef("kotlin")
     }
 
-    create("pauli") {
+    create("ichor") {
       library("prorialize", "fyi.pauli.prorialize", "prorialize").version("1.1.1")
       library("nbterialize", "fyi.pauli.nbterialize", "nbterialize").version("1.0.2")
 
@@ -21,10 +21,10 @@ dependencyResolutionManagement {
     }
 
     create("kotlinx") {
+      library("io", "org.jetbrains.kotlinx", "kotlinx-io-core").version("0.3.0")
       library("datetime", "org.jetbrains.kotlinx", "kotlinx-datetime").version("0.4.1")
       library("json", "org.jetbrains.kotlinx", "kotlinx-serialization-json").version("1.6.2")
       library("coroutines", "org.jetbrains.kotlinx", "kotlinx-coroutines-core").version("1.7.3")
-      library("io", "org.jetbrains.kotlinx", "kotlinx-io-core").version("0.3.0")
 
       bundle("kotlinx", listOf("coroutines", "coroutines", "datetime", "io"))
     }
@@ -65,6 +65,18 @@ dependencyResolutionManagement {
       library("ktoml-core", "com.akuleshov7", "ktoml-core").versionRef("ktoml")
 
       bundle("toml", listOf("ktoml-core"))
+    }
+
+    create("cryptography"){
+      library("core", "dev.whyoleg.cryptography", "cryptography-core").version("0.2.0")
+    }
+
+    create("kn") {
+      library("uuid", "com.benasher44", "uuid").version("0.8.2")
+    }
+
+    create("testing") {
+      library("jupiter", "org.junit.jupiter", "junit-jupiter-engine").version("5.10.1")
     }
   }
 }

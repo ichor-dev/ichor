@@ -7,11 +7,8 @@ import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.coroutines.runBlocking
 
-public fun main(): Unit = runBlocking {
-	serve(Hephaistos) {}
-}
+public suspend fun main(): Unit = serve(Hephaistos) { }
 
 public object Hephaistos : Server("Hephaistos") {
 	override val httpClient: HttpClient = HttpClient(CIO) {
