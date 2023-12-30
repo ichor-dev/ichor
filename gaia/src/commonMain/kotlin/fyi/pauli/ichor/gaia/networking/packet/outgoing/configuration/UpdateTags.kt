@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 public data class UpdateTags(var tags: MutableMap<@Contextual Identifier, MutableMap<@Contextual Identifier, IntArray>>) :
-	OutgoingPacket() {
+	OutgoingPacket {
 	override val id: Int
 		get() = 0x08
 	override val state: State

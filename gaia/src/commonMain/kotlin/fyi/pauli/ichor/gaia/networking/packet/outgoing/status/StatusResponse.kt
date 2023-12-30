@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class StatusResponse(
 	var status: String
-) : OutgoingPacket() {
+) : OutgoingPacket {
 	override val id: Int
 		get() = 0x00
 

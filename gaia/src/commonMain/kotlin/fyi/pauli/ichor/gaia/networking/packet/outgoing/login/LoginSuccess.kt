@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class LoginSuccess(
 	var userProfile: @Contextual UserProfile
-) : OutgoingPacket() {
+) : OutgoingPacket {
 	override val id: Int
 		get() = 0x02
 	override val state: State

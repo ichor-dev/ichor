@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
  * @param threshold Maximum size of a packet before it is compressed.
  */
 @Serializable
-public data class SetCompression(var threshold: Int) : OutgoingPacket() {
+public data class SetCompression(var threshold: Int) : OutgoingPacket {
 	override val id: Int
 		get() = 0x03
 	override val state: State

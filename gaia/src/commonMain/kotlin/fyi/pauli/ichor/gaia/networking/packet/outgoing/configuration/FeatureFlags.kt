@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
  * @param featureFlags The identifiers of the features.
  */
 @Serializable
-public data class FeatureFlags(var featureFlags: MutableList<@Contextual Identifier>) : OutgoingPacket() {
+public data class FeatureFlags(var featureFlags: MutableList<@Contextual Identifier>) : OutgoingPacket {
 	override val id: Int
 		get() = 0x07
 	override val state: State

@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class EncryptionRequest(
 	var serverId: String, var publicKey: ByteArray, var verifyToken: ByteArray
-) : OutgoingPacket() {
+) : OutgoingPacket {
 	override fun equals(other: Any?): Boolean {
 		if (this === other) return true
 		if (other == null || this::class != other::class) return false

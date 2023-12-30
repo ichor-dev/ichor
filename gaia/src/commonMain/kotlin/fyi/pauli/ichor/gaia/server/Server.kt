@@ -8,9 +8,12 @@ import fyi.pauli.ichor.gaia.config.ServerConfig
 import fyi.pauli.ichor.gaia.config.loadConfig
 import fyi.pauli.ichor.gaia.entity.player.Player
 import fyi.pauli.ichor.gaia.entity.player.UserProfile
+import fyi.pauli.ichor.gaia.extensions.internal.InternalGaiaApi
 import fyi.pauli.ichor.gaia.extensions.koin.KoinLogger
 import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
 import fyi.pauli.ichor.gaia.networking.packet.State
+import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPacket
+import fyi.pauli.ichor.gaia.networking.packet.outgoing.OutgoingPackets
 import fyi.pauli.ichor.gaia.networking.serialization.UserProfileSerializer
 import fyi.pauli.ichor.gaia.networking.serialization.UuidLongSerializer
 import fyi.pauli.prolialize.MinecraftProtocol
@@ -25,6 +28,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.io.files.Path
 import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import kotlin.coroutines.CoroutineContext
@@ -92,10 +96,8 @@ public abstract class Server(private val serverName: String) : CoroutineScope {
 	/**
 	 * The kotlinx.serialization format for the Minecraft protocol.
 	 */
-	internal val mcProtocol = MinecraftProtocol(SerializersModule {
-		contextual(Uuid::class, UuidLongSerializer)
-		contextual(UserProfile::class, UserProfileSerializer)
-	})
+	@InternalGaiaApi
+	public lateinit var mcProtocol: MinecraftProtocol
 
 	/**
 	 * Verify token, currently just example and test purposes.
@@ -179,7 +181,7 @@ public abstract class Server(private val serverName: String) : CoroutineScope {
 	internal suspend fun internalStart() = coroutineScope {
 		Platform.setupPlatform()
 
-		val serverConfig: ServerConfig = loadConfig(Path("./config.toml"), ServerConfig())
+		val serverConfig: ServerConfig = loadConfig(Path("./ichor/config.toml"), ServerConfig())
 		configurationsModule.single { serverConfig }
 
 		startKoin {
@@ -190,6 +192,15 @@ public abstract class Server(private val serverName: String) : CoroutineScope {
 		}
 
 		startup()
+
+		mcProtocol = MinecraftProtocol(SerializersModule {
+			contextual(Uuid::class, UuidLongSerializer)
+			contextual(UserProfile::class, UserProfileSerializer)
+
+			polymorphic(OutgoingPacket::class) {
+				OutgoingPackets.outgoingPacketSubClasses.forEach { it(this@polymorphic) }
+			}
+		})
 
 		val manager = SelectorManager(Dispatchers.IO)
 		val serverSocket = aSocket(manager).tcp().bind(

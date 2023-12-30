@@ -34,7 +34,7 @@ public data class Server(
 	val host: String = "127.0.0.1",
 	val port: Int = 25565,
 	val maxPacketSize: Int = 2_097_151,
-	val favIconPath: String = "./favicon.png",
+	val favIconPath: String = "./ichor/favicon.png",
 ) {
 
 	/**
@@ -46,9 +46,8 @@ public data class Server(
 	public fun base64FavIcon(): String {
 		val path = Path(favIconPath)
 		val fileSystem = SystemFileSystem
+		if (!fileSystem.exists(path)) return "<data>"
 		val source = fileSystem.source(path).buffered()
-
-		if (fileSystem.exists(path)) return ""
 
 		return source.readByteArray().encodeBase64()
 	}

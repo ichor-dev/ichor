@@ -13,9 +13,7 @@ import kotlinx.serialization.Serializable
  * @param payload The payload to send.
  */
 @Serializable
-public data class PluginMessage(
-	var payload: Payload
-) : OutgoingPacket() {
+public data class PluginMessage(var payload: Payload) : OutgoingPacket {
 	override val id: Int
 		get() = 0x00
 	override val state: State

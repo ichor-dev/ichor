@@ -15,7 +15,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.io.Buffer
 import kotlinx.io.readByteArray
-import kotlinx.serialization.encodeToByteArray
+import kotlinx.serialization.PolymorphicSerializer
+import kotlinx.serialization.serializer
 
 /**
  * Handler class for any established connection,
@@ -45,17 +46,20 @@ public class PacketHandle(
 	public suspend fun sendPacket(packet: OutgoingPacket) {
 		withContext(server.coroutineContext) {
 			launch {
-				val encoded = server.mcProtocol.encodeToByteArray(packet)
-				val length = encoded.size
+				val data = Buffer().also { buffer ->
+					writeVarInt(packet.id) { buffer.writeByte(it) }
+					buffer.write(server.mcProtocol.encodeToByteArray(PolymorphicSerializer(OutgoingPacket::class), packet))
+				}.readByteArray()
+				val length = data.size
 
 				if (!compression) {
 					connection.output.writeFully(Buffer().also { buffer ->
 						writeVarInt(length) { buffer.writeByte(it) }
-						buffer.write(encoded)
+						buffer.write(data)
 					}.readByteArray())
 				} else {
 					val lengthLength = varIntBytesCount(length)
-					val compressed = Compressor.compress(encoded)
+					val compressed = Compressor.compress(data)
 					val compressedLength = compressed.size
 					connection.output.writeFully(Buffer().also { buffer ->
 						writeVarInt(compressedLength + lengthLength) { buffer.writeByte(it) }
@@ -76,6 +80,15 @@ public class PacketHandle(
 	 * @since 01/11/2023
 	 */
 	internal suspend fun handleIncoming(): Job {
+		suspend fun handle(rawPacket: RawPacket) {
+			if (state == State.PLAY) server.launch {
+				IncomingPacketHandler.deserializeAndHandle(
+					rawPacket, this@PacketHandle, server
+				)
+			}
+			else IncomingPacketHandler.deserializeAndHandle(rawPacket, this@PacketHandle, server)
+		}
+
 		while (true) {
 			val length = VarIntSerializer.readVarInt { connection.input.readByte() }
 			val secondInt = VarIntSerializer.readVarInt { connection.input.readByte() }
@@ -84,19 +97,15 @@ public class PacketHandle(
 			if (!compression) {
 				val data = ByteArray(length - secondIntLength) { connection.input.readByte() }
 
-				server.launch {
-					IncomingPacketHandler.deserializeAndHandle(RawPacket.Found(secondInt, length, data), this@PacketHandle, server)
-				}
-			}
+				handle(RawPacket.Found(secondInt, length, data))
+			} else {
+				val compressedArray = ByteArray(length - secondIntLength) { connection.input.readByte() }
+				val decompressedBuffer = Buffer().also { it.write(Compressor.decompress(compressedArray)) }
 
-			val compressedArray = ByteArray(length - secondIntLength) { connection.input.readByte() }
-			val decompressedBuffer = Buffer().also { it.write(Compressor.decompress(compressedArray)) }
-
-			val id = VarIntSerializer.readVarInt { decompressedBuffer.readByte() }
-			val idLength = varIntBytesCount(id)
-			val data = ByteArray(secondInt - idLength) { decompressedBuffer.readByte() }
-			server.launch {
-				IncomingPacketHandler.deserializeAndHandle(RawPacket.Found(secondInt, length, data), this@PacketHandle, server)
+				val id = VarIntSerializer.readVarInt { decompressedBuffer.readByte() }
+				val idLength = varIntBytesCount(id)
+				val data = ByteArray(secondInt - idLength) { decompressedBuffer.readByte() }
+				handle(RawPacket.Found(secondInt, length, data))
 			}
 		}
 	}

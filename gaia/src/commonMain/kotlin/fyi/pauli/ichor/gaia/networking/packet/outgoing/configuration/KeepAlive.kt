@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
  * @param keepAliveId ID to check the response of the client
  */
 @Serializable
-public data class KeepAlive(@NumberType var keepAliveId: Long) : OutgoingPacket() {
+public data class KeepAlive(@NumberType var keepAliveId: Long) : OutgoingPacket {
 	override val id: Int
 		get() = 0x03
 	override val state: State

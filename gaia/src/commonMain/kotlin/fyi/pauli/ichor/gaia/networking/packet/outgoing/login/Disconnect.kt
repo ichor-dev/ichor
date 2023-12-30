@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
  * @param reason The reason why the player was disconnected.
  */
 @Serializable
-public data class Disconnect(var reason: String) : OutgoingPacket() {
+public data class Disconnect(var reason: String) : OutgoingPacket {
 	override val id: Int
 		get() = 0x00
 	override val state: State

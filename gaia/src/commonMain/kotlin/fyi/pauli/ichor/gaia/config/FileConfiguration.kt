@@ -50,6 +50,7 @@ public val configToml: Toml = Toml(
 @InternalGaiaApi
 public inline fun <reified C> loadConfig(path: Path, defaultConfig: C): C {
 	val fileSystem = SystemFileSystem
+	if (path.parent != null) fileSystem.createDirectories(path.parent!!)
 	val sink = fileSystem.sink(path).buffered()
 	val source = fileSystem.source(path).buffered()
 

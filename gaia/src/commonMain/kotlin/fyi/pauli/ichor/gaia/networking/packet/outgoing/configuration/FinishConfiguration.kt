@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
  * In Vanilla, this packet switches the connection state to play.
  */
 @Serializable
-public class FinishConfiguration : OutgoingPacket() {
+public class FinishConfiguration : OutgoingPacket {
 	override val id: Int
 		get() = 0x02
 	override val state: State

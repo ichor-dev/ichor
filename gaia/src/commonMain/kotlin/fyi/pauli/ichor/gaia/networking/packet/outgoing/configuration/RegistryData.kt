@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
  * @see "https://wiki.vg/Pre-release_protocol#Registry_Data"
  */
 @Serializable
-public data class RegistryData(var registryCodec: CompoundTag) : OutgoingPacket() {
+public data class RegistryData(var registryCodec: CompoundTag) : OutgoingPacket {
 	override val id: Int
 		get() = 0x05
 	override val state: State
