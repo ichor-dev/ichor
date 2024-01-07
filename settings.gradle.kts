@@ -7,7 +7,7 @@ include(
 dependencyResolutionManagement {
   versionCatalogs {
     create("jetbrains") {
-      version("kotlin", "1.9.21")
+      version("kotlin", "1.9.22")
 
       plugin("multiplatform", "org.jetbrains.kotlin.multiplatform").versionRef("kotlin")
       plugin("serialization", "org.jetbrains.kotlin.plugin.serialization").versionRef("kotlin")
@@ -47,20 +47,20 @@ dependencyResolutionManagement {
     }
 
     create("koin") {
-      library("core", "io.insert-koin", "koin-core").version("3.5.2-RC1")
-      library("coroutines", "io.insert-koin", "koin-core-coroutines").version("3.5.2-RC1")
+      library("core", "io.insert-koin", "koin-core").version("3.5.3")
+      library("coroutines", "io.insert-koin", "koin-core-coroutines").version("3.5.3")
 
       bundle("koin", listOf("core", "coroutines"))
     }
 
     create("klogging") {
-      library("logging", "io.github.oshai", "kotlin-logging").version("5.1.1")
+      library("logging", "io.github.oshai", "kotlin-logging").version("6.0.1")
 
       bundle("logging", listOf("logging"))
     }
 
     create("fileConfiguration") {
-      version("ktoml", "0.5.0")
+      version("ktoml", "0.5.1")
 
       library("ktoml-core", "com.akuleshov7", "ktoml-core").versionRef("ktoml")
 
