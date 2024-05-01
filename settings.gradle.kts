@@ -14,14 +14,14 @@ dependencyResolutionManagement {
     }
 
     create("ichor") {
-      library("prorialize", "fyi.pauli.prorialize", "prorialize").version("1.1.2")
-      library("nbterialize", "fyi.pauli.nbterialize", "nbterialize").version("1.0.2")
+      library("prorialize", "fyi.pauli.prorialize", "prorialize").version("1.1.3")
+      library("nbterialize", "fyi.pauli.nbterialize", "nbterialize").version("1.0.3")
 
       bundle("ichor", listOf("prorialize", "nbterialize"))
     }
 
     create("kotlinx") {
-      library("io", "org.jetbrains.kotlinx", "kotlinx-io-core").version("0.3.2")
+      library("io", "org.jetbrains.kotlinx", "kotlinx-io-core").version("0.3.3")
       library("datetime", "org.jetbrains.kotlinx", "kotlinx-datetime").version("0.5.0")
       library("json", "org.jetbrains.kotlinx", "kotlinx-serialization-json").version("1.6.3")
       library("coroutines", "org.jetbrains.kotlinx", "kotlinx-coroutines-core").version("1.8.0")
