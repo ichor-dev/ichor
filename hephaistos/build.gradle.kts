@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 
 plugins {
-  alias(jetbrains.plugins.multiplatform)
-  alias(jetbrains.plugins.serialization)
+  alias(ichor.plugins.jetbrains.multiplatform)
+  alias(ichor.plugins.jetbrains.serialization)
 }
 
 version = "1.0.0"
@@ -28,55 +28,36 @@ kotlin {
   jvm {
     compilations.all {
       kotlinOptions {
-        jvmTarget = "17"
-      }
-    }
-
-    mainRun {
-      mainClass = "fyi.pauli.ichor.hephaistos.HephaistosKt"
-    }
-  }
-
-  linuxX64 {
-    binaries {
-      executable {
-        entryPoint = "fyi.pauli.ichor.hephaistos.main"
+        jvmTarget = "1.8"
       }
     }
   }
+
+  linuxX64()
+
+  //linuxArm64() Unsupported due to the not existing linuxArm support of ktoml.
+
+  /**
+   * macosX64()
+   * macosArm64()
+   *
+   * Cant support darwin targets due to missing hardware.
+   */
+
+  applyDefaultHierarchyTemplate()
 
   sourceSets {
+    all {
+      languageSettings.optIn("fyi.pauli.ichor.gaia.extensions.internal.InternalGaiaApi")
+      languageSettings.enableLanguageFeature("InlineClasses")
+    }
+
     val commonMain by getting {
       dependencies {
         implementation(project(":gaia"))
-      }
-    }
-
-    val commonTest by getting {
-      dependencies {
-        implementation(project(":gaia"))
-        implementation(kotlin("test-common"))
-        implementation(kotlin("test-annotations-common"))
-      }
-    }
-
-    val jvmMain by getting {
-      dependencies {
-        implementation(cryptography.core)
-        implementation(kotlin("stdlib-jdk8"))
-      }
-    }
-
-    val jvmTest by getting {
-      dependencies {
-        implementation(testing.jupiter)
-        implementation(kotlin("test-junit5"))
-      }
-    }
-
-    val linuxX64Main by getting {
-      dependencies {
-        implementation(cryptography.core)
+        implementation(ichor.logging)
+        implementation(ichor.ktor.client.cio)
+        implementation(ichor.ktor.client.negotiation)
       }
     }
   }
