@@ -10,7 +10,7 @@ dependencyResolutionManagement {
   }
   versionCatalogs {
     create("ichor") {
-      from("fyi.pauli:ichor-catalog:1.6.1")
+      from("fyi.pauli:ichor-catalog:1.6.3")
     }
   }
 }
