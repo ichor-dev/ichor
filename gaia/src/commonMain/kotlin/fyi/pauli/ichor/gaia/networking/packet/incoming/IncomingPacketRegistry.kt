@@ -11,5 +11,5 @@ public object PacketRegistry {
 public data class RegisteredIncomingPacket(
 	val identifier: PacketIdentifier,
 	var kClass: KClass<out IncomingPacket>,
-	val receivers: MutableMap<Identifier, PacketReceiver<IncomingPacket>>
+	val receivers: MutableMap<Identifier, PacketReceiver<IncomingPacket>>,
 )

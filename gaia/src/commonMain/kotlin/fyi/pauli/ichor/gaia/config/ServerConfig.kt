@@ -16,7 +16,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 public data class ServerConfig(
-	val server: Server = Server()
+	val server: Server = Server(),
 )
 
 /**

@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 public data class EncryptionRequest(
-	var serverId: String, var publicKey: ByteArray, var verifyToken: ByteArray
+	var serverId: String, var publicKey: ByteArray, var verifyToken: ByteArray,
 ) : OutgoingPacket() {
 	override fun equals(other: Any?): Boolean {
 		if (this === other) return true

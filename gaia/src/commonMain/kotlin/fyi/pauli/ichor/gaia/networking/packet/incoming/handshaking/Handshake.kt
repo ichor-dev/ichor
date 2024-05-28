@@ -11,5 +11,5 @@ public data class Handshake(
 	val protocolVersion: Int,
 	val serverAddress: String,
 	@NumberType(MinecraftNumberType.UNSIGNED) val serverPort: Short,
-	val nextState: State
+	val nextState: State,
 ) : IncomingPacket

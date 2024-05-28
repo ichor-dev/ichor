@@ -13,5 +13,5 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 public data class LoginStart(
-	var name: String, var uuid: @Contextual Uuid
+	var name: String, var uuid: @Contextual Uuid,
 ) : IncomingPacket

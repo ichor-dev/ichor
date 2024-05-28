@@ -19,7 +19,7 @@ public data class UserProfile(
 	@SerialName("id") val uuid: @Serializable(with = OldUuidStringSerializer::class) Uuid,
 	@SerialName("name") val username: String,
 	val properties: List<Property>,
-	val profileActions: List<ProfileAction>
+	val profileActions: List<ProfileAction>,
 )
 
 /**

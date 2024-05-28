@@ -32,7 +32,7 @@ public class PacketHandle(
 	public val connection: Connection,
 	public var threshold: Int = -1,
 	public var compression: Boolean = threshold > 0,
-	internal val server: Server
+	internal val server: Server,
 ) {
 
 	/**
@@ -85,7 +85,11 @@ public class PacketHandle(
 				val data = ByteArray(length - secondIntLength) { connection.input.readByte() }
 
 				server.launch {
-					IncomingPacketHandler.deserializeAndHandle(RawPacket.Found(secondInt, length, data), this@PacketHandle, server)
+					IncomingPacketHandler.deserializeAndHandle(
+						RawPacket.Found(secondInt, length, data),
+						this@PacketHandle,
+						server
+					)
 				}
 			}
 

@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 public data class EncryptionResponse(
-	var sharedSecret: ByteArray, var verifyToken: ByteArray
+	var sharedSecret: ByteArray, var verifyToken: ByteArray,
 ) : IncomingPacket {
 	override fun equals(other: Any?): Boolean {
 		if (this === other) return true

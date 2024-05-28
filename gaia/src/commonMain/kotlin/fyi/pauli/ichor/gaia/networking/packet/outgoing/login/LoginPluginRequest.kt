@@ -21,7 +21,7 @@ import kotlinx.serialization.Serializable
 public data class LoginPluginRequest(
 	var messageId: Int,
 	var channel: @Serializable(IdentifierStringSerializer::class) Identifier,
-	@Unprefixed var data: ByteArray
+	@Unprefixed var data: ByteArray,
 ) : OutgoingPacket() {
 	override val id: Int
 		get() = 0x04

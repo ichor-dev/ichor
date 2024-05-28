@@ -4,6 +4,7 @@ import kotlinx.cinterop.*
 import platform.posix.memset
 import platform.posix.size_tVar
 import platform.zlib.*
+
 /**
  * @author btwonion
  * @since 21/11/2023
@@ -13,7 +14,7 @@ internal actual object Compressor {
 	private var finished: Boolean = false
 	private var finish: Int = Z_FINISH
 
-	@OptIn(ExperimentalForeignApi::class)
+	@OptIn(ExperimentalForeignApi::class, UnsafeNumber::class)
 	actual fun compress(input: ByteArray): ByteArray {
 		memScoped {
 			// Allocate output buffer with maximum possible size

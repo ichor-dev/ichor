@@ -26,7 +26,7 @@ class ProtocolObjectTests {
 		val identifier: Identifier,
 		val tag: CompoundTag,
 		val uuid: @Serializable(with = UuidLongSerializer::class) Uuid,
-		val userProfile: @Serializable(with = UserProfileSerializer::class) UserProfile
+		val userProfile: @Serializable(with = UserProfileSerializer::class) UserProfile,
 	)
 
 	@Test

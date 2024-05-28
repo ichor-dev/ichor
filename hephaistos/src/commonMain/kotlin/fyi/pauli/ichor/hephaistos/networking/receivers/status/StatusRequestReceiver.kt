@@ -22,7 +22,7 @@ public object StatusRequestReceiver : PacketReceiver<StatusRequest>, KoinCompone
 	override suspend fun onReceive(
 		packet: StatusRequest,
 		packetHandle: PacketHandle,
-		server: Server
+		server: Server,
 	) {
 		packetHandle.sendPacket(StatusResponse(json.encodeToString(ServerPreview())))
 	}
@@ -34,37 +34,38 @@ public object StatusRequestReceiver : PacketReceiver<StatusRequest>, KoinCompone
 		public var description: Description = Description(),
 		public var favicon: String = "data:image/png;base64,${serverConfig.server.base64FavIcon()}",
 		public var enforceSecureChat: Boolean = true,
-		public var previewsChat: Boolean = true
+		public var previewsChat: Boolean = true,
 	) {
 
 		@Serializable
 		public class Version(
 			public var name: String = "1.20.2",
-			public var protocol: Int = 764
+			public var protocol: Int = 764,
 		)
 
 		@Serializable
 		public class Players(
 			public var max: Int = 100,
 			public var online: Int = 0,
-			public var sample: List<PreviewPlayer> = listOf()
+			public var sample: List<PreviewPlayer> = listOf(),
 		) {
 
 			@Serializable
 			public class PreviewPlayer(
 				public var name: String = "btwonion",
-				@Contextual public var id: Uuid = uuidFrom("84c7eef5-ae2c-4ebb-a006-c3ee07643d79")
+				@Contextual public var id: Uuid = uuidFrom("84c7eef5-ae2c-4ebb-a006-c3ee07643d79"),
 			) {
 
 				public companion object {
-					public fun fromPlayer(player: Player): PreviewPlayer = PreviewPlayer(player.profile.username, player.profile.uuid)
+					public fun fromPlayer(player: Player): PreviewPlayer =
+						PreviewPlayer(player.profile.username, player.profile.uuid)
 				}
 			}
 		}
 
 		@Serializable
 		public class Description(
-			public var text: String = ""
+			public var text: String = "",
 		)
 	}
 }

@@ -24,7 +24,7 @@ public object EncryptionResponseReceiver : PacketReceiver<EncryptionResponse> {
 	public val loginStartPackets: MutableMap<PacketHandle, LoginStart> = mutableMapOf()
 
 	override suspend fun onReceive(
-		packet: EncryptionResponse, packetHandle: PacketHandle, server: Server
+		packet: EncryptionResponse, packetHandle: PacketHandle, server: Server,
 	) {
 		val loginStartPacket = loginStartPackets[packetHandle]
 		if (loginStartPacket == null) {
@@ -56,10 +56,12 @@ public object EncryptionResponseReceiver : PacketReceiver<EncryptionResponse> {
 	}
 
 	private suspend fun requestUserProfile(
-		server: Server, loginStartPacket: LoginStart, encryptionResponsePacket: EncryptionResponse
+		server: Server, loginStartPacket: LoginStart, encryptionResponsePacket: EncryptionResponse,
 	): UserProfile? {
-		val failed = server.encryptionPair.publicKey.encryptor().encrypt(encryptionResponsePacket.verifyToken).contentEquals(encryptionResponsePacket.verifyToken)
-		if (failed) server.logger.error { "Encryption failed for player ${loginStartPacket.name} (${loginStartPacket.uuid})" }.also { return null }
+		val failed = server.encryptionPair.publicKey.encryptor().encrypt(encryptionResponsePacket.verifyToken)
+			.contentEquals(encryptionResponsePacket.verifyToken)
+		if (failed) server.logger.error { "Encryption failed for player ${loginStartPacket.name} (${loginStartPacket.uuid})" }
+			.also { return null }
 
 		val digest = Digest("SHA-1")
 		digest += "".toByteArray(Charset.forName("ISO_8859_1"))

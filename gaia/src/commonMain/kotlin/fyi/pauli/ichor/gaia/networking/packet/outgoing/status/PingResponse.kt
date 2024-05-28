@@ -10,7 +10,7 @@ import fyi.pauli.prolialize.serialization.types.NumberType
  * @param payload Should be the same as sent by the client.
  */
 public data class PingResponse(
-	@NumberType var payload: Long
+	@NumberType var payload: Long,
 ) : OutgoingPacket() {
 
 	override val id: Int

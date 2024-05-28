@@ -16,7 +16,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 public data class ResourcePack(
-	var url: String, var hash: String, var forced: Boolean, var hasPromptMessage: Boolean, var promptMessage: String?
+	var url: String, var hash: String, var forced: Boolean, var hasPromptMessage: Boolean, var promptMessage: String?,
 ) : OutgoingPacket() {
 	override val id: Int
 		get() = 0x06

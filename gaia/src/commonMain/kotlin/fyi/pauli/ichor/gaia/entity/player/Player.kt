@@ -12,6 +12,6 @@ import fyi.pauli.ichor.gaia.networking.packet.PacketHandle
  */
 public class Player(
 	public val profile: UserProfile,
-	public val handle: PacketHandle
+	public val handle: PacketHandle,
 ) : Entity.Creature
 

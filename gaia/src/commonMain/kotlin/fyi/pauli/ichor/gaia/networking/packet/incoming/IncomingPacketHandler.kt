@@ -44,17 +44,17 @@ public object IncomingPacketHandler {
 
 	public fun registerJoinPackets() {
 		fun createPacket(
-			state: State, id: Int, name: String, kClass: KClass<out IncomingPacket>
+			state: State, id: Int, name: String, kClass: KClass<out IncomingPacket>,
 		): RegisteredIncomingPacket = RegisteredIncomingPacket(
 			PacketIdentifier(id, state, name), kClass, mutableMapOf()
 		)
 
 		fun createLoginPacket(
-			id: Int, name: String, kClass: KClass<out IncomingPacket>
+			id: Int, name: String, kClass: KClass<out IncomingPacket>,
 		): RegisteredIncomingPacket = createPacket(State.LOGIN, id, name, kClass)
 
 		fun createConfigurationPacket(
-			id: Int, name: String, kClass: KClass<out IncomingPacket>
+			id: Int, name: String, kClass: KClass<out IncomingPacket>,
 		) = createPacket(State.CONFIGURATION, id, name, kClass)
 
 		val handshakePackets = listOf(

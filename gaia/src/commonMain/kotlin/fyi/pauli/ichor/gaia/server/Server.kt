@@ -30,6 +30,13 @@ import org.koin.core.module.Module
 import kotlin.coroutines.CoroutineContext
 
 /**
+ * Cryptography provider used for en-/decryption.
+ * Will depend on platform.
+ * @see CryptographyProvider
+ */
+public expect val Server.cryptographyProvider: CryptographyProvider
+
+/**
  * Start function for you server. Highly recommended to use as this is the only supported way to start the server correctly.
  * @param server instance of you server class.
  * @param init in this part you should register things you need already at startup like configurations.
@@ -49,17 +56,20 @@ public abstract class Server(private val serverName: String) : CoroutineScope {
 
 	/**
 	 * Module for all configurations you need to have at runtime.
-	 * You don't need to access this Module.
+	 * This module is used for configuration purposes.
+	 * Only access it if you know what you're doing.
 	 * @author Paul Kindler
 	 * @since 01/11/2023
 	 * @see Module
 	 */
+	@InternalCoroutinesApi
 	public val configurationsModule: Module = Module()
 
 	/**
 	 * Function to register a fileConfiguration at runtime.
 	 * You only need to call this function one time in the init block. After you can just inject it.
 	 */
+	@OptIn(InternalCoroutinesApi::class)
 	public inline fun <reified C> config(path: Path, fileConfiguration: C) {
 		configurationsModule.factory<C> { loadConfig<C>(path, fileConfiguration) }
 	}
@@ -87,7 +97,7 @@ public abstract class Server(private val serverName: String) : CoroutineScope {
 	 * @see RSA.OAEP.KeyPair
 	 */
 	public val encryptionPair: RSA.OAEP.KeyPair =
-		CryptographyProvider.Default.get(RSA.OAEP).keyPairGenerator(1024.bits).generateKeyBlocking()
+		cryptographyProvider.get(RSA.OAEP).keyPairGenerator(1024.bits).generateKeyBlocking()
 
 	/**
 	 * The kotlinx.serialization format for the Minecraft protocol.
@@ -176,6 +186,7 @@ public abstract class Server(private val serverName: String) : CoroutineScope {
 	 * Function used to initiate internal logic like koin or connection management.
 	 * Also executes [startup] when koin is started.
 	 */
+	@OptIn(InternalCoroutinesApi::class)
 	internal suspend fun internalStart() = coroutineScope {
 		Platform.setupPlatform()
 
@@ -183,7 +194,7 @@ public abstract class Server(private val serverName: String) : CoroutineScope {
 		configurationsModule.single { serverConfig }
 
 		startKoin {
-			logger(KoinLogger(logger = logger))
+			logger(KoinLogger(logger))
 			modules(
 				configurationsModule
 			)

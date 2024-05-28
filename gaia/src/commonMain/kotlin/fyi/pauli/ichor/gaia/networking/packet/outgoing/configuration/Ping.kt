@@ -11,7 +11,9 @@ import kotlinx.serialization.Serializable
  * @param pingId ID to check the response of the client
  */
 @Serializable
-public data class Ping(@NumberType var pingId: Int) : OutgoingPacket() {
+public data class Ping(
+	@NumberType var pingId: Int,
+) : OutgoingPacket() {
 	override val id: Int
 		get() = 0x04
 	override val state: State

@@ -19,7 +19,7 @@ internal sealed interface RawPacket {
 	 * A serializable class of a packet, which was recognized by its id.
 	 */
 	@Serializable
-	data class Found(val id: Int, override val length: Int, val data: ByteArray): RawPacket {
+	data class Found(val id: Int, override val length: Int, val data: ByteArray) : RawPacket {
 		override fun equals(other: Any?): Boolean {
 			if (this === other) return true
 			if (other == null || this::class != other::class) return false
@@ -45,7 +45,7 @@ internal sealed interface RawPacket {
 	 * A serializable class of a packet, which couldn't be recognized.
 	 */
 	@Serializable
-	data class NotFound(override val length: Int, val data: ByteArray): RawPacket {
+	data class NotFound(override val length: Int, val data: ByteArray) : RawPacket {
 		override fun equals(other: Any?): Boolean {
 			if (this === other) return true
 			if (other == null || this::class != other::class) return false

@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 public data class LoginSuccess(
-	var userProfile: @Contextual UserProfile
+	var userProfile: @Contextual UserProfile,
 ) : OutgoingPacket() {
 	override val id: Int
 		get() = 0x02
