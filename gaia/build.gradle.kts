@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.jvm.tasks.KotlinJvmTest
 
 plugins {
@@ -17,30 +19,22 @@ repositories {
 kotlin {
   targets.configureEach {
     compilations.configureEach {
-      compilerOptions.configure {
-        freeCompilerArgs.add("-Xexpect-actual-classes")
+      compileTaskProvider.configure {
+        compilerOptions.freeCompilerArgs.add("-Xexpect-actual-classes")
       }
     }
   }
   explicitApi()
 
   jvm {
-    compilations.all {
-      kotlinOptions.jvmTarget = "1.8"
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+      jvmTarget = JvmTarget.JVM_1_8
     }
   }
 
-  val linuxTargets = listOf(
-    linuxX64(),
-    //linuxArm64() Unsupported due to the not existing linuxArm support of ktoml.
-  )
+  linuxX64()
 
-  /**
-   * val darwinTargets = listOf(
-   *   macosX64(),
-   *   macosArm64(),
-   * )
-   */
 
   applyDefaultHierarchyTemplate()
 
@@ -77,28 +71,6 @@ kotlin {
         api(ichor.crypto.providers.openssl)
       }
     }
-
-    /**
-     * val darwinMain by creating {
-     *   dependencies {
-     *     api(crypto.providers.apple)
-     *   }
-     * }
-     */
-
-    linuxTargets.forEach {
-      getByName("${it.targetName}Main") {
-        dependsOn(linuxMain)
-      }
-    }
-
-    /**
-     * darwinTargets.forEach {
-     *   getByName("${it.targetName}Main") {
-     *     dependsOn(darwinMain)
-     *    }
-     * }
-     */
 
     val commonTest by getting {
       dependencies {
