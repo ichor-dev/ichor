@@ -1,5 +1,9 @@
 <h1>Ichor <a href="https://en.wikipedia.org/wiki/Ichor">[ ɪˈçoːɐ ]</a></h1>
 
+<h1>Archiving / termination of the project</h1>
+This project will'nt be continued.
+Huge shoutouts to anton (@btwonion)!
+
 <h3>Word clarification:</h3>
 Ichor is the blood of the gods (greek). It is gold. <s>Like this project.</s>
 
